@@ -1,0 +1,25 @@
+.createNewPlaylist {
+    background-color: rgb(49, 49, 56);
+    outline: 1px solid transparent;
+    border: 1px solid transparent;
+    caret-color: rgb(76, 76, 255);
+    color: white;
+}
+
+.createNewPlaylist:focus {
+    border: 1px solid rgb(76, 76, 255);
+}
+
+.hideInput {
+    transform: translateY(50%);
+    visibility: hidden;
+}
+
+.showInput {
+    visibility: visible;
+
+    transition: transform 50ms ease;
+}
+#btn-modal-close {
+    display: none;
+}
