@@ -3,6 +3,7 @@ import { ProviderProps, Video } from "../constants/videos.types";
 import { useAuth } from "../hooks/useAuth";
 import { useAsync } from "../hooks/useAxios";
 import { getUserProfileService } from "../services/profile/getUserProfileService";
+
 export type Gender = `male` | `female` | `others`
     ;
 export type Profile = {
