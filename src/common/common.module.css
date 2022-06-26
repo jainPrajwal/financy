@@ -1,0 +1,138 @@
+.containerSingleVideoPage {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 12px;
+  }
+  .mainContainer {
+    padding-top: 1rem;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .nav {
+    width: 80px;
+    background-color: #000;
+    position: fixed;
+    left: 0;
+    top: 4rem;
+    z-index: 1;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .navbar {
+    width: 100%;
+    height: 4rem;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    background-color: #000;
+    align-items: center;
+  }
+  .wrapperContainer {
+    display: flex;
+    margin-left: 80px;
+    align-items: flex-start;
+  }
+  .wrapperLogo {
+    width: 48px;
+    height: 48px;
+    margin-left: 1rem;
+  }
+  /* .mobileNavContainer {
+    position: fixed;
+    bottom: 0;
+    display: none;
+    background-color: var(--tube-theme-background);
+  } */
+  
+  .sideNav {
+    width: 100%;
+    height: 100%;
+    background-color: var(--tube-theme-background);
+    color: white;
+    position: relative;
+    overflow-y: auto;
+    display: none;
+  }
+  .iconClose {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    color: var(--tube-theme-error);
+  }
+  .userProfileWrapper {
+    margin-top: 2rem;
+  }
+  .getPremimumMobileWrapper {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 4rem;
+  }
+  
+  .sideNavItemsWrapper {
+    align-items: flex-start;
+    margin: 0 auto;
+  }
+  .btnGetPremium {
+    background-image: linear-gradient(317deg, #7f53ac 0%, #647dee 74%);
+    width: 100%;
+    height: 48px;
+    color: white;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hamburgerMenu {
+    display: none;
+  }
+  .sidebarStyle {
+    display: none;
+  }
+  .btnTrash {
+    padding: 2px;
+    color: inherit;
+    background-color: transparent;
+  }
+  
+  .btnTrash:focus {
+    background-color: var(--tube-theme-error);
+    color: white;
+  }
+  @media (max-width: 860px) {
+    .sidebarStyle {
+      display: block;
+    }
+    .sideNav {
+      display: flex;
+    }
+    .hamburgerMenu {
+      display: block;
+    }
+    .containerSingleVideoPage {
+      margin-bottom: 5rem;
+    }
+    .wrapperContainer {
+      flex-wrap: wrap;
+      margin: 0;
+    }
+  
+    .nav {
+      display: none;
+    }
+  
+    /* .mobileNavContainer {
+      display: flex;
+    } */
+    .wrapperLogo {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
