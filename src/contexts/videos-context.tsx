@@ -7,7 +7,7 @@ import {
 } from "../constants/videos.types";
 import { ACTION } from "../constants/actions.types";
 
-const initialState: VideosInitialState = {
+export const initialState: VideosInitialState = {
   videos: [],
   loading: `idle`,
   sortBy: `RECOMMENDED`,
