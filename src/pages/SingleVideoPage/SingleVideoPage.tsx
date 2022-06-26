@@ -21,13 +21,55 @@ import { useAuth } from "../../hooks/useAuth";
 import { editNotesService } from "../../services/notes/editNotesService";
 import { useProfile } from "../../hooks/useProfile";
 import { Video } from "../../constants/videos.types";
-
-
-
+import { default as svp } from "./SingleVideoPage.module.css";
+import { default as common } from "../../common/common.module.css"
+import { MdMenu, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import ReactPlayer from "react-player"
+import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
 export const SingleVideoPage = () => {
+    const {
+        detailsAndActions,
+        btnIcon,
+        notes,
+        notesContainer,
+        notesTextarea,
+        playerWrapper,
+        popular,
+        publisherDetails,
+
+        publisherName,
+        reactPlayer,
+        videoActions,
+        videoHeader,
+        videoMetrics,
+        videoContainer,
+
+        wrapperNotes,
+        videoMain,
+        videoAside,
+        videoContent
+    } = svp;
+    const {
+        containerSingleVideoPage,
+
+        mainContainer,
+
+        navbar,
+
+        publisherAvatar,
+
+        wrapperContainer,
+
+        wrapperLogo,
+        hamburgerMenu
+    } = common;
+    const [sidebar, setSidebar] = useState(false);
+
     const { videoId } = useParams();
     const { videosState, videosDispatch } = useVideos();
-  
+
     const [userDefinedNote, setUserDefinedNote] = useState<UserDefinedNote | null>(null);
     const [editNote, setEditNote] = useState<{
         isEditNote: Boolean,
@@ -364,325 +406,613 @@ export const SingleVideoPage = () => {
     }
 
     if (video)
-        return <>
-            {
-                !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
-            }
-            <h1>Single Video Page</h1>
-
-            <div
-
-                className={`p-1 my-1 d-flex ai-center  w-100`}
-                key={`${video.url}`}
-                style={{ border: `1px solid black` }}
-                role={`button`}
-
-            >
-                <div>
-
-                    <Avatar size={`md`} showStatus isVerified />
-                </div>
-                <div className="d-flex ai-start f-direction-col w-100">
-                    <div className={`header header-secondary`} style={{ whiteSpace: `initial` }}>{video.title}</div>
-
-                    <div className="d-flex" style={{ gap: `24px` }}>
-                        <div className={`w-100`}>
-                            {!isVideoAlreadyPresentInLikedPlaylist ? (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-
-                                    onClick={() => {
-                                        const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
-                                        executeAddToLikeService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.likedVideosData.likedVideos._id,
-                                        });
-                                        if (userProfile && userProfile.gender === `male`) {
-
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    likes: {
-                                                        male: foundVideo.likes.male + 1,
-                                                        female: foundVideo.likes.female,
-                                                        others: foundVideo.likes.others
-
-                                                    }
-
-                                                },
-                                                videoId: video._id
-                                            })
-                                        } else {
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    likes: {
-                                                        female: foundVideo.likes.female + 1,
-                                                        male: foundVideo.likes.male,
-                                                        others: foundVideo.likes.others
-
-                                                    }
-                                                },
-                                                videoId: video._id
-                                            })
-                                        }
-
-                                    }}
-                                >
-                                    {likeStatus === `loading` ?
-
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-
-                                        : `Like`}
-                                </button>
-                            ) : (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-                                    onClick={() => {
-                                        const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
-                                        executeRemoveFromLiked({
-                                            videoId: video._id,
-                                            playlistId: playlistsState.likedVideosData.likedVideos._id
-                                        })
-                                        if (userProfile && userProfile.gender === `male`) {
-
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    likes: {
-                                                        male: foundVideo.likes.male - 1,
-                                                        female: foundVideo.likes.female,
-                                                        others: foundVideo.likes.others
-
-                                                    }
-
-                                                },
-                                                videoId: video._id
-                                            })
-                                        } else {
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    likes: {
-                                                        female: foundVideo.likes.female - 1,
-                                                        male: foundVideo.likes.male,
-                                                        others: foundVideo.likes.others
-
-                                                    }
-                                                },
-                                                videoId: video._id
-                                            })
-                                        }
-                                    }}
-                                >
-                                    {removeFromLikeStatus === `loading` ?
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-                                        : `Unlike`}
-                                </button>
-                            )}
-                        </div>
-
-                        <div className={`w-100`}>
-                            {!isVideoAlreadyPresentInWatchLaterPlaylist ? (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-
-                                    onClick={() => {
-
-                                        executeAddToWatchLaterService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                        });
-                                    }}
-                                >
-                                    {watchLaterStatus === `loading` ?
-
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-
-                                        : `Watch Later`}
-                                </button>
-                            ) : (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-                                    onClick={() => {
-
-                                        executeRemoveFromWatchLater({
-                                            videoId: video._id,
-                                            playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                        })
-                                    }}
-                                >
-                                    {removeFromWatchLaterStatus === `loading` ?
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-                                        : `Remove From Watch Later`}
-                                </button>
-                            )}
-                        </div>
-
-                        <div className={`w-100`}>
-                            <button className="btn btn-primary" style={{ margin: `0`, width: `inherit` }} onClick={() => setIsModalHidden(false)}>
-                                Add To Playlists
-                            </button>
-                        </div>
-
-                        <div className={`w-100`}>
-                            {!isVideoAlreadyPresentInHistoryPlaylist ? (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-
-                                    onClick={() => {
-
-                                        executeAddHistoryService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.historyData.history._id
-                                        });
-
-                                        if (userProfile?.gender) {
-
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    likes:
-                                                        videosState.videos.filter(video => video._id === videoId)[0].views[userProfile.gender] + 1
-                                                },
-                                                videoId: video._id
-                                            })
-                                        }
-
-                                    }}
-                                >
-                                    {addToHistoryStatus === `loading` ?
-
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-
-                                        : `Add to History`}
-                                </button>
-                            ) : (
-                                <button
-                                    className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
-                                    onClick={() => {
-                                        executeRemoveFromHistory({
-                                            videoId: video._id,
-                                            playlistId: playlistsState.historyData.history._id
-                                        })
-                                    }}
-                                >
-                                    {removeFromHistoryStatus === `loading` ?
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
-                                        </span>
-                                        : `Remove From History`}
-                                </button>
-                            )}
-
-                        </div>
-
-                        <div className="w-100">
-                            <div>Category: {video.category}</div>
-                            <div>Views: {
-                                /* videosState.videos.reduce((acc: number, current: Video) => {
-                                     return acc += current.views.male + current.views.female + current.views.others
-                                 }, 0)*/
-
-                                video.views.male + video.views.female + video.views.others 
-                            }</div>
-                            <div>Likes: {
-                                /* videosState.videos.reduce((acc: number, current: Video) => {
-                                     return acc += current.likes.male + current.likes.female + current.likes.others
-                                 }, 0)*/
-                                 video.likes.male + video.likes.female + video.likes.others 
-                            }</div>
-                        </div>
-                    </div>
-
+        /*
+            return <>
+                {
+                    !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
+                }
+                <h1>Single Video Page</h1>
+    
+                <div
+    
+                    className={`p-1 my-1 d-flex ai-center  w-100`}
+                    key={`${video.url}`}
+                    style={{ border: `1px solid black` }}
+                    role={`button`}
+    
+                >
                     <div>
-                        <form className="d-flex ai-center" style={{ gap: `24px` }}
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                console.log(`notes`, userDefinedNote)
-                                setUserDefinedNote({
-                                    description: ``,
-                                    title: ``
-                                })
-                                if (editNote.isEditNote) {
-                                    executeEditNotesService({
-                                        noteId: editNote.noteId,
-                                        videoId,
-                                        note: userDefinedNote
-                                    })
-
-
-                                } else {
-                                    executesaveNotesService({
-                                        videoId: video._id,
-                                        note: userDefinedNote
-                                    })
-                                }
-
-                            }}
-                        >
-                            <input type="text"
-                                value={userDefinedNote?.title || ``}
-                                placeholder="Enter Notes Title" onChange={(e) => {
-                                    setUserDefinedNote(prevState => ({ ...prevState, title: e.target.value } as UserDefinedNote))
-                                }} />
-                            <textarea
-                                value={userDefinedNote?.description || ``}
-                                name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `320px`, }}
-                                placeholder="Enter notes"
-                                className="p-lg"
-                                onChange={(e) => {
-                                    setUserDefinedNote(prevState => ({ ...prevState, description: e.target.value } as UserDefinedNote))
-                                }}
-                            ></textarea>
-                            <button className="btn btn-primary" style={{ height: `fit-content` }}
-                                type={`submit`}
-                            >Save</button>
-                        </form>
-
-
+    
+                        <Avatar size={`md`} showStatus isVerified />
                     </div>
-
-                    {
-                        notesData.notes.map((note: Note) => {
-                            return <div key={note._id}>
-                                <div>{note.title}</div>
-                                <div>{note.description}</div>
-                                <div><button className="btn btn-primary" onClick={() => {
-                                    setEditNote({
-                                        isEditNote: true,
-                                        noteId: note._id
-                                    })
+                    <div className="d-flex ai-start f-direction-col w-100">
+                        <div className={`header header-secondary`} style={{ whiteSpace: `initial` }}>{video.title}</div>
+    
+                        <div className="d-flex" style={{ gap: `24px` }}>
+                            <div className={`w-100`}>
+                                {!isVideoAlreadyPresentInLikedPlaylist ? (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+    
+                                        onClick={() => {
+                                            const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                            executeAddToLikeService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.likedVideosData.likedVideos._id,
+                                            });
+                                            if (userProfile && userProfile.gender === `male`) {
+    
+                                                executeUpdateVideoService({
+    
+                                                    video: {
+                                                        likes: {
+                                                            male: foundVideo.likes.male + 1,
+                                                            female: foundVideo.likes.female,
+                                                            others: foundVideo.likes.others
+    
+                                                        }
+    
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            } else {
+                                                executeUpdateVideoService({
+    
+                                                    video: {
+                                                        likes: {
+                                                            female: foundVideo.likes.female + 1,
+                                                            male: foundVideo.likes.male,
+                                                            others: foundVideo.likes.others
+    
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+    
+                                        }}
+                                    >
+                                        {likeStatus === `loading` ?
+    
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+    
+                                            : `Like`}
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+                                        onClick={() => {
+                                            const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                            executeRemoveFromLiked({
+                                                videoId: video._id,
+                                                playlistId: playlistsState.likedVideosData.likedVideos._id
+                                            })
+                                            if (userProfile && userProfile.gender === `male`) {
+    
+                                                executeUpdateVideoService({
+    
+                                                    video: {
+                                                        likes: {
+                                                            male: foundVideo.likes.male - 1,
+                                                            female: foundVideo.likes.female,
+                                                            others: foundVideo.likes.others
+    
+                                                        }
+    
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            } else {
+                                                executeUpdateVideoService({
+    
+                                                    video: {
+                                                        likes: {
+                                                            female: foundVideo.likes.female - 1,
+                                                            male: foundVideo.likes.male,
+                                                            others: foundVideo.likes.others
+    
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+                                        }}
+                                    >
+                                        {removeFromLikeStatus === `loading` ?
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+                                            : `Unlike`}
+                                    </button>
+                                )}
+                            </div>
+    
+                            <div className={`w-100`}>
+                                {!isVideoAlreadyPresentInWatchLaterPlaylist ? (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+    
+                                        onClick={() => {
+    
+                                            executeAddToWatchLaterService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            });
+                                        }}
+                                    >
+                                        {watchLaterStatus === `loading` ?
+    
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+    
+                                            : `Watch Later`}
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+                                        onClick={() => {
+    
+                                            executeRemoveFromWatchLater({
+                                                videoId: video._id,
+                                                playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            })
+                                        }}
+                                    >
+                                        {removeFromWatchLaterStatus === `loading` ?
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+                                            : `Remove From Watch Later`}
+                                    </button>
+                                )}
+                            </div>
+    
+                            <div className={`w-100`}>
+                                <button className="btn btn-primary" style={{ margin: `0`, width: `inherit` }} onClick={() => setIsModalHidden(false)}>
+                                    Add To Playlists
+                                </button>
+                            </div>
+    
+                            <div className={`w-100`}>
+                                {!isVideoAlreadyPresentInHistoryPlaylist ? (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+    
+                                        onClick={() => {
+    
+                                            executeAddHistoryService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.historyData.history._id
+                                            });
+    
+                                            if (userProfile?.gender) {
+    
+                                                executeUpdateVideoService({
+    
+                                                    video: {
+                                                        likes:
+                                                            videosState.videos.filter(video => video._id === videoId)[0].views[userProfile.gender] + 1
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+    
+                                        }}
+                                    >
+                                        {addToHistoryStatus === `loading` ?
+    
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+    
+                                            : `Add to History`}
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn btn-primary" style={{ margin: `0`, width: `inherit` }}
+                                        onClick={() => {
+                                            executeRemoveFromHistory({
+                                                videoId: video._id,
+                                                playlistId: playlistsState.historyData.history._id
+                                            })
+                                        }}
+                                    >
+                                        {removeFromHistoryStatus === `loading` ?
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
+                                            </span>
+                                            : `Remove From History`}
+                                    </button>
+                                )}
+    
+                            </div>
+    
+                            <div className="w-100">
+                                <div>Category: {video.category}</div>
+                                <div>Views: {
+                                    //  videosState.videos.reduce((acc: number, current: Video) => {
+                                    //      return acc += current.views.male + current.views.female + current.views.others
+                                    //  }, 0)
+    
+                                    video.views.male + video.views.female + video.views.others 
+                                }</div>
+                                <div>Likes: {
+                                    //  videosState.videos.reduce((acc: number, current: Video) => {
+                                    //      return acc += current.likes.male + current.likes.female + current.likes.others
+                                    //  }, 0)
+                                     video.likes.male + video.likes.female + video.likes.others 
+                                }</div>
+                            </div>
+                        </div>
+    
+                        <div>
+                            <form className="d-flex ai-center" style={{ gap: `24px` }}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    console.log(`notes`, userDefinedNote)
                                     setUserDefinedNote({
-                                        title: note.title,
-                                        description: note.description
+                                        description: ``,
+                                        title: ``
                                     })
-                                }}>Edit</button>
+                                    if (editNote.isEditNote) {
+                                        executeEditNotesService({
+                                            noteId: editNote.noteId,
+                                            videoId,
+                                            note: userDefinedNote
+                                        })
+    
+    
+                                    } else {
+                                        executesaveNotesService({
+                                            videoId: video._id,
+                                            note: userDefinedNote
+                                        })
+                                    }
+    
+                                }}
+                            >
+                                <input type="text"
+                                    value={userDefinedNote?.title || ``}
+                                    placeholder="Enter Notes Title" onChange={(e) => {
+                                        setUserDefinedNote(prevState => ({ ...prevState, title: e.target.value } as UserDefinedNote))
+                                    }} />
+                                <textarea
+                                    value={userDefinedNote?.description || ``}
+                                    name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `320px`, }}
+                                    placeholder="Enter notes"
+                                    className="p-lg"
+                                    onChange={(e) => {
+                                        setUserDefinedNote(prevState => ({ ...prevState, description: e.target.value } as UserDefinedNote))
+                                    }}
+                                ></textarea>
+                                <button className="btn btn-primary" style={{ height: `fit-content` }}
+                                    type={`submit`}
+                                >Save</button>
+                            </form>
+    
+    
+                        </div>
+    
+                        {
+                            notesData.notes.map((note: Note) => {
+                                return <div key={note._id}>
+                                    <div>{note.title}</div>
+                                    <div>{note.description}</div>
+                                    <div><button className="btn btn-primary" onClick={() => {
+                                        setEditNote({
+                                            isEditNote: true,
+                                            noteId: note._id
+                                        })
+                                        setUserDefinedNote({
+                                            title: note.title,
+                                            description: note.description
+                                        })
+                                    }}>Edit</button>
+    
+    
+                                        <button className="btn btn-danger mx-sm">Delete</button>
+                                    </div>
+                                </div>
+                            })
+                        }
+                    </div>
+    
+                </div>
+                <div></div>
+            </>
+    */
 
+        if (video) {
+            return (
+                <>
+                    <header className={`${navbar} pr-lg`}>
+                        <div
+                            className={`${hamburgerMenu} text-white`}
+                            role="button"
+                            onClick={() => setSidebar(true)}
+                        >
+                            <MdMenu size={28} />
+                        </div>
+                        <div className={`${wrapperLogo}`}>
+                            <img
+                                src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
+                                alt="logo"
+                                width={`100%`}
+                                height={`100%`}
+                            />
+                        </div>
+                        <div className="ml-auto">
+                            <div className={`${publisherAvatar}`}>
+                                <Avatar
+                                    size={`sm`}
+                                    imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                                />
+                            </div>
+                        </div>
+                    </header>
+                    <MobileSidebar status={{ sidebar, setSidebar }} />
+                    <div className={` ${containerSingleVideoPage}`}>
+                        <div className={`${wrapperContainer}`}>
+                            <Sidebar />
+                            <div className={`${mainContainer}`}>
+                                <div className={`${playerWrapper}`}>
+                                    <ReactPlayer
+                                        className={`${reactPlayer}`}
+                                        url={`https://www.youtube.com/watch?v=${video.url}`}
+                                        playing={true}
+                                        width={`100%`}
+                                        height={`100%`}
+                                        volume={1}
+                                        controls={true}
+                                        muted={true}
+                                    />
+                                </div>
+                                <div className={`${detailsAndActions}  d-flex mt-lg p-sm`}>
+                                    <div
+                                        className={`${publisherDetails} d-flex ai-center pt-lg w-100`}
+                                    >
+                                        <div className={`${publisherAvatar}`}>
+                                            <Avatar
+                                                size={`md`}
+                                                imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                                            />
+                                        </div>
+                                        <div
+                                            className={`${publisherName} text-bold text-white pl-lg fs-2`}
+                                        >
+                                            <div className="d-flex ai-center">
+                                                <div>Prasad Lendwe</div>
+                                                <span
+                                                    style={{ color: `var(--tube-theme-primary)` }}
+                                                    className="pl-sm"
+                                                >
+                                                    <MdVerifiedUser size={20} />
+                                                </span>
+                                            </div>
+                                            <div className="text-gray fs-sm pt-sm">
+                                                1230213 subscribers
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <button className="btn btn-danger mx-sm">Delete</button>
+                                    <div className={`${videoActions} d-flex ml-auto`}>
+                                        {!isVideoAlreadyPresentInLikedPlaylist ? <button
+                                            onClick={() => {
+                                                const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                                executeAddToLikeService({
+                                                    video,
+                                                    playlistId:
+                                                        playlistsState.likedVideosData.likedVideos._id,
+                                                });
+                                                if (userProfile && userProfile.gender === `male`) {
+
+                                                    executeUpdateVideoService({
+
+                                                        video: {
+                                                            likes: {
+                                                                male: foundVideo.likes.male + 1,
+                                                                female: foundVideo.likes.female,
+                                                                others: foundVideo.likes.others
+
+                                                            }
+
+                                                        },
+                                                        videoId: video._id
+                                                    })
+                                                } else {
+                                                    executeUpdateVideoService({
+
+                                                        video: {
+                                                            likes: {
+                                                                female: foundVideo.likes.female + 1,
+                                                                male: foundVideo.likes.male,
+                                                                others: foundVideo.likes.others
+
+                                                            }
+                                                        },
+                                                        videoId: video._id
+                                                    })
+                                                }
+
+                                            }}
+                                            className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                        >
+                                            {likeStatus === `loading` ?
+                                                <span className="w-100 h-100 d-flex jc-center">
+                                                    <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                </span>
+                                                : <IoMdHeartEmpty size={20} />}
+
+                                        </button> :
+
+                                            <button
+                                                onClick={() => {
+                                                    const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                                    executeRemoveFromLiked({
+                                                        videoId: video._id,
+                                                        playlistId: playlistsState.likedVideosData.likedVideos._id
+                                                    })
+                                                    if (userProfile && userProfile.gender === `male`) {
+
+                                                        executeUpdateVideoService({
+
+                                                            video: {
+                                                                likes: {
+                                                                    male: foundVideo.likes.male - 1,
+                                                                    female: foundVideo.likes.female,
+                                                                    others: foundVideo.likes.others
+
+                                                                }
+
+                                                            },
+                                                            videoId: video._id
+                                                        })
+                                                    } else {
+                                                        executeUpdateVideoService({
+
+                                                            video: {
+                                                                likes: {
+                                                                    female: foundVideo.likes.female - 1,
+                                                                    male: foundVideo.likes.male,
+                                                                    others: foundVideo.likes.others
+
+                                                                }
+                                                            },
+                                                            videoId: video._id
+                                                        })
+                                                    }
+                                                }}
+                                                className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                            >
+                                                {removeFromLikeStatus === `loading` ?
+                                                    <span className="w-100 h-100 d-flex jc-center">
+                                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                    </span>
+                                                    : <IoMdHeart size={20} />}
+
+                                            </button>
+                                        }
+                                        <button
+                                            className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                        >
+                                            <MdWatchLater size={20} />
+                                        </button>
+                                        <button
+                                            className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                        >
+                                            <MdPlaylistAdd size={20} />
+                                        </button>
+                                        <button
+                                            className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                        >
+                                            <MdShare size={20} />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className={`${videoContainer}`}>
+                                    <div
+                                        className={`${videoMain} d-flex jc-center f-direction-col p-sm`}
+                                    >
+                                        <div className={`${videoHeader} text-white text-bold fs-3`}>
+                                            The Men Who Built India | S1 E3- The Cotton Supremacy | Convey
+                                        </div>
+                                        <div
+                                            className={`${videoContent} pt-lg`}
+                                            style={{ color: `rgb(170 172 192)` }}
+                                        >
+                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam
+                                            et sit nesciunt vitae, quibusdam vero, fuga, at laudantium
+                                            libero maiores dolore quos! Modi neque sequi nulla eum quae
+                                            animi blanditiis!
+                                            <div
+                                                className="pt-lg mt-lg"
+                                                style={{ color: `rgb(170 172 192)` }}
+                                            >
+                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                Maiores molestias corporis nulla perferendis. Illum repellat
+                                                explicabo, reprehenderit a quo, accusantium delectus nisi
+                                                excepturi dignissimos earum qui inventore expedita
+                                                repellendus provident reiciendis dolor culpa animi ex
+                                                voluptatum dicta? Ad eveniet neque cupiditate iusto
+                                                inventore aut hic. This is what it is
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={`${videoAside} d-flex f-direction-col `}>
+                                        <div
+                                            className={`${videoMetrics} d-flex tube-text-secondary-color `}
+                                        >
+                                            <div className="d-flex ai-center">
+                                                <span>
+                                                    <IoMdHeart size={20} />
+                                                </span>
+                                                <span className="pl-md "> 24,000 likes</span>
+                                            </div>
+                                            <div className="d-flex ai-center">
+                                                <span>
+                                                    <MdRemoveRedEye size={20} />
+                                                </span>
+                                                <span className="pl-md "> 1,24,000 views</span>
+                                            </div>
+                                            <div className="d-flex ai-center">
+                                                <span>
+                                                    <MdSubscriptions size={20} />
+                                                </span>
+                                                <span className="pl-md "> 2,200 subscribers</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        })
-                    }
-                </div>
+                            <div
+                                className={`${notesContainer} text-white d-flex f-direction-col `}
+                            >
+                                <div className={`${wrapperNotes} d-flex f-direction-col `}>
+                                    <div className={`${notes}`}>
+                                        <textarea
+                                            className={`${notesTextarea} w-100 `}
+                                            placeholder="Write your notes here..."
+                                        ></textarea>
+                                    </div>
 
-            </div>
-            <div></div>
-        </>
+                                    <div className={`${popular} my-1 `}>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
+                                        repudiandae reprehenderit aspernatur eaque, soluta debitis
+                                        voluptas alias ipsa, modi nemo, magni illo possimus temporibus.
+                                        Nulla amet debitis consequatur eos voluptates? Lorem ipsum dolor
+                                        sit amet consectetur adipisicing elit. Rem at sint, consectetur
+                                        cupiditate mollitia maxime praesentium libero itaque minus
+                                        officiis? Praesentium temporibus, repudiandae voluptate
+                                        laboriosam obcaecati modi velit cupiditate fugiat?
+                                    </div>
 
+                                    <div className={`${popular} my-1 `}>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
+                                        repudiandae reprehenderit aspernatur eaque, soluta debitis
+                                        voluptas alias ipsa, modi nemo, magni illo possimus temporibus.
+                                        Nulla amet debitis consequatur eos voluptates? Lorem ipsum dolor
+                                        sit amet consectetur adipisicing elit. Rem at sint, consectetur
+                                        cupiditate mollitia maxime praesentium libero itaque minus
+                                        officiis? Praesentium temporibus, repudiandae voluptate
+                                        laboriosam obcaecati modi velit cupiditate fugiat? Lorem ipsum
+                                        dolor sit amet consectetur adipisicing elit. Atque totam quos
+                                        officiis aliquid, nulla inventore. Dicta fugiat quasi, voluptate
+                                        possimus voluptatem quibusdam laborum neque vero veniam facilis.
+                                        Repellat, perferendis minus?
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            );
+        }
     return <><h1>Invalid ID</h1></>
 }
