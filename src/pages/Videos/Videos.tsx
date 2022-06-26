@@ -120,6 +120,7 @@ export const Videos = () => {
         <div>
 
           <input type="radio"
+          checked={videosState.sortBy === `mostliked`}
             value={`mostliked`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
@@ -132,6 +133,7 @@ export const Videos = () => {
         <div>
 
           <input type="radio"
+            checked={videosState.sortBy === `mostviewed`}
             value={`mostviewed`}
             onChange={(e) => {
 
@@ -144,16 +146,21 @@ export const Videos = () => {
 
         <div>
           <input type="radio"
+           checked={videosState.sortBy === `latestfirst`}
             value={`latestfirst`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
               setSearchParams(searchParams)
             }}
-            name="sortBy" id="oldestfirst" />
-          <label htmlFor="oldestfirst">Latest First</label>
+            name="sortBy" id="latestfirst" />
+          <label htmlFor="latestfirst">Latest First</label>
         </div>
+
+
         <div>
+      
           <input type="radio"
+            checked={videosState.sortBy === `oldestfirst`}
             value={`oldestfirst`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
