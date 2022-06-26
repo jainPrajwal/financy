@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './contexts/auth-context';
 import { VideosProvider } from './contexts/videos-context';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { PlaylistsProvider } from './contexts/playlists-context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

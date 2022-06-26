@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { NavLink, Route, Routes } from "react-router-dom";
+import { Videos } from "./pages/Videos/Videos";
+import { Login } from "./pages/Login/Login";
 
 
 
