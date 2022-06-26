@@ -1,25 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <>
+      <header
+        className="d-flex jc-space-around p-1"
+        style={{ boxShadow: `4px 2px 5px grey` }}
+      >
+        <div className="header header-secondary">
+          <NavLink to="/login">Login</NavLink>
+        </div>
+        <div className="header header-secondary">
+          <NavLink to="/liked">Liked</NavLink>
+        </div>
+        <div className="header header-secondary">
+          <NavLink to="/watchlater">Watch Later</NavLink>
+        </div>
+        <div className="header header-secondary">
+          <NavLink to="/playlists">Playlists</NavLink>
+        </div>
+        <div className="header header-secondary">
+          <NavLink to="/videos">Videos</NavLink>
+        </div>
+        <div className="header header-tertiary">
+          <button
+            className="btn btn-secondary"
+  
+          >
+            logout
+          </button>
+        </div>
       </header>
-    </div>
+      <Routes>
+        <Route path="/" element={<Videos />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/videos" element={<Videos />} />
+      </Routes>
+    </>
   );
 }
 
