@@ -1,0 +1,80 @@
+:root {
+    --tube-theme-secondary: #92b4f4;
+    /* --tube-theme-background: #0f172a; */
+    --tube-theme-background: #121212;
+    --tube-theme-background-elevate-1: #242424;
+    --tube-theme-background-elevate-2: #2c2c2c;
+    --tube-theme-background-elevate-3: #323232;
+    --tube-theme-background-elevate-4: #373737;
+    --tube-theme-surface: #121212;
+    --tube-theme-error: #d32f2f;
+    --tube-theme-error-light: #e57373;
+    --tube-theme-on-primary: #fff;
+    --tube-theme-on-secondary: #fff;
+    --tube-theme-on-surface: #fff;
+    --tube-theme-on-error: #fff;
+    --tube-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+    --tube-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+    --tube-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+    --tube-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+    --tube-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+    --tube-theme-text-primary-on-dark: white;
+    --tube-theme-text-secondary-on-dark: rgb(170 172 192);
+    --tube-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
+    --tube-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
+    --tube-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
+    --kaali-danger: #2563eb !important;
+    --tube-theme-primary: var(--kaali-danger);
+    --tube-border-radius-md: 12px;
+
+    /* !important is used purposely to override colors imported because of reactive kaali UI */
+}
+
+
+.chipsContainer {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.chip {
+    border: 1px solid var(--tube-theme-primary);
+    border-radius: 2rem;
+    background-color: transparent;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chip:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+}
+
+.chipSolid {
+    background-color: var(--tube-theme-primary);
+    color: white;
+}
+.chipSolid:hover {
+    background-color: var(--tube-theme-primary);
+    color: white;
+    filter: brightness(90%);
+}
+
+.chipClear {
+    position: absolute;
+    right: 10px;
+    top: -50px;
+    border: 1px solid var(--tube-theme-error);
+}
+
+.chipClear:focus,
+.chipClear:hover {
+    background-color: var(--tube-theme-error);
+}
