@@ -182,7 +182,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     {likeStatus === `loading` ?
 
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
 
                                         : `Like`}
@@ -199,7 +199,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                 >
                                     {removeFromLikeStatus === `loading` ?
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
                                         : `Unlike`}
                                 </button>
@@ -222,7 +222,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     {watchLaterStatus === `loading` ?
 
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
 
                                         : `Watch Later`}
@@ -240,7 +240,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                 >
                                     {removeFromWatchLaterStatus === `loading` ?
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
                                         : `Remove From Watch Later`}
                                 </button>
@@ -346,7 +346,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     {likeStatus === `loading` ?
 
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
 
                                         : `Like`}
@@ -394,7 +394,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                 >
                                     {removeFromLikeStatus === `loading` ?
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
                                         : `Unlike`}
                                 </button>
@@ -418,7 +418,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     {watchLaterStatus === `loading` ?
 
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
 
                                         : `Watch Later`}
@@ -436,7 +436,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                 >
                                     {removeFromWatchLaterStatus === `loading` ?
                                         <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`12px`} height={`100%`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                         </span>
                                         : `Remove From Watch Later`}
                                 </button>

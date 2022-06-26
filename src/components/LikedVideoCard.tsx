@@ -5,7 +5,7 @@ import { usePlaylists } from "../hooks/usePlaylists";
 import { addToPlaylistService } from "../services/playlists/addToPlaylistService";
 import { removeFromPlaylistService } from "../services/playlists/removeFromPlaylistService";
 import { checkIfVideoIsAlreadyPresentInSpecifiedPlaylist } from "../utils/checkIfVideoIsAlreadyPresentInSpecifiedPlaylist";
-import { Avatar, Loader } from "kaali-ui"
+import { Avatar, Loader } from "kaali-ui";
 
 export const LikedVideoCard = ({ video, index }: { video: Video, index: number }) => {
 
@@ -150,7 +150,7 @@ export const LikedVideoCard = ({ video, index }: { video: Video, index: number }
                                 {likeStatus === `loading` ?
 
                                     <span className="w-100 h-100 d-flex jc-center">
-                                        <Loader width={`12px`} height={`100%`} />
+                                        <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                     </span>
 
                                     : `Like`}
@@ -167,7 +167,7 @@ export const LikedVideoCard = ({ video, index }: { video: Video, index: number }
                             >
                                 {removeFromLikeStatus === `loading` ?
                                     <span className="w-100 h-100 d-flex jc-center">
-                                        <Loader width={`12px`} height={`100%`} />
+                                        <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                     </span>
                                     : `Unlike`}
                             </button>
@@ -190,7 +190,7 @@ export const LikedVideoCard = ({ video, index }: { video: Video, index: number }
                                 {watchLaterStatus === `loading` ?
 
                                     <span className="w-100 h-100 d-flex jc-center">
-                                        <Loader width={`12px`} height={`100%`} />
+                                        <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                     </span>
 
                                     : `Watch Later`}
@@ -208,7 +208,7 @@ export const LikedVideoCard = ({ video, index }: { video: Video, index: number }
                             >
                                 {removeFromWatchLaterStatus === `loading` ?
                                     <span className="w-100 h-100 d-flex jc-center">
-                                        <Loader width={`12px`} height={`100%`} />
+                                        <Loader width={`12px`} height={`12px`} borderWidth={`4px`}/>
                                     </span>
                                     : `Remove From Watch Later`}
                             </button>
