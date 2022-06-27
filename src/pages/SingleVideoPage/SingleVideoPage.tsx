@@ -23,11 +23,12 @@ import { useProfile } from "../../hooks/useProfile";
 import { Video } from "../../constants/videos.types";
 import { default as svp } from "./SingleVideoPage.module.css";
 import { default as common } from "../../common/common.module.css"
-import { MdMenu, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
+import { MdMenu, MdOutlineWatchLater, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import ReactPlayer from "react-player"
+import ReactPlayer from "react-player/youtube"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { Button } from "kaali-ui"
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -35,6 +36,7 @@ export const SingleVideoPage = () => {
         notes,
         notesContainer,
         notesTextarea,
+        notesInput,
         playerWrapper,
         popular,
         publisherDetails,
@@ -71,6 +73,7 @@ export const SingleVideoPage = () => {
     const { videosState, videosDispatch } = useVideos();
 
     const [userDefinedNote, setUserDefinedNote] = useState<UserDefinedNote | null>(null);
+    const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null)
     const [editNote, setEditNote] = useState<{
         isEditNote: Boolean,
         noteId: string | null
@@ -86,7 +89,7 @@ export const SingleVideoPage = () => {
 
     const { playlistsState, playlistsDispatch } = usePlaylists();
 
-    const [ismodalHidden, setIsModalHidden] = useState<Boolean>(true);
+    const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
     const { authState } = useAuth()
 
     const { execute: executeAddToLikeService, status: likeStatus, response: likeResponse } = useAsync(addToPlaylistService, false, null);
@@ -731,6 +734,9 @@ export const SingleVideoPage = () => {
         if (video) {
             return (
                 <>
+                    {
+                        !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
+                    }
                     <header className={`${navbar} pr-lg`}>
                         <div
                             className={`${hamburgerMenu} text-white`}
@@ -765,12 +771,51 @@ export const SingleVideoPage = () => {
                                     <ReactPlayer
                                         className={`${reactPlayer}`}
                                         url={`https://www.youtube.com/watch?v=${video.url}`}
-                                        playing={true}
+                                        playing={ismodalHidden}
                                         width={`100%`}
                                         height={`100%`}
                                         volume={1}
                                         controls={true}
-                                        muted={true}
+                                        muted={false}
+
+                                        onStart={() => {
+                                            console.log(`video playing`);
+                                            executeAddHistoryService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.historyData.history._id
+                                            });
+
+                                            console.log(`user profile gender`, userProfile?.gender)
+                                            if (userProfile?.gender === `male`) {
+                                                executeUpdateVideoService({
+
+                                                    video: {
+                                                        views:
+                                                        {
+                                                            male: video.views.male + 1,
+                                                            female: video.views.female,
+                                                            other: video.views.others
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+                                            else {
+                                                executeUpdateVideoService({
+
+                                                    video: {
+                                                        views:
+                                                        {
+                                                            male: video.views.male,
+                                                            female: video.views.female + 1,
+                                                            others: video.views.others
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className={`${detailsAndActions}  d-flex mt-lg p-sm`}>
@@ -898,17 +943,55 @@ export const SingleVideoPage = () => {
 
                                             </button>
                                         }
-                                        <button
+                                        {!isVideoAlreadyPresentInWatchLaterPlaylist ? <button
+                                            onClick={() => {
+
+                                                executeAddToWatchLaterService({
+                                                    video,
+                                                    playlistId:
+                                                        playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                                });
+                                            }}
                                             className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
                                         >
-                                            <MdWatchLater size={20} />
-                                        </button>
+                                            {watchLaterStatus === `loading` ?
+                                                <span className="w-100 h-100 d-flex jc-center">
+                                                    <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                </span>
+                                                : <MdOutlineWatchLater size={20} />}
+
+
+                                        </button> :
+                                            <button
+                                                onClick={() => {
+
+                                                    executeRemoveFromWatchLater({
+                                                        videoId: video._id,
+                                                        playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                                    })
+                                                }}
+                                                className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
+                                            >
+                                                {removeFromWatchLaterStatus === `loading` ?
+                                                    <span className="w-100 h-100 d-flex jc-center">
+                                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                    </span>
+                                                    : <MdWatchLater size={20} />}
+
+
+                                            </button>}
                                         <button
+                                            onClick={() => setIsModalHidden(false)}
                                             className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
                                         >
                                             <MdPlaylistAdd size={20} />
                                         </button>
+
+
                                         <button
+                                            onClick={() => {
+                                                // window.navigator.clipboard(``)
+                                            }}
                                             className={`btn btn-danger ${btnIcon} d-flex ai-center jc-center`}
                                         >
                                             <MdShare size={20} />
@@ -927,22 +1010,10 @@ export const SingleVideoPage = () => {
                                             className={`${videoContent} pt-lg`}
                                             style={{ color: `rgb(170 172 192)` }}
                                         >
-                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam
-                                            et sit nesciunt vitae, quibusdam vero, fuga, at laudantium
-                                            libero maiores dolore quos! Modi neque sequi nulla eum quae
-                                            animi blanditiis!
-                                            <div
-                                                className="pt-lg mt-lg"
-                                                style={{ color: `rgb(170 172 192)` }}
-                                            >
-                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                Maiores molestias corporis nulla perferendis. Illum repellat
-                                                explicabo, reprehenderit a quo, accusantium delectus nisi
-                                                excepturi dignissimos earum qui inventore expedita
-                                                repellendus provident reiciendis dolor culpa animi ex
-                                                voluptatum dicta? Ad eveniet neque cupiditate iusto
-                                                inventore aut hic. This is what it is
-                                            </div>
+                                            {
+                                                video.description.split(/\*\*|(--)|__/).join(``).slice(0, 550).concat(`......`)
+                                            }
+
                                         </div>
                                     </div>
                                     <div className={`${videoAside} d-flex f-direction-col `}>
@@ -953,13 +1024,13 @@ export const SingleVideoPage = () => {
                                                 <span>
                                                     <IoMdHeart size={20} />
                                                 </span>
-                                                <span className="pl-md "> 24,000 likes</span>
+                                                <span className="pl-md "> {video.likes.male + video.likes.female + video.likes.others} likes</span>
                                             </div>
                                             <div className="d-flex ai-center">
                                                 <span>
                                                     <MdRemoveRedEye size={20} />
                                                 </span>
-                                                <span className="pl-md "> 1,24,000 views</span>
+                                                <span className="pl-md "> {video.views.male + video.views.female + video.views.others} views</span>
                                             </div>
                                             <div className="d-flex ai-center">
                                                 <span>
@@ -975,37 +1046,90 @@ export const SingleVideoPage = () => {
                                 className={`${notesContainer} text-white d-flex f-direction-col `}
                             >
                                 <div className={`${wrapperNotes} d-flex f-direction-col `}>
-                                    <div className={`${notes}`}>
-                                        <textarea
-                                            className={`${notesTextarea} w-100 `}
-                                            placeholder="Write your notes here..."
-                                        ></textarea>
-                                    </div>
+                                    <form className="d-flex ai-center" style={{ gap: `24px` }}
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            console.log(userDefinedNote)
+                                            setUserDefinedNote({
+                                                description: ``,
+                                                title: ``
+                                            })
+                                            if (editNote.isEditNote) {
+                                                executeEditNotesService({
+                                                    noteId: editNote.noteId,
+                                                    videoId,
+                                                    note: userDefinedNote
+                                                })
+
+
+                                            } else {
+                                                executesaveNotesService({
+                                                    videoId: video._id,
+                                                    note: userDefinedNote
+                                                })
+                                            }
+
+                                        }}
+                                    >
+                                        <div className="w-100">
+                                            <div  >
+                                                <input type="text"
+                                                    className={`${notesInput}`}
+                                                    style={{ minHeight: `none`, background: `#262837` }}
+                                                    value={userDefinedNote?.title || ``}
+                                                    placeholder="Enter Notes Title" onChange={(e) => {
+                                                        setUserDefinedNote(prevState => ({ ...prevState, title: e.target.value } as UserDefinedNote))
+                                                    }} />
+                                            </div>
+
+                                            <div className={`${notes} mt-lg`}>
+
+                                                <textarea
+                                                    value={userDefinedNote?.description || ``}
+                                                    name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `320px`, }}
+                                                    className={`${notesTextarea} w-100 `}
+                                                    placeholder="Write your notes here..."
+                                                    onChange={(e) => {
+                                                        setUserDefinedNote(prevState => ({ ...prevState, description: e.target.value } as UserDefinedNote))
+                                                    }}
+                                                ></textarea>
+
+                                            </div>
+                                            <div className={`my-1`}>
+                                                <button type="submit" className="btn btn-primary w-100"> {saveNotesStatus === `loading` ?
+                                                    <span className="w-100 h-100 d-flex jc-center">
+                                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                    </span>
+                                                    : `Save Note`}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+
+
 
                                     <div className={`${popular} my-1 `}>
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
-                                        repudiandae reprehenderit aspernatur eaque, soluta debitis
-                                        voluptas alias ipsa, modi nemo, magni illo possimus temporibus.
-                                        Nulla amet debitis consequatur eos voluptates? Lorem ipsum dolor
-                                        sit amet consectetur adipisicing elit. Rem at sint, consectetur
-                                        cupiditate mollitia maxime praesentium libero itaque minus
-                                        officiis? Praesentium temporibus, repudiandae voluptate
-                                        laboriosam obcaecati modi velit cupiditate fugiat?
-                                    </div>
+                                        {
+                                            <div>
+                                                {getNotesStatus === `loading` ?
+                                                    <span className="w-100 h-100 d-flex jc-center">
+                                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                                    </span>
+                                                    : notesData.notes.map(note => {
+                                                        return <div key={note._id}>
+                                                            <div className={`fs-3 mb-lg`}>{note.title}</div>
+                                                            <div className="">
+                                                                {
+                                                                    note.description
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    })}
 
-                                    <div className={`${popular} my-1 `}>
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
-                                        repudiandae reprehenderit aspernatur eaque, soluta debitis
-                                        voluptas alias ipsa, modi nemo, magni illo possimus temporibus.
-                                        Nulla amet debitis consequatur eos voluptates? Lorem ipsum dolor
-                                        sit amet consectetur adipisicing elit. Rem at sint, consectetur
-                                        cupiditate mollitia maxime praesentium libero itaque minus
-                                        officiis? Praesentium temporibus, repudiandae voluptate
-                                        laboriosam obcaecati modi velit cupiditate fugiat? Lorem ipsum
-                                        dolor sit amet consectetur adipisicing elit. Atque totam quos
-                                        officiis aliquid, nulla inventore. Dicta fugiat quasi, voluptate
-                                        possimus voluptatem quibusdam laborum neque vero veniam facilis.
-                                        Repellat, perferendis minus?
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
