@@ -23,7 +23,7 @@ const UserPlaylist: UserDefinedPlaylist = {
 
 
 
-export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: Boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<Boolean>>, video: Video }) => {
+export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<boolean>>, video: Video }) => {
     const { createNewPlaylist, showInput, hideInput } = playlistModalStyles;
 
     const [showPlaylistInput, setShowPlaylistInput] = useState<Boolean>(false);
@@ -71,17 +71,24 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                             e.preventDefault();
                             setShowPlaylistInput(true)
                             if (showPlaylistInput) {
-                                
+
                                 executeCreatePlaylistService(newPlaylistDetails)
                             }
 
                         }}>
                             <ModalContainer>
 
-                                <ModalHeader handleModalClose={handleModalClose}>
-                                    {`Recent Playlists`}
-                                    <MdClose />
-                                </ModalHeader>
+                                <div className="d-flex">
+                                    <ModalHeader handleModalClose={handleModalClose}>
+                                        {`Recent Playlists`}
+
+                                    </ModalHeader>
+                                    <span className="ml-auto header-tertiary cursor-pointer" role={`button`} onClick={() => handleModalClose()}>
+
+                                        <MdClose />
+                                    </span>
+                                </div>
+
                                 <hr className="modal-hr" />
                                 <ModalBody>
 

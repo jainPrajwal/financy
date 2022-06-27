@@ -25,7 +25,7 @@ import { useProfile } from "../../hooks/useProfile";
 
 export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Video, index: number, setLastElement: React.Dispatch<React.SetStateAction<HTMLDivElement | null>> }) => {
 
-    const [ismodalHidden, setIsModalHidden] = useState<Boolean>(true);
+    const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
 
     const { execute: executeAddToLikeService, status: likeStatus, response: likeResponse } = useAsync(addToPlaylistService, false, null);
 
