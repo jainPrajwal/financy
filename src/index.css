@@ -35,7 +35,7 @@
   /* !important is used purposely to override colors imported because of reactive kaali UI */
 }
 *::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
 }
 
 *::-webkit-scrollbar-track {
@@ -65,6 +65,9 @@ body {
 
 .fs-3 {
   font-size: 1.4rem;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .container-single-video-page .video-header {

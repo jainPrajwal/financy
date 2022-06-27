@@ -278,7 +278,7 @@ export const Home = () => {
                                                     className={`${"cardFooter"} d-flex tube-text-secondary-color jc-space-between mt-lg`}
                                                 >
                                                     <div>{video.views.male + video.views.female + video.views.others} views</div>
-                                                    <div>3 weeks ago</div>
+
                                                 </div>
                                             </div>
                                         </div>

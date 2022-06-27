@@ -7,6 +7,7 @@ import { AuthProvider } from './contexts/auth-context';
 import { VideosProvider } from './contexts/videos-context';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { PlaylistsProvider } from './contexts/playlists-context';
+import { ProfileProvider } from './contexts/profile-context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,11 +15,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <Router>
     <AuthProvider>
+      <ProfileProvider>
       <VideosProvider>
         <PlaylistsProvider>
           <App />
         </PlaylistsProvider>
       </VideosProvider>
+      </ProfileProvider>
     </AuthProvider>
   </Router>
 );
