@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export const useOnClickOutside = (refElement: React.MutableRefObject<HTMLElement | null>, setIsRefElementHidden: React.Dispatch<React.SetStateAction<Boolean>>) => {
+export const useOnClickOutside = (refElement: React.MutableRefObject<HTMLElement | null>, setIsRefElementHidden: React.Dispatch<React.SetStateAction<boolean>>) => {
     useEffect(() => {
         const current = refElement.current;
 
