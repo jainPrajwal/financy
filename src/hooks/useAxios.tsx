@@ -7,7 +7,7 @@ const useAsync = (
   callImmediately: boolean,
   params: any
 ) => {
-  console.log(`useAsync rendering`);
+
   const [status, setStatus] = useState<loading>(`idle`);
   const [response, setResponse] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 // Even though its <T, > T represents the type of initialValue and not the former key
 export const useLocalStorage = <T,>(key: string, initialValue: T) => {
-  console.log(`useLocalStorage rendering`)
+
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
       // as window is undefined if we are using SSR or SSG
