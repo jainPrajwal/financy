@@ -1,0 +1,167 @@
+.homeContainer {
+    display: flex;
+    margin-top: 4rem;
+    margin-left: 100px;
+    padding: 1rem;
+    flex-direction: column;
+}
+
+.headerContainer {
+    font-size: 3rem;
+    margin-top: 2rem;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.bannerContainer {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    width: 100%;
+    gap: 32px;
+}
+
+.bannerWrapper {
+    border-radius: 24px;
+    display: flex;
+    height: 380px;
+    position: relative;
+    background-image: linear-gradient(317deg, #7f53ac 0%, #647dee 74%);
+}
+
+.bannerImage {
+    height: 100%;
+    width: 100%;
+}
+
+.bannerContent {
+    width: 100%;
+    padding-left: 2rem;
+    padding-top: 4rem;
+}
+
+.bannerText {
+    padding-top: 4rem;
+}
+
+.bannerHeader {}
+
+.bannerImageWrapper {
+    width: 100%;
+}
+
+.publisherName {
+    white-space: nowrap;
+}
+
+.cardContainer {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cardWrapper {
+    display: flex;
+    background-color: #262837;
+    border-radius: 12px;
+    width: 250px;
+}
+
+.cardImageWrapper {
+    width: 100%;
+    position: relative;
+}
+
+.cardAvatar {
+    position: absolute;
+    right: 10px;
+    bottom: -25px;
+    border-radius: 50%;
+
+    padding: 2px;
+}
+
+.cardImage {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.cardTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+@media (max-width: 1140px) {
+    .bannerWrapper {
+        height: fit-content;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+    }
+
+    .bannerImageWrapper {
+        max-width: 380px;
+        margin: 0 auto;
+    }
+
+    .bannerContent {
+        /* padding: 0; */
+        padding: 1rem;
+        /* padding-top: 2rem; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bannerText {
+        padding-top: 1rem;
+    }
+}
+
+@media (max-width: 860px) {
+    .homeContainer {
+        margin-left: 0;
+        margin-bottom: 5rem;
+    }
+
+    .cardWrapper {
+        flex-basis: calc(50% - 1rem);
+    }
+
+    .cardTitle {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+    }
+}
+
+@media (max-width: 550px) {
+    .bannerContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .bannerImageWrapper {
+        width: 320px;
+        height: 320px;
+    }
+
+    .cardWrapper {
+        width: 100%;
+    }
+
+    .cardImageWrapper {
+        width: 100%;
+    }
+}
