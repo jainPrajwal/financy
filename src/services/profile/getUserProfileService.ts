@@ -4,6 +4,7 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 
 export const getUserProfileService = async (): Promise<AxiosResponse> => {
   try {
+    
     const response = await axios.get(`${BASE_API}/profile`);
     return response;
   } catch (error) {
