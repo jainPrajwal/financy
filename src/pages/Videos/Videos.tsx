@@ -11,8 +11,8 @@ import { CLEAR_ALL, FILTER_BY_CATEGORY, SORT_BY } from "../../constants/actions.
 
 export const Videos = () => {
   const { videosState, videosDispatch } = useVideos();
-  const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
   useInfiniteScroll({ lastElement, setLastElement });
 
   const { chipsContainer, chip, chipClear } = chipsStyles;
