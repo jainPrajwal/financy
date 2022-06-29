@@ -1,0 +1,15 @@
+
+
+.hideInput {
+    transform: translateY(50%);
+    visibility: hidden;
+}
+
+.showInput {
+    visibility: visible;
+
+    transition: transform 50ms ease;
+}
+#btn-modal-close {
+    display: none;
+}
