@@ -18,7 +18,7 @@ import {
         <div className="d-flex f-direction-col gap-10 mt-lg">
           <div className="text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/home"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -30,7 +30,7 @@ import {
           </div>
           <div className="  text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/explore"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -42,7 +42,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/trending"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -54,7 +54,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/history"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -66,7 +66,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/watchlater"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -80,7 +80,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/liked"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -95,7 +95,7 @@ import {
   
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/playlists"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -109,7 +109,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/settings"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -123,7 +123,7 @@ import {
           </div>
           <div className=" text-white ">
             <NavLink
-              className={`d-flex ai-center jc-center p-1 f-direction-col`}
+              className={`d-flex ai-center jc-center p-lg f-direction-col`}
               to="/upload"
               style={({ isActive }) => ({
                 color: isActive ? `var(--tube-theme-primary)` : `inherit`
