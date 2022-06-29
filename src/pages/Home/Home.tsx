@@ -15,6 +15,8 @@ import { BASE_API } from "../../constants/api";
 import { getAllVideos } from "../../services/videos/getAllVideos";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Loader } from "kaali-ui"
+import { Navbar } from "../../components/Navbar/Navbar";
+import { useProfile } from "../../hooks/useProfile";
 
 export const Home = () => {
     const {
@@ -54,6 +56,7 @@ export const Home = () => {
         status: `idle`
     });
     const navigate = useNavigate();
+    const { userProfile } = useProfile();
 
     useEffect(() => {
         (async () => {
@@ -89,32 +92,7 @@ export const Home = () => {
     console.log(`mostWatched`, mostWatched)
     return (
         <>
-            <header className={`${navbar}`}>
-                <div
-                    className={`${hamburgerMenu} text-white`}
-                    role="button"
-                    onClick={() => setSidebar(true)}
-                >
-                    <MdMenu size={28} />
-                </div>
-                <div className={`${wrapperLogo}`}>
-                    <img
-                        src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
-                        alt="logo"
-                        width={`100%`}
-                        height={`100%`}
-                    />
-                </div>
-                <div className="ml-auto">
-                    <div className={`${publisherAvatar}`}>
-                        <Avatar
-                            isVerified
-                            size={`sm`}
-                            imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
-                        />
-                    </div>
-                </div>
-            </header>
+            <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
 
             <div className={`${homeContainer}`}>
@@ -131,12 +109,12 @@ export const Home = () => {
                             <div className={`${bannerContent}`}>
                                 <div className={`${bannerHeader}`}>
                                     <div
-                                        className={` text-white text-bold header-secondary ml-sm`}
+                                        className={` text-white text-bold header-tertiary ml-sm`}
                                     >
                                         Learn Finance
                                     </div>
                                     <div
-                                        className={` text-white text-bold header-secondary ml-sm`}
+                                        className={` text-white text-bold header-tertiary ml-sm`}
                                     >
                                         At Financy!
                                     </div>
@@ -152,7 +130,7 @@ export const Home = () => {
                                                 showStatus
                                                 sizeOfStatus={`md`}
                                                 size={`lg`}
-                                                imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                                                imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
                                             />
                                         </div>
                                         <div className={`${publisherName} text-white pl-lg `}>
@@ -181,24 +159,24 @@ export const Home = () => {
                                 backgroundImage: `linear-gradient(315deg, #f5df2e 0%, #f07654 74%)`
                             }}
                         >
-                            <div className={`${bannerContent}`}>
+                            <div className={`${bannerContent}`} style={{padding: `1rem`, paddingTop:`2rem`}}>
                                 <div className={`${bannerHeader}`}>
-                                    <div className={` text-white text-bold header-secondary`}>
+                                    <div className={` text-white text-bold header-tertiary text-center`}>
                                         We Serve,
                                     </div>
-                                    <div className={` text-white text-bold header-secondary`}>
+                                    <div className={` text-white text-bold header-tertiary text-center`}>
                                         Knowledge About Money
                                     </div>
                                 </div>
                                 <div className={`${bannerText}`}>
-                                    <div className={`d-flex ai-center pt-lg w-100`}>
+                                    <div className={`d-flex ai-center pt-lg w-100 f-direction-col`}>
                                         <div className={`${publisherAvatar}`}>
                                             <Avatar
                                                 isVerified
                                                 showStatus
                                                 sizeOfStatus={`md`}
                                                 size={`lg`}
-                                                imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                                                imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
                                             />
                                         </div>
                                         <div className={`${publisherName} text-white pl-lg `}>
@@ -236,9 +214,11 @@ export const Home = () => {
                                     <Loader />
                                 </div>
                                 : mostWatched?.videos.map((video: Video) => {
-                                    return <div className={`${cardWrapper} cursor-pointer`} role={`button`} onClick={() => {
-                                        navigate(`/videos/${video._id}`)
-                                    }}>
+                                    return <div
+                                        key={video._id}
+                                        className={`${cardWrapper} cursor-pointer`} role={`button`} onClick={() => {
+                                            navigate(`/videos/${video._id}`)
+                                        }}>
 
                                         <div className={`${card} w-100`}>
                                             <div className={`${cardImageWrapper}`}>
@@ -253,7 +233,7 @@ export const Home = () => {
                                                         showStatus
                                                         sizeOfStatus={`sm`}
                                                         size={`md`}
-                                                        imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                                                        imageUrl={video.publisher.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
                                                     />
                                                 </div>
                                             </div>

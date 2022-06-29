@@ -65,7 +65,7 @@
 
 .cardWrapper {
     display: flex;
-    background-color: #262837;
+    background-color: #211E27;
     border-radius: 12px;
     width: 250px;
 }
@@ -97,42 +97,26 @@
     overflow: hidden;
 }
 
+.bannerHeader>* {
+    /* font-size: 1.4rem; */
+}
 
-@media (max-width: 1140px) {
+
+
+@media (max-width: 860px) {
     .bannerWrapper {
         height: fit-content;
         flex-direction: column-reverse;
         justify-content: flex-end;
     }
 
-    .bannerImageWrapper {
-        max-width: 380px;
-        margin: 0 auto;
-    }
-
-    .bannerContent {
-        /* padding: 0; */
-        padding: 1rem;
-        /* padding-top: 2rem; */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .bannerText {
-        padding-top: 1rem;
-    }
-}
-
-@media (max-width: 860px) {
     .homeContainer {
         margin-left: 0;
         margin-bottom: 5rem;
     }
 
     .cardWrapper {
-        flex-basis: calc(50% - 1rem);
+        flex-basis: calc(50% - 0.6rem);
     }
 
     .cardTitle {
@@ -145,6 +129,17 @@
         text-overflow: ellipsis;
         white-space: initial;
     }
+
+    .bannerContent {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .bannerText {
+        padding-top: 1rem;
+    }
+
 }
 
 @media (max-width: 550px) {
@@ -155,6 +150,12 @@
     .bannerImageWrapper {
         width: 320px;
         height: 320px;
+    }
+
+    .bannerImageWrapper {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
     }
 
     .cardWrapper {
