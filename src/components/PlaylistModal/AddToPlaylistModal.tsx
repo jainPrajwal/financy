@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { default as playlistModalStyles } from "./AddToPlaylistModal.module.css"
+import { default as playlistModalStyles } from "./AddToPlaylistModal.module.css";
 import { Modal, ModalHeader, ModalFooter, ModalBody, ModalRow, ModalOverlay, ModalContainer } from "kaali-ui"
 import { MdClose, MdPlaylistAdd } from "react-icons/md"
 import { useFocus } from "../../hooks/useFocus";
@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { Loader } from "kaali-ui"
 import { CheckboxWrapper } from "../CheckboxWrapper/CheckboxWrapper";
 import { Video } from "../../constants/videos.types";
+import { default as common } from "../../common/common.module.css";
+
 const UserPlaylist: UserDefinedPlaylist = {
     name: null,
     description: null,
@@ -24,7 +26,8 @@ const UserPlaylist: UserDefinedPlaylist = {
 
 
 export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<boolean>>, video: Video }) => {
-    const { createNewPlaylist, showInput, hideInput } = playlistModalStyles;
+    const { showInput, hideInput } = playlistModalStyles;
+    const { inputStyle, } = common;
 
     const [showPlaylistInput, setShowPlaylistInput] = useState<Boolean>(false);
     const [newPlaylistDetails, setnewPlaylistDetails] = useState<UserDefinedPlaylist>(UserPlaylist);
@@ -124,7 +127,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                                         <div className={`collection create-new-collection w-100 f-direction-col ai-center ${showPlaylistInput ? `${showInput}` : `${hideInput}`}`}>
 
                                             <div className="create-text w-100 my-sm">
-                                                <input type="text" placeholder="Create new playlist" className={`p-lg ${createNewPlaylist}`} autoFocus
+                                                <input type="text" placeholder="Create new playlist" className={`p-lg ${inputStyle}`} autoFocus
                                                     ref={InputRef}
                                                     required={showPlaylistInput ? true : false}
                                                     name="playlist name"
@@ -133,7 +136,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
                                             </div>
                                             <div className="create-text w-100 my-sm">
-                                                <textarea placeholder="Description" className={`p-lg ${createNewPlaylist}`} style={{ resize: `none` }}
+                                                <textarea placeholder="Description" className={`p-lg ${inputStyle}`} style={{ resize: `none` }}
                                                     name="playlist description"
                                                     onChange={(e) => setnewPlaylistDetails(prevState => ({ ...prevState, description: e.target.value, }))}
                                                 />
