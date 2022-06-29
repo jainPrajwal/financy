@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 :root {
   --tube-theme-secondary: #92b4f4;
   /* --tube-theme-background: #0f172a; */
@@ -31,6 +32,7 @@
   --kaali-danger: #2563eb !important;
   --tube-theme-primary: var(--kaali-danger);
   --tube-border-radius-md: 12px;
+  --tube-theme-premium: #ffd700;
 
   /* !important is used purposely to override colors imported because of reactive kaali UI */
 }
@@ -51,7 +53,8 @@
 }
 body {
   background-color: var(--tube-theme-background);
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Lato', sans-serif;
+  height: 100vh;
 }
 .gap-10 {
   gap: 10px;
@@ -135,7 +138,7 @@ body {
   top: 100px;
 }
 .notes-container .notes {
-  background-color: #262837;
+  background-color: #211E27;
   /* max-width: 360px; */
   border-radius: 12px;
   min-height: 200px;
