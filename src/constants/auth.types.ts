@@ -8,7 +8,7 @@ export type UserLoginCredentials = {
     email: string | null;
     password: string | null;
     gender: string | null;
-    dateOfBirth: Date;
+    dateOfBirth?: Date;
   };
   
   export type AuthState = {
