@@ -2,28 +2,79 @@ import { MdPlaylistAdd } from "react-icons/md";
 import { Playlist } from "../../constants/playlists.types";
 import { usePlaylists } from "../../hooks/usePlaylists"
 import { Checkbox } from "kaali-ui"
+import { default as common } from "../../common/common.module.css";
+import { Avatar } from "kaali-ui";
+
+import { default as historyStyles } from "../History/History.module.css";
+
+import { MdMenu, MdVerifiedUser } from "react-icons/md";
+
+import { IoMdTrash } from "react-icons/io";
+import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar"
+import { useState } from "react";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { useVideos } from "../../hooks/useVideos";
+
+import { Video } from "../../constants/videos.types";
+import { PlaylistsCard } from "../../components/PlaylistsCard/PlaylistsCard";
+import { Loader } from "kaali-ui"
+import { Navbar } from "../../components/Navbar/Navbar";
 
 export const Playlists = () => {
     const { playlistsState } = usePlaylists();
-    return <>
-        {
-            playlistsState.customPlaylistsData.customPlaylists.map((customPlaylist: Playlist, index: number) => {
 
-                return <div className="collection saved-collection w-100" key={customPlaylist._id}>
-                    <div className="modal-save-item-to-icon save-symbol" style={{ minWidth: `48px`, height: `48px` }}>
-                        <MdPlaylistAdd size={20} color={`red`} />
-                    </div>
-                    <div className="create-text" style={{ fontFamily: `inherit` }}>
-                        <span className="heading">{`${customPlaylist.name}`.toUpperCase()} </span>
-                        <span className="secondary-text">
-                            {`${customPlaylist.videos.length} items`}
-                        </span>
-                    </div>
-                    <div className="ml-auto">
 
-                        <Checkbox />
+    const {
+        navbar,
+        publisherAvatar,
+        wrapperLogo,
+        hamburgerMenu,
+        btnTrash
+    } = common;
+    const {
+        historyContainer,
+        headerContainer,
+        mainContainer,
+        publisherName,
+        cardContainer,
+        card,
+        cardWrapper,
+        cardImageWrapper,
+
+        cardImage,
+        cardTitle,
+        iconDelete
+    } = historyStyles;
+    const [sidebar, setSidebar] = useState(false);
+
+
+    return (
+        <>
+    <Navbar setSidebar={setSidebar} />
+            <MobileSidebar status={{ sidebar, setSidebar }} />
+            <div className={`${historyContainer}`}>
+                <div
+                    className={`${headerContainer} header header-secondary text-white`}
+                >
+                    Playlists
+                </div>
+
+                <Sidebar />
+                <div className={`${mainContainer}`}>
+                    <div className={`${cardContainer}`}>
+
+
+                        {
+                            playlistsState.customPlaylistsData.loading === `loading` ? <Loader /> :
+                                playlistsState.customPlaylistsData.customPlaylists.map((customPlaylist: Playlist, index: number) => {
+                                    return <PlaylistsCard playlist={customPlaylist} key={customPlaylist._id} />
+                                })
+                        }
+
                     </div>
                 </div>
-            })
-        }</>
+            </div>
+        </>
+    );
+
 }
