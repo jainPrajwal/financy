@@ -6,11 +6,11 @@ export type loading = `idle` | `success` | `loading` | `error`;
 export const QUERY_LIMIT = 10;
 
 export type ThumbnailObject = {
- default: Thumbnail;
- high: Thumbnail;
- max: Thumbnail;
- medium: Thumbnail;
- standard: Thumbnail
+  default: Thumbnail;
+  high: Thumbnail;
+  max: Thumbnail;
+  medium: Thumbnail;
+  standard: Thumbnail;
 };
 export type Thumbnail = {
   url: string;
@@ -68,3 +68,20 @@ export type UserUploadedVideo = {
   url: string | null;
   category: string | null;
 };
+export const STOCKMARKET = `STOCKMARKET`;
+export const GOLD = `GOLD`;
+export const CRYPTO = `CRYPTO`;
+export const BUSINESSCASESTUDIES = `BUSINESSCASESTUDIES`;
+export const SCAMS = `SCAMS`;
+export const NFTS = `NFTS`;
+export const INVESTMENTSTRATEGIES = `INVESTMENTSTRATEGIES`;
+
+export const CATEGORIES = [
+  STOCKMARKET,
+  GOLD,
+  CRYPTO,
+  BUSINESSCASESTUDIES,
+  SCAMS,
+  NFTS,
+  INVESTMENTSTRATEGIES,
+];
