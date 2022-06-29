@@ -1,0 +1,56 @@
+.uploadContainer {
+    display: flex;
+    margin-top: 4rem;
+    margin-left: 100px;
+    padding: 1rem;
+    flex-direction: column;
+  }
+  
+  .headerContainer {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  
+  .mainContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+  }
+  .uploadVideoLabelWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .uploadVideoForm {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    width: 280px;
+    margin: 0 auto;
+  }
+  .uploadVideoButton {
+    width: 100%;
+  }
+  
+  .uploadVideoLabel {
+    padding: 12px;
+    border: 1px solid var(--tube-theme-primary);
+    color: white;
+    text-align: center;
+  }
+  
+  .uploadVideoInput {
+    display: none;
+  }
+  
+  @media (max-width: 860px) {
+    .uploadContainer {
+      margin-left: 0;
+      margin-bottom: 5rem;
+    }
+  }
+  

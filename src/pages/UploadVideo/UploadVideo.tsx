@@ -1,22 +1,42 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { UserUploadedVideo, Video } from "../../constants/videos.types";
-import { initialState as DefaultVideosInitialState} from "../../contexts/videos-context";
+import { initialState as DefaultVideosInitialState } from "../../contexts/videos-context";
 
 import { useAsync } from "../../hooks/useAxios";
 import { useVideos } from "../../hooks/useVideos";
 import { uploadVideoService } from "../../services/videos/uploadVideoService";
-
-
+import { default as common } from "../../common/common.module.css";
+import { Navbar } from "../../components/Navbar/Navbar";
+import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { default as uploadStyles } from "./UploadVideo.module.css";
 
 export const UploadVideo = () => {
     const [videoDetails, setVideoDetails] = useState<UserUploadedVideo>({
         url: null,
         category: null,
     });
+    const [sidebar, setSidebar] = useState(false)
 
-    const { execute, status, response, errorMessage } = useAsync(uploadVideoService, false, null)
+    const { execute, status, response, errorMessage } = useAsync(uploadVideoService, false, null);
 
+    const { inputStyle } = common;
+    const {
+        nav,
+        navbar,
+
+        publisherAvatar,
+
+        wrapperLogo,
+        hamburgerMenu
+    } = common;
+
+    const {
+        headerContainer,
+        uploadContainer,
+        mainContainer,
+    } = uploadStyles;
     const { videosDispatch } = useVideos();
     useEffect(() => {
         if (status === `success`) {
@@ -31,51 +51,71 @@ export const UploadVideo = () => {
     }, [status, response, videosDispatch])
 
     return <>
-        <form
-            className="d-flex f-direction-col gap-10 p-lg m-lg"
-            style={{ maxWidth: `380px`, margin: `0 auto` }}
-            onSubmit={async (e) => {
-                e.preventDefault();
-                const url = videoDetails.url;
-                const videoId = url?.split(`=`)[1];
-                const response = await axios.get(`https://getYoutubeVideoDetails.prajwaljain.repl.co/videos/${videoId}/${videoDetails.category}`);
+        <Navbar setSidebar={setSidebar} />
+        <MobileSidebar status={{ sidebar, setSidebar }} />
+        <div className={`${uploadContainer}`}>
+            <div
+                className={`${headerContainer} header header-secondary text-white`}
+            >
+                Upload Videos
+            </div>
 
-                const { data: { video } } = response;
-                let videoToBeUploaded: Video = video[0];
-                videoToBeUploaded = {
-                    ...videoToBeUploaded, isPremium: false, likes: {
-                        male: 0,
-                        female: 0,
-                        others: 0
-                    }, views: {
-                        male: 0,
-                        female: 0,
-                        others: 0
-                    }, url: videoId || ``
-                }
+            <Sidebar />
+           
+                <div style={{ height: `100vh`, maxWidth: `380px`, margin: `0 auto`, width:`100%` }}
+                  
+                >
+                    <form
+                        className="d-flex f-direction-col gap-10 p-lg  w-100"
 
-                execute({ video: videoToBeUploaded })
+                        onSubmit={async (e) => {
+                            e.preventDefault();
+                            const url = videoDetails.url;
+                            const videoId = url?.split(`=`)[1];
+                            const response = await axios.get(`https://getYoutubeVideoDetails.prajwaljain.repl.co/videos/${videoId}/${videoDetails.category}`);
+
+                            const { data: { video } } = response;
+                            let videoToBeUploaded: Video = video[0];
+                            videoToBeUploaded = {
+                                ...videoToBeUploaded, isPremium: false, likes: {
+                                    male: 0,
+                                    female: 0,
+                                    others: 0
+                                }, views: {
+                                    male: 0,
+                                    female: 0,
+                                    others: 0
+                                }, url: videoId || ``
+                            }
+
+                            execute({ video: videoToBeUploaded })
 
 
-            }}>
-            <label htmlFor="url">Enter Youtube URL</label>
-            <input type="text" placeholder="Enter URL of any youtube video"
-                className="p-lg m-sm"
-                id={`url`}
-                onChange={(e) => setVideoDetails(prevState => ({ ...prevState, url: e.target.value }))} required autoFocus />
+                        }}>
+                        <label htmlFor="url" className="text-white">Enter Youtube URL</label>
+                        <input type="text" placeholder="Enter URL of any youtube video"
+                            className={`p-lg m-sm ${inputStyle}`}
+                            id={`url`}
+                            onChange={(e) => setVideoDetails(prevState => ({ ...prevState, url: e.target.value }))} required autoFocus />
 
-            <label htmlFor="cateogry">Category</label>
-            <select name="category" id="category" className="p-lg" onChange={(e) => setVideoDetails(prevState => ({ ...prevState, category: e.target.value }))}>
-                <option value="">Please select an option</option>
-                {
+                        <label htmlFor="category" className="text-white">Category</label>
+                        <select
 
-DefaultVideosInitialState.categories.map((category: string, index: number) => {
+                            name="category" id="category" className={`${inputStyle} p-lg cursor-pointer`} onChange={(e) => setVideoDetails(prevState => ({ ...prevState, category: e.target.value }))}>
+                            <option value="">Please select an option</option>
+                            {
 
-                        return <option value={category} key={category} >{category}</option>
-                    })
-                }
-            </select>
+                                DefaultVideosInitialState.categories.map((category: string, index: number) => {
 
-            <button className="btn btn-primary" type="submit">Upload Video</button>
-        </form></>
+                                    return <option value={category} key={category} >{category}</option>
+                                })
+                            }
+                        </select>
+
+                        <button className="btn btn-primary" type="submit">Upload Video</button>
+                    </form>
+                </div>
+            
+        </div>
+    </>
 } 
