@@ -1,0 +1,118 @@
+.playlistsContainer {
+    display: flex;
+    margin-top: 4rem;
+    margin-left: 100px;
+    padding: 1rem;
+    flex-direction: column;
+}
+
+.headerContainer {
+    font-size: 3rem;
+    margin-top: 2rem;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.publisherName {
+    white-space: nowrap;
+}
+
+.cardContainer {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.cardWrapper {
+    background-color: #262837;
+    border-radius: 12px;
+    display: flex;
+    width: 220px;
+    position: relative;
+    cursor: pointer;
+}
+
+.cardImageWrapper {
+    /* height: 80%; */
+
+}
+
+.cardTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: white;
+    width: 70%;
+    padding: 12px;
+}
+
+.cardOverlay {
+    position: absolute;
+    top: 0;
+    left: 70%;
+    width: 30%;
+    background-color: #504f6aad;
+    height: 100%;
+}
+
+.cardAvatar {
+    position: absolute;
+    right: 10px;
+    bottom: -25px;
+    border-radius: 50%;
+
+    padding: 2px;
+}
+
+.cardImage {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.cardTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-block: 4px;
+    max-width: 300px;
+}
+
+.iconDelete {
+    color: var(--tube-theme-error);
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card {}
+
+.cardContent {}
+
+@media (max-width: 860px) {
+    .playlistsContainer {
+        margin-left: 0;
+        margin-bottom: 5rem;
+        align-items: center;
+    }
+
+    .cardContainer {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 550px) {
+    .cardWrapper {
+        width: 100%;
+    }
+
+    .cardImageWrapper {
+        width: 100%;
+    }
+}
