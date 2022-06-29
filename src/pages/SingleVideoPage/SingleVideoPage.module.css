@@ -33,7 +33,7 @@
 }
 
 .notes {
-  background-color: #262837;
+  background-color: #211E27;
   /* max-width: 360px; */
   border-radius: 12px;
   min-height: 200px;
@@ -57,7 +57,7 @@
 }
 
 .notesInput {
-  background-color: #262837;
+  background-color: #211E27;
   width: 100%;
   color: white;
   max-width: 100%;
@@ -103,18 +103,18 @@
   padding: 1rem;
 }
 
-.btnIcon {
+/* .iconButton {
   padding: 12px;
   background: transparent;
   margin-block: 24px;
   color: var(--kaali-danger);
 }
 
-.btnIcon:focus {
+.iconButton:focus {
   background-color: var(--kaali-danger);
   color: #fff;
   border: 1px solid transparent;
-}
+} */
 
 .videoActions {
   justify-content: flex-end;
@@ -135,7 +135,7 @@
     font-size: 1rem;
   }
 
-  .btn.btnIcon {
+  .btn.iconButton {
     margin: 0px;
     padding: 8px;
     max-width: 60px;
@@ -152,7 +152,7 @@
     margin: 4px;
   }
 
-  .btnIcon {
+  .iconButton {
     padding: 8px;
   }
 }
