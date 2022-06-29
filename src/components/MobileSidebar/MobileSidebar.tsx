@@ -16,9 +16,11 @@ import {
   MdWatchLater
 } from "react-icons/md";
 import { BsHeartFill } from "react-icons/bs";
+import { useProfile } from "../../hooks/useProfile";
 
 export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
   const sidebarRef = useRef<null | HTMLElement>(null);
+  const {userProfile} = useProfile();
 
   useEffect(() => {
     const handleClickOutside = (e: any) => {
@@ -67,7 +69,7 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
               <div className={`${"publisherAvatar"}`}>
                 <Avatar
                   size={`md`}
-                  imageUrl={`https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png`}
+                 imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
                 />
               </div>
               <div className={`${"publisherName"}  pl-lg `}>
