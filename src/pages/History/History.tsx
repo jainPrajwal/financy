@@ -57,7 +57,7 @@ export const History = () => {
 
 
                         {
-                            playlistsState.historyData.history.videos.reverse().map((video: Video) => {
+                            playlistsState.historyData.history.videos.map((video: Video) => {
                                 return <PlaylistsVideoCard key={video._id} video={video} playlistId={null} />
                             })
                         }

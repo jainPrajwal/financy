@@ -172,7 +172,9 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                             <div className={`${iconDelete}`}>
                                 <button className={`btn ${btnTrash}`} onClick={() => {
                                     switch (location.pathname) {
-                                        case `/history`: executeRemoveFromHistory({
+                                        case `/history`:
+                                        console.log(`removing`)    
+                                        executeRemoveFromHistory({
                                             videoId: video._id,
                                             playlistId: playlistsState.historyData.history._id
                                         });

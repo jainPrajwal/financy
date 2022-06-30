@@ -15,8 +15,8 @@ export const Trending = () => {
     const [searchbar, setSearchbar] = useState(false);
 
     const trendingVideos = [...videosState.videos].sort((video1, video2) => {
-        const timeElapsed2 = Date.now() - new Date(video2.createdAt).getSeconds();
-        const timeElapsed1 = Date.now() - new Date(video1.createdAt).getSeconds();
+        const timeElapsed2 = new Date().getTime() - new Date(video2.createdAt).getTime();
+        const timeElapsed1 = new Date().getTime() - new Date(video1.createdAt).getTime();
 
         let totalVideo2Views = video2.views.female + video2.views.male + video2.views.others
         let totalVideo1Views = video1.views.female + video1.views.male + video1.views.others
@@ -52,7 +52,7 @@ export const Trending = () => {
         publisherName,
         publisherDetails,
         likeIconButtonWrapper,
-       
+
         videoWrapperContainer,
         exploreWrapperContainer,
         videoThumbnailContainer,
@@ -69,7 +69,7 @@ export const Trending = () => {
     } = exploreStyles;
     return (
         <>
-           <Navbar setSidebar={setSidebar} />
+            <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${exploreContainer}`}>
                 <div

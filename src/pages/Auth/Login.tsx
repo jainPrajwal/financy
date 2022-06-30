@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 
 const Login = () => {
-  
+
   const [showPassword, setShowPassword] = useState({
     initial: false,
     confirm: false
@@ -54,6 +54,7 @@ const Login = () => {
     }
   });
 
+  const { loginUserWithCredentials } = useAuth();
   const LoginHandler = async () => { };
 
   return (
@@ -71,8 +72,14 @@ const Login = () => {
           className={`${signinForm}`}
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(`submitting form.........`);
-            LoginHandler();
+            console.log(`Sign Up succesful!`, form);
+            if (form.isFormValid) {
+
+              loginUserWithCredentials({
+                email: form.email,
+                password: form.password
+              });
+            }
           }}
         >
           <div>

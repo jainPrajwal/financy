@@ -418,18 +418,25 @@ export const SingleVideoPage = () => {
                                     muted={false}
 
                                     onStart={() => {
-                                        const lastWatchedVideo = playlistsState.historyData.history.videos[0];
-                                        // videos[0] because I m getting reversed data from BE
+                                        const alreadyPresentInHistoryVideo = playlistsState.historyData.history.videos.find(videoInHistory => videoInHistory._id === video._id);
 
+                                        if (alreadyPresentInHistoryVideo) {
 
+                                            playlistsDispatch({
+                                                type: `REMOVE_FROM_PLAYLIST`,
+                                                payload: {
+                                                    video: alreadyPresentInHistoryVideo,
+                                                    playlist: playlistsState.historyData.history
+                                                }
+                                            })
 
-                                        if (lastWatchedVideo?._id !== video._id || lastWatchedVideo === undefined) {
-                                            executeAddHistoryService({
-                                                video,
-                                                playlistId:
-                                                    playlistsState.historyData.history._id
-                                            });
                                         }
+                                        executeAddHistoryService({
+                                            video,
+                                            playlistId:
+                                                playlistsState.historyData.history._id
+                                        });
+
 
                                         console.log(`user profile gender`, userProfile?.gender)
                                         if (userProfile?.gender === `male`) {
@@ -586,8 +593,8 @@ export const SingleVideoPage = () => {
                                                 <span className="w-100 h-100 d-flex jc-center">
                                                     <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
                                                 </span>
-                                                : <IoMdHeart size={20} 
-                                                color={`rgb(14, 165, 233)`}
+                                                : <IoMdHeart size={20}
+                                                    color={`rgb(14, 165, 233)`}
                                                 />}
 
                                         </button>
