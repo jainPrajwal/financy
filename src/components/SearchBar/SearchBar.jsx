@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useVideos } from "../../hooks/useVideos";
 import { getSearchedData } from "../../utils/getSearchedData";
+import { default as common } from "../../common/common.module.css";
 import { default as searchStyles } from "./SearchBar.module.css";
 
 const SearchBar = ({ searchbar, setSearchbar }) => {
@@ -15,14 +16,15 @@ const SearchBar = ({ searchbar, setSearchbar }) => {
   );
 
   let navigate = useNavigate();
-  const {  autocomplete, searchBox, autocompleteItems, autocompleteItem } =
+  const { autocomplete, searchBox, autocompleteItems, autocompleteItem } =
     searchStyles;
+  const { inputStyle } = common;
   return (
     <>
       <div className={`${autocomplete}`}>
         <input
           type="text"
-          className={`${searchBox}`}
+          className={`${searchBox} ${inputStyle}`}
           value={localSearchQuery}
           placeholder="Search by name"
           onKeyUp={(e) => {
