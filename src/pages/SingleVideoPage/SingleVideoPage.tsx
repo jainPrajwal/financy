@@ -249,15 +249,18 @@ export const SingleVideoPage = () => {
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { video },
+                    data: { video }, status, success
                 } = updateVideoResponse;
 
-                videosDispatch({
-                    type: `UPDATE_VIDEO`,
-                    payload: {
-                        video
-                    },
-                });
+                if (status === 201 && success) {
+                    videosDispatch({
+                        type: `UPDATE_VIDEO`,
+                        payload: {
+                            video
+                        },
+                    });
+                }
+
             }
         } catch (error) {
             console.error(`error`, error);
