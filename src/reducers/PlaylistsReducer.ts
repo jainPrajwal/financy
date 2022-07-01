@@ -3,6 +3,7 @@ import {
   ADD_TO_PLAYLIST,
   CREATE_PLAYLIST,
   REMOVE_FROM_PLAYLIST,
+  SET_LOADING,
 } from "../constants/actions.types";
 import { PlaylistsState } from "../constants/playlists.types";
 
@@ -203,6 +204,33 @@ const actionMap = new Map([
               },
             };
         }
+      }
+      return state;
+    },
+  ],
+  [
+    SET_LOADING,
+    (state: PlaylistsState, action: ACTION) => {
+      if (action.type === `SET_LOADING`) {
+        return {
+          ...state,
+          customPlaylistsData: {
+            ...state.customPlaylistsData,
+            loading: action.payload.loading,
+          },
+          historyData: {
+            ...state.historyData,
+            loading: action.payload.loading,
+          },
+          watchLaterVideosData: {
+            ...state.watchLaterVideosData,
+            loading: action.payload.loading,
+          },
+          likedVideosData: {
+            ...state.likedVideosData,
+            loading: action.payload.loading,
+          },
+        };
       }
       return state;
     },
