@@ -11,6 +11,7 @@ import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 export const Liked = () => {
   const {
     navbar,
@@ -37,7 +38,7 @@ export const Liked = () => {
   const { playlistsState } = usePlaylists();
   return (
     <>
-  <Navbar setSidebar={setSidebar} />
+      <Navbar setSidebar={setSidebar} />
       <MobileSidebar status={{ sidebar, setSidebar }} />
       <div className={`${historyContainer}`}>
         <div
@@ -51,10 +52,10 @@ export const Liked = () => {
           <div className={`${cardContainer}`}>
 
 
-            {
+            {playlistsState.likedVideosData.loading === `loading` ? <><FlexContainer><Loader /></FlexContainer></> :
               playlistsState.likedVideosData.likedVideos.videos.map((video: Video) => {
-                return <PlaylistsVideoCard key={video._id} video={video} 
-                playlistId={null}
+                return <PlaylistsVideoCard key={video._id} video={video}
+                  playlistId={null}
                 />
               })
             }

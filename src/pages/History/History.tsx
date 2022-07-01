@@ -11,10 +11,11 @@ import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { useVideos } from "../../hooks/useVideos";
 import { usePlaylists } from "../../hooks/usePlaylists";
-
+import { Loader } from "kaali-ui"
 import { Video } from "../../constants/videos.types";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 export const History = () => {
     const {
         navbar,
@@ -39,7 +40,6 @@ export const History = () => {
     } = historyStyles;
     const [sidebar, setSidebar] = useState(false);
     const { playlistsState } = usePlaylists();
-
     return (
         <>
             <Navbar setSidebar={setSidebar} />
@@ -56,7 +56,7 @@ export const History = () => {
                     <div className={`${cardContainer}`}>
 
 
-                        {
+                        {playlistsState.historyData.loading === `loading` ? <><FlexContainer><Loader /></FlexContainer></> :
                             playlistsState.historyData.history.videos.map((video: Video) => {
                                 return <PlaylistsVideoCard key={video._id} video={video} playlistId={null} />
                             })

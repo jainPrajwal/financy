@@ -11,6 +11,7 @@ import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 export const WatchLater = () => {
 
   const {
@@ -32,7 +33,7 @@ export const WatchLater = () => {
   const { playlistsState } = usePlaylists();
   return (
     <>
-      <Navbar setSidebar={setSidebar}/>
+      <Navbar setSidebar={setSidebar} />
       <MobileSidebar status={{ sidebar, setSidebar }} />
       <div className={`${historyContainer}`}>
         <div
@@ -46,7 +47,7 @@ export const WatchLater = () => {
           <div className={`${cardContainer}`}>
 
 
-            {
+            {playlistsState.watchLaterVideosData.loading === `loading` ? <><FlexContainer><Loader /></FlexContainer></> :
               playlistsState.watchLaterVideosData.watchLaterVideos.videos.map((video: Video) => {
                 return <PlaylistsVideoCard
                   key={video._id} video={video}
