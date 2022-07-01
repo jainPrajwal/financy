@@ -418,55 +418,69 @@ export const SingleVideoPage = () => {
                                     muted={false}
 
                                     onStart={() => {
-                                        const alreadyPresentInHistoryVideo = playlistsState.historyData.history.videos.find(videoInHistory => videoInHistory._id === video._id);
+                                        if (userProfile) {
+                                            const alreadyPresentInHistoryVideo = playlistsState.historyData.history.videos.find(videoInHistory => videoInHistory._id === video._id);
 
-                                        if (alreadyPresentInHistoryVideo) {
+                                            if (alreadyPresentInHistoryVideo) {
 
-                                            playlistsDispatch({
-                                                type: `REMOVE_FROM_PLAYLIST`,
-                                                payload: {
-                                                    video: alreadyPresentInHistoryVideo,
-                                                    playlist: playlistsState.historyData.history
-                                                }
-                                            })
-
-                                        }
-                                        executeAddHistoryService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.historyData.history._id
-                                        });
-
-
-                                        console.log(`user profile gender`, userProfile?.gender)
-                                        if (userProfile?.gender === `male`) {
-                                            executeUpdateVideoService({
-
-                                                video: {
-                                                    views:
-                                                    {
-                                                        male: video.views.male + 1,
-                                                        female: video.views.female,
-                                                        others: video.views.others
+                                                playlistsDispatch({
+                                                    type: `REMOVE_FROM_PLAYLIST`,
+                                                    payload: {
+                                                        video: alreadyPresentInHistoryVideo,
+                                                        playlist: playlistsState.historyData.history
                                                     }
-                                                },
-                                                videoId: video._id
-                                            })
-                                        }
-                                        else {
-                                            executeUpdateVideoService({
+                                                })
 
-                                                video: {
-                                                    views:
-                                                    {
-                                                        male: video.views.male,
-                                                        female: video.views.female + 1,
-                                                        others: video.views.others
-                                                    }
-                                                },
-                                                videoId: video._id
-                                            })
+                                            }
+                                            executeAddHistoryService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.historyData.history._id
+                                            });
+
+                                            if (userProfile?.gender === `male`) {
+                                                executeUpdateVideoService({
+
+                                                    video: {
+                                                        views:
+                                                        {
+                                                            male: video.views.male + 1,
+                                                            female: video.views.female,
+                                                            others: video.views.others
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
+                                            else if (userProfile?.gender === `female`) {
+                                                executeUpdateVideoService({
+
+                                                    video: {
+                                                        views:
+                                                        {
+                                                            male: video.views.male,
+                                                            female: video.views.female + 1,
+                                                            others: video.views.others
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            } else if (userProfile?.gender === `others`) {
+                                                executeUpdateVideoService({
+
+                                                    video: {
+                                                        views:
+                                                        {
+                                                            male: video.views.male,
+                                                            female: video.views.female,
+                                                            others: video.views.others + 1
+                                                        }
+                                                    },
+                                                    videoId: video._id
+                                                })
+                                            }
                                         }
+
                                     }}
                                 />
                             </div>
