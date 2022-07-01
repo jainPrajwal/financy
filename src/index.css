@@ -36,15 +36,15 @@
 
   /* !important is used purposely to override colors imported because of reactive kaali UI */
 }
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 2px;
 }
 
-*::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-*::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
   background-color: var(--kaali-danger);
   outline: 1px solid var(--kaali-danger);
 }
