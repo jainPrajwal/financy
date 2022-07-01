@@ -1,5 +1,5 @@
+import { Avatar, Loader } from "kaali-ui";
 import { default as common } from "../../common/common.module.css";
-import { Avatar } from "kaali-ui";
 
 import { default as homeStyles } from "./Home.module.css";
 
@@ -14,7 +14,7 @@ import axios from "axios";
 import { BASE_API } from "../../constants/api";
 import { getAllVideos } from "../../services/videos/getAllVideos";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Loader } from "kaali-ui"
+
 import { Navbar } from "../../components/Navbar/Navbar";
 import { useProfile } from "../../hooks/useProfile";
 

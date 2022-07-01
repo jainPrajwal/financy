@@ -1,6 +1,6 @@
+import { Modal, ModalHeader, ModalFooter, ModalBody, ModalRow, ModalOverlay, ModalContainer } from "kaali-ui"
 import { useCallback, useEffect, useRef, useState } from "react";
 import { default as playlistModalStyles } from "./AddToPlaylistModal.module.css";
-import { Modal, ModalHeader, ModalFooter, ModalBody, ModalRow, ModalOverlay, ModalContainer } from "kaali-ui"
 import { MdClose, MdPlaylistAdd } from "react-icons/md"
 import { useFocus } from "../../hooks/useFocus";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";

@@ -1,8 +1,8 @@
+import { Avatar } from "kaali-ui"
 import React, { useState } from "react";
 import { MdMenu } from "react-icons/md";
 import { default as common } from "../../common/common.module.css";
 import { useProfile } from "../../hooks/useProfile";
-import { Avatar } from "kaali-ui"
 
 export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetStateAction<boolean>> }) => {
 

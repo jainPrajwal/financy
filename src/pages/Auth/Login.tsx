@@ -1,10 +1,10 @@
+import { Tooltip } from "kaali-ui";
 import { useAuth } from "../../hooks/useAuth";
 
-import { Loader } from "kaali-ui";
+
 import { useState } from "react";
 import { UserLoginCredentials } from "../../constants/auth.types";
 import { default as authStyles } from "./Auth.module.css";
-import { Tooltip } from "kaali-ui";
 import { Link } from "react-router-dom";
 
 

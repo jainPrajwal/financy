@@ -1,9 +1,9 @@
+import { Avatar, Loader } from "kaali-ui";
 import { useVideos } from "../../hooks/useVideos"
 import { default as common } from "../../common/common.module.css";
 import { useState } from "react";
 import { MdMenu } from "react-icons/md";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
-import { Avatar, Loader } from "kaali-ui"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { ExploreVideoCard } from "../../components/Explore/ExploreVideoCard";

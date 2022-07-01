@@ -1,9 +1,9 @@
+import { Loader } from "kaali-ui"
 import { MdPlaylistAdd } from "react-icons/md";
 import { Playlist } from "../../constants/playlists.types";
 import { usePlaylists } from "../../hooks/usePlaylists"
-import { Checkbox } from "kaali-ui"
 import { default as common } from "../../common/common.module.css";
-import { Avatar } from "kaali-ui";
+
 
 import { default as historyStyles } from "../History/History.module.css";
 
@@ -17,7 +17,6 @@ import { useVideos } from "../../hooks/useVideos";
 
 import { Video } from "../../constants/videos.types";
 import { PlaylistsCard } from "../../components/PlaylistsCard/PlaylistsCard";
-import { Loader } from "kaali-ui"
 import { Navbar } from "../../components/Navbar/Navbar";
 
 export const Playlists = () => {

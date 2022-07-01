@@ -1,8 +1,8 @@
+
 import { MdMenu } from "react-icons/md";
 import { useParams } from "react-router"
 
 import { usePlaylists } from "../../hooks/usePlaylists";
-import { Avatar } from "kaali-ui"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { default as common } from "../../common/common.module.css";
 import { default as historyStyles } from "../History/History.module.css"

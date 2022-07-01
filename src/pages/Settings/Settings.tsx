@@ -1,5 +1,6 @@
 // import { BsHeartFill } from "react-icons/bs";
-import { Avatar } from "kaali-ui";
+import { Avatar, Loader } from "kaali-ui";
+
 
 import { MdEditNote, MdMenu, MdVerifiedUser } from "react-icons/md";
 
@@ -15,7 +16,6 @@ import { useProfile } from "../../hooks/useProfile";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { ProfileModal } from "../../components/Profile/ProfileModal";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
-import { Loader } from "kaali-ui"
 import { Payment } from "../../constants/payment.types";
 import { useAsync } from "../../hooks/useAxios";
 import { getPaymentDetailsService } from "../../services/payment/getPaymentDetailsService";
@@ -137,7 +137,7 @@ export const Settings = () => {
 
         }
     }, [status, response])
-    console.log(publishedVideos)  
+    console.log(publishedVideos)
 
     return (
         <>

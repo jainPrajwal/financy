@@ -1,7 +1,7 @@
+import { Loader } from "kaali-ui";
 import { Video } from "../../constants/videos.types";
 import { useVideos } from "../../hooks/useVideos";
 
-import { Loader } from "kaali-ui";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { useEffect, useState } from "react";
 import { ExploreVideoCard } from "../../components/Explore/ExploreVideoCard";

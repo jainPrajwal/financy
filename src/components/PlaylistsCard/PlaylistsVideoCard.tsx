@@ -1,3 +1,4 @@
+import { Loader } from "kaali-ui"
 import { useEffect } from "react";
 import { IoMdTrash } from "react-icons/io";
 import { MdVerifiedUser } from "react-icons/md";
@@ -8,7 +9,6 @@ import { usePlaylists } from "../../hooks/usePlaylists";
 import { default as historyStyles } from "../../pages/History/History.module.css";
 import { clearHistoryService } from "../../services/playlists/clearHistoryService";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
-import { Loader } from "kaali-ui"
 import { useLocation } from "react-router";
 import { useVideos } from "../../hooks/useVideos";
 import { useProfile } from "../../hooks/useProfile";

@@ -1,4 +1,4 @@
-import { Avatar } from "kaali-ui";
+import { Avatar, Loader } from "kaali-ui";
 
 import { MdMenu, MdRemoveRedEye } from "react-icons/md";
 import { BsHeartFill } from "react-icons/bs";
@@ -14,7 +14,7 @@ import { useVideos } from "../../hooks/useVideos";
 import { useSearchParams } from "react-router-dom";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { CLEAR_ALL, FILTER_BY_CATEGORY, SORT_BY } from "../../constants/actions.types";
-import { Loader } from "kaali-ui"
+
 import { BUSINESSCASESTUDIES, CRYPTO, GOLD, INVESTMENTSTRATEGIES, NFTS, SCAMS, STOCKMARKET } from "../../constants/videos.types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useProfile } from "../../hooks/useProfile";

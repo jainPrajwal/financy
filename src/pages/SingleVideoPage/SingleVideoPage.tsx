@@ -1,6 +1,7 @@
+import { Avatar, Loader } from "kaali-ui";
+
 import { useParams } from "react-router-dom"
 import { useVideos } from "../../hooks/useVideos";
-import { Avatar, Loader } from "kaali-ui"
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { useEffect, useReducer, useState } from "react";
 import { useAsync } from "../../hooks/useAxios";
@@ -28,7 +29,6 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import ReactPlayer from "react-player/youtube"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
-import { Button } from "kaali-ui"
 import { Navbar } from "../../components/Navbar/Navbar";
 export const SingleVideoPage = () => {
     const {

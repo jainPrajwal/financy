@@ -1,5 +1,5 @@
-import { default as common } from "../../common/common.module.css";
 import { Avatar } from "kaali-ui";
+import { default as common } from "../../common/common.module.css";
 
 import { default as playlistsStyles } from "./Playlists.module.css";
 

@@ -1,7 +1,7 @@
+import { Avatar } from "kaali-ui";
 import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { default as common } from "../../common/common.module.css";
-import { Avatar } from "kaali-ui";
 import { RiShieldFlashFill } from "react-icons/ri";
 import {
   MdClose,

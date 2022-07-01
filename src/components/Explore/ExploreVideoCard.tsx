@@ -1,10 +1,10 @@
+import { Avatar, Loader } from "kaali-ui";
 import { useEffect, useState } from "react";
 import { Video } from "../../constants/videos.types";
 import { useAsync } from "../../hooks/useAxios";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { useVideos } from "../../hooks/useVideos";
 import { default as exploreStyles } from "../../pages/Explore/Explore.module.css";
-import { Avatar, Loader } from "kaali-ui";
 import { BsHeartFill } from "react-icons/bs";
 
 

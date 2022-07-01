@@ -1,8 +1,8 @@
+import { RadioButton } from "kaali-ui";
 import { useState } from "react";
 
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
-import { RadioButton } from "kaali-ui";
 import { useAuth } from "../../hooks/useAuth";
 
 

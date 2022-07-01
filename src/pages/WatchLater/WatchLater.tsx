@@ -1,3 +1,4 @@
+import { Avatar, Loader } from "kaali-ui";
 
 import { useState } from "react";
 import { MdMenu } from "react-icons/md";
@@ -6,7 +7,6 @@ import { default as common } from "../../common/common.module.css";
 import { Video } from "../../constants/videos.types";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { default as historyStyles } from "../History/History.module.css";
-import { Avatar, Loader } from "kaali-ui";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";

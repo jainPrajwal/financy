@@ -1,5 +1,5 @@
+import { Avatar, Loader } from "kaali-ui";
 import { default as common } from "../../common/common.module.css";
-import { Avatar } from "kaali-ui";
 
 import { default as historyStyles } from "../History/History.module.css";
 
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { useVideos } from "../../hooks/useVideos";
 import { usePlaylists } from "../../hooks/usePlaylists";
-import { Loader } from "kaali-ui"
+
 import { Video } from "../../constants/videos.types";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";
 import { Navbar } from "../../components/Navbar/Navbar";
