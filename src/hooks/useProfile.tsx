@@ -1,5 +1,6 @@
 import { useContext } from "react"
-import { Profile, ProfileContext } from "../contexts/profile-context"
+import { Profile } from "../constants/profile.types";
+import { ProfileContext } from "../contexts/profile-context"
 
 export const useProfile = (): {
     userProfile: Profile | null,
