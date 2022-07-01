@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   }, []);
 
   useEffect(() => {
+    console.log(`login`, localStorageItem)
     if (localStorageItem.token) {
       authDispatch({
         type: `LOGIN_USER`,
@@ -86,8 +87,8 @@ export const AuthProvider = ({ children }: ProviderProps) => {
         });
         setupAuthHeaderForServiceCalls(authState.token);
         setLocalStorageItem(authState);
-
-        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+        console.log(`state`, state);
+        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
       }
     }
 
@@ -99,7 +100,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
         type: `LOGIN_USER`,
         payload: localStorageItem,
       });
-      (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+      (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
     } else {
       if (signupStatus === `success`) {
         const {
@@ -117,7 +118,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
         setupAuthHeaderForServiceCalls(authState.token);
         setLocalStorageItem(authState);
 
-        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
       }
     }
 
@@ -125,10 +126,10 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     if (localStorageItem.token) {
-
+     
       setupAuthHeaderForServiceCalls(localStorageItem.token);
     } else if (authState.token) {
-
+    
 
       setupAuthHeaderForServiceCalls(authState.token);
     }

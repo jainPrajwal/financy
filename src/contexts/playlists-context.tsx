@@ -4,6 +4,7 @@ import { Playlist, PlaylistsState } from "../constants/playlists.types";
 import { ProviderProps } from "../constants/videos.types";
 import { useAuth } from "../hooks/useAuth";
 import { useAsync } from "../hooks/useAxios";
+import { useVideos } from "../hooks/useVideos";
 import { playlistsReducer } from "../reducers/PlaylistsReducer";
 import { getAllPlaylistsService } from "../services/playlists/getAllPlaylistsService";
 
@@ -62,7 +63,7 @@ export const PlaylistsContext = createContext<{
 }>({ playlistsState: playlistsInitialState, playlistsDispatch: () => { } });
 
 export const PlaylistsProvider = ({ children }: ProviderProps) => {
-  
+
   const [playlistsState, playlistsDispatch] = useReducer(
     playlistsReducer,
     playlistsInitialState
@@ -76,27 +77,42 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
   const {
     authState: { token },
   } = useAuth();
-  
+
+
+
 
   useEffect(() => {
     const local = localStorage.getItem(`token`);
     const localtoken = local ? JSON.parse(local) : null;
-    
+
     if (token || localtoken?.token) {
       execute(null);
     }
   }, [token, execute]);
   useEffect(() => {
+
+    playlistsDispatch({
+      type: `SET_LOADING`,
+      payload: {
+        loading: `loading`
+      }
+    })
     if (status === `success`) {
-      
+
       try {
         const {
           data: { playlists },
         } = response;
+        playlistsDispatch({
+          type: `SET_LOADING`,
+          payload: {
+            loading: `success`
+          }
+        })
         if (playlists?.length > 0) {
-          
+
           playlists.forEach((playlist: Playlist) => {
-            
+
             playlistsDispatch({
               type: `CREATE_PLAYLIST`,
               payload: {
@@ -106,6 +122,12 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
           });
         }
       } catch (error) {
+        playlistsDispatch({
+          type: `SET_LOADING`,
+          payload: {
+            loading: `error`
+          }
+        })
         console.error(`error occured`, error)
       }
 

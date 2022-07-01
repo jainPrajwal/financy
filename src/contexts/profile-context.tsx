@@ -1,19 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
+import { Profile } from "../constants/profile.types";
 import { ProviderProps, Video } from "../constants/videos.types";
 import { useAuth } from "../hooks/useAuth";
 import { useAsync } from "../hooks/useAxios";
 import { getUserProfileService } from "../services/profile/getUserProfileService";
 
-export type Gender = `male` | `female` | `others`
-    ;
-export type Profile = {
-    name: string,
-    avatar: string,
-    email: string,
-    isAPremiumMember: Boolean,
-    publishedVideos: Array<Video>
-    gender: Gender
-}
+
 export const ProfileContext = createContext<{
     userProfile: Profile | null,
     setUserProfile: React.Dispatch<React.SetStateAction<Profile | null>>
