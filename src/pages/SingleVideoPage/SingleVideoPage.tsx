@@ -135,20 +135,27 @@ export const SingleVideoPage = () => {
     }, [videoId, executeGetSingeVideoPageService, videosState.videos]);
 
     useEffect(() => {
-        if (status === `success`) {
+        try {
+            if (status === `success`) {
 
-            const { data: { video } } = response;
+                const { data: { video }, status, success } = response;
 
 
-
-
-            videosDispatch({
-                type: UPDATE_VIDEO,
-                payload: {
-                    video
+                if (status === 201 && success) {
+                    videosDispatch({
+                        type: UPDATE_VIDEO,
+                        payload: {
+                            video
+                        }
+                    })
                 }
-            })
+
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [status, response, videosDispatch])
 
 
