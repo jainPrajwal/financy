@@ -47,7 +47,7 @@ export const Videos = () => {
   if (videosState.sortBy) {
 
     switch (videosState.sortBy) {
-      case `mostliked`:
+      case `most liked`:
         sortedData = [...filteredData].sort((video1, video2) => {
           const totalLikes1 = video1.likes.male + video1.likes.female + video1.likes.others;
           const totalLikes2 = video2.likes.male + video2.likes.female + video2.likes.others;
@@ -56,7 +56,7 @@ export const Videos = () => {
 
         break;
 
-      case `mostviewed`:
+      case `most viewed`:
         sortedData = [...filteredData].sort((video1, video2) => {
           const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
           const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
@@ -64,12 +64,12 @@ export const Videos = () => {
         })
         break;
 
-      case `latestfirst`: sortedData = [...filteredData].sort((video1, video2) => {
+      case `latest first`: sortedData = [...filteredData].sort((video1, video2) => {
 
         return new Date(video2.createdAt).getMilliseconds() - new Date(video1.createdAt).getMilliseconds()
       })
         break;
-      case `oldestfirst`: sortedData = [...filteredData].sort((video1, video2) => {
+      case `oldest first`: sortedData = [...filteredData].sort((video1, video2) => {
 
         return new Date(video1.createdAt).getMilliseconds() - new Date(video2.createdAt).getMilliseconds()
       })
@@ -120,54 +120,54 @@ export const Videos = () => {
         <div>
 
           <input type="radio"
-          checked={videosState.sortBy === `mostliked`}
-            value={`mostliked`}
+          checked={videosState.sortBy === `most liked`}
+            value={`most liked`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
               setSearchParams(searchParams)
             }}
-            name="sortBy" id="mostliked" />
-          <label htmlFor="mostliked">Most Liked</label>
+            name="sortBy" id="most liked" />
+          <label htmlFor="most liked">Most Liked</label>
 
         </div>
         <div>
 
           <input type="radio"
-            checked={videosState.sortBy === `mostviewed`}
-            value={`mostviewed`}
+            checked={videosState.sortBy === `most viewed`}
+            value={`most viewed`}
             onChange={(e) => {
 
               searchParams.set(`sortBy`, e.target.value)
               setSearchParams(searchParams)
             }}
-            name="sortBy" id="mostviewed" />
-          <label htmlFor="mostviewed">Most Viewed</label>
+            name="sortBy" id="most viewed" />
+          <label htmlFor="most viewed">Most Viewed</label>
         </div>
 
         <div>
           <input type="radio"
-           checked={videosState.sortBy === `latestfirst`}
-            value={`latestfirst`}
+           checked={videosState.sortBy === `latest first`}
+            value={`latest first`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
               setSearchParams(searchParams)
             }}
-            name="sortBy" id="latestfirst" />
-          <label htmlFor="latestfirst">Latest First</label>
+            name="sortBy" id="latest first" />
+          <label htmlFor="latest first">Latest First</label>
         </div>
 
 
         <div>
       
           <input type="radio"
-            checked={videosState.sortBy === `oldestfirst`}
-            value={`oldestfirst`}
+            checked={videosState.sortBy === `oldest first`}
+            value={`oldest first`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
               setSearchParams(searchParams)
             }}
-            name="sortBy" id="oldestfirst" />
-          <label htmlFor="oldestfirst">Oldest First</label>
+            name="sortBy" id="oldest first" />
+          <label htmlFor="oldest first">Oldest First</label>
         </div>
 
       </div>

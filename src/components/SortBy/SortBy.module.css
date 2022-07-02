@@ -1,0 +1,34 @@
+.sortsortBy {
+    padding: 9px 14px;
+    
+    color: #282c3f;
+   
+    position: relative;
+    width: 255px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background-color: #211E27;
+    color: #808080;
+    border: 1px solid rgb(70, 70, 70);
+    position: relative;
+}
+
+.wrapperSortByOptions {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 70%;
+    padding: 12px 12px 0 12px;
+    background-color: #211E27;
+    border: 1px solid rgb(70, 70, 70);
+    z-index: 11;
+    display: none;
+    
+}
+
+.wrapperSortByOptionsActive {
+    transform: translateY(10%);
+    display: block;
+    transition: transform 200ms ease-in, display 200ms ease-in;
+}

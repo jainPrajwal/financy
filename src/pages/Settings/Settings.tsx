@@ -21,6 +21,7 @@ import { useAsync } from "../../hooks/useAxios";
 import { getPaymentDetailsService } from "../../services/payment/getPaymentDetailsService";
 import { Video } from "../../constants/videos.types";
 import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
+import { Navbar } from "../../components/Navbar/Navbar";
 
 ChartJS.register(ArcElement);
 ChartJS.register([Tooltip]);
@@ -144,31 +145,7 @@ export const Settings = () => {
             {
                 !ismodalHidden && <ProfileModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} />
             }
-            <header className={`${navbar} pr-lg`}>
-                <div
-                    className={`${hamburgerMenu} text-white`}
-                    role="button"
-                    onClick={() => setSidebar(true)}
-                >
-                    <MdMenu size={28} />
-                </div>
-                <div className={`${wrapperLogo}`}>
-                    <img
-                        src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
-                        alt="logo"
-                        width={`100%`}
-                        height={`100%`}
-                    />
-                </div>
-                <div className="ml-auto">
-                    <div className={`${publisherAvatar}`}>
-                        <Avatar
-                            size={`sm`}
-                            imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
-                        />
-                    </div>
-                </div>
-            </header>
+         <Navbar setSidebar={setSidebar}/>
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${exploreContainer}`}>
                 <div

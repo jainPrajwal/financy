@@ -150,13 +150,30 @@
   justify-content: center;
   position: relative;
   gap: 24px;
+  overflow-x: auto;
 }
 
+.chipsContainer::-webkit-scrollbar {
+    width: 1px;
+    height: 0px;
+  }
+  
+  .chipsContainer::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .chipsContainer::-webkit-scrollbar-thumb {
+    background-color: var(--kaali-danger);
+    outline: 1px solid var(--kaali-danger);
+  }
 .chip {
   border: 1px solid var(--tube-theme-primary);
   border-radius: 2rem;
   background-color: transparent;
   color: #fff;
+  position: relative;
+  left: 50px;
+  white-space: nowrap;
   /* background-color: rgba(255, 255, 255, 0.1); */
 }
 
@@ -169,6 +186,9 @@
   background-color: var(--tube-theme-primary);
   color: white;
   border-radius: 2rem;
+  position: relative;
+  left: 50px;
+  white-space: nowrap;
 }
 
 .chipSolid:hover {
@@ -268,12 +288,15 @@
     gap: 10px;
   }
 
-  
-  .chip {
+
+  .chip, 
+  .chipSolid  {
     position: relative;
-    left: 200px;
+    left: 150px;
     white-space: nowrap;
+
   }
+
 }
 
 @media (max-width: 860px) {
@@ -295,24 +318,13 @@
   }
 
   .chipsContainer {
-    
+
     gap: 12px;
-    
+
   }
 
-  
-  /* .chipsContainer::-webkit-scrollbar {
-    width: 1px;
-  }
-  
-  .chipsContainer::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  
-  .chipsContainer::-webkit-scrollbar-thumb {
-    background-color: var(--kaali-danger);
-    outline: 1px solid var(--kaali-danger);
-  } */
+
+
 
   ​ .videoContainer {
 
@@ -345,11 +357,11 @@
     max-width: 260px;
   }
 
-  
 
-  .chip {
+
+  .chip,.chipSolid {
     position: relative;
-    left: 300px;
+    left: 220px;
     white-space: nowrap;
   }
 }
@@ -386,8 +398,10 @@
     height: 36px;
   }
 
-  .chipsContainer {
-    overflow-x: auto;
+  .chip,.chipSolid {
+    position: relative;
+    left: 300px;
+    white-space: nowrap;
   }
 
 }

@@ -1,3 +1,4 @@
+import { useToast } from "kaali-ui"
 import {
   createContext,
   useCallback,
@@ -6,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ToastMessage } from "../components/ToastMessage/ToastMessage";
 import { AuthState, signupUserCredentials, UserLoginCredentials } from "../constants/auth.types";
 import { loading, ProviderProps } from "../constants/videos.types";
 import { useAsync } from "../hooks/useAxios";
@@ -17,6 +19,7 @@ import {
   setupAuthHeaderForServiceCalls,
 } from "../services/auth/loginService";
 import { signupService } from "../services/auth/signupService";
+import { showToast } from "../utils/showToast";
 
 export const AuthContext = createContext<{
   authState: AuthState;
@@ -44,6 +47,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const [email, setEmail] = useState<string | null>(null);
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { toastDispatch } = useToast();
 
   const { execute, status, response } = useAsync(loginService, false, null);
   const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
@@ -64,7 +68,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   }, []);
 
   useEffect(() => {
-    console.log(`login`, localStorageItem)
+
     if (localStorageItem.token) {
       authDispatch({
         type: `LOGIN_USER`,
@@ -74,7 +78,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     } else {
       if (status === `success`) {
         const {
-          data: { token },
+          data: { message, token },
         } = response;
         const authState = {
           loggedInUser: email,
@@ -85,6 +89,15 @@ export const AuthProvider = ({ children }: ProviderProps) => {
           type: `LOGIN_USER`,
           payload: authState,
         });
+        showToast({
+          toastDispatch,
+          element: (
+            <ToastMessage message={message} videoId={token} />
+          ),
+         
+          videoId: token,
+
+        })
         setupAuthHeaderForServiceCalls(authState.token);
         setLocalStorageItem(authState);
         console.log(`state`, state);
@@ -104,7 +117,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     } else {
       if (signupStatus === `success`) {
         const {
-          data: { token, user },
+          data: { message, token, user },
         } = signupResponse;
         const authState = {
           loggedInUser: user?.email,
@@ -126,10 +139,10 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     if (localStorageItem.token) {
-     
+
       setupAuthHeaderForServiceCalls(localStorageItem.token);
     } else if (authState.token) {
-    
+
 
       setupAuthHeaderForServiceCalls(authState.token);
     }

@@ -1,4 +1,4 @@
-import { Loader } from "kaali-ui"
+import { Loader, useToast } from "kaali-ui"
 import { useEffect } from "react";
 import { IoMdTrash } from "react-icons/io";
 import { MdVerifiedUser } from "react-icons/md";
@@ -13,6 +13,8 @@ import { useLocation } from "react-router";
 import { useVideos } from "../../hooks/useVideos";
 import { useProfile } from "../../hooks/useProfile";
 import { updateVideoService } from "../../services/videos/updateVideoService";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../ToastMessage/ToastMessage";
 export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playlistId: string | null }) => {
 
     const { playlistsDispatch, playlistsState } = usePlaylists();
@@ -57,12 +59,13 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
     } = common;
 
     const location = useLocation();
-    console.log(`location`, location)
+    const { toastDispatch } = useToast();
+    const videoId = video?._id;
 
     useEffect(() => {
         if (removeFromHistoryStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = removeFromHistoryResponse;
 
             playlistsDispatch({
@@ -72,13 +75,22 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                     playlist: playlistsState.historyData.history
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+               
+                videoId,
+                type: `danger`
+            })
         }
     }, [removeFromHistoryStatus, removeFromHistoryResponse, playlistsDispatch]);
 
     useEffect(() => {
         if (removeFromLikeStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = removeFromLikedResponse;
 
             playlistsDispatch({
@@ -87,7 +99,15 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                     video,
                     playlist: playlistsState.likedVideosData.likedVideos
                 },
-            });
+            }); showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+               
+                videoId,
+                type: `danger`
+            })
 
         }
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
@@ -96,7 +116,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { video },
+                    data: { message, video },
                 } = updateVideoResponse;
 
                 videosDispatch({
@@ -116,7 +136,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
     useEffect(() => {
         if (removeFromWatchLaterStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = removeFromWatchLaterResponse;
 
             playlistsDispatch({
@@ -126,6 +146,15 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                     playlist: playlistsState.watchLaterVideosData.watchLaterVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+               
+                videoId,
+                type: `danger`
+            })
         }
     }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
 
@@ -133,7 +162,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
     useEffect(() => {
         if (removeFromPlaylistStatus === `success`) {
             const playlist = playlistsState.customPlaylistsData.customPlaylists.find(playlist => playlist._id === playlistId);
-            const { data: { video } } = removeFromPlaylistResponse;
+            const { data: { message, video } } = removeFromPlaylistResponse;
             if (playlist) {
 
                 playlistsDispatch({
@@ -142,6 +171,15 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                         playlist: playlist,
                         video
                     }
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
+                 
+                    videoId,
+                    type: `danger`
                 })
             }
         }
@@ -173,11 +211,11 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                 <button className={`btn ${btnTrash}`} onClick={() => {
                                     switch (location.pathname) {
                                         case `/history`:
-                                        console.log(`removing`)    
-                                        executeRemoveFromHistory({
-                                            videoId: video._id,
-                                            playlistId: playlistsState.historyData.history._id
-                                        });
+                                            console.log(`removing`)
+                                            executeRemoveFromHistory({
+                                                videoId: video._id,
+                                                playlistId: playlistsState.historyData.history._id
+                                            });
                                             break;
 
                                         case `/liked`: executeRemoveFromLiked({

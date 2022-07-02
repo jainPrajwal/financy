@@ -1,4 +1,4 @@
-import { Avatar, Loader } from "kaali-ui";
+import { Avatar, Loader, useToast } from "kaali-ui";
 import { useEffect, useState } from "react";
 import { Video } from "../../constants/videos.types";
 import { useAsync } from "../../hooks/useAxios";
@@ -21,6 +21,8 @@ import { RiVipCrown2Fill } from "react-icons/ri";
 import { default as svp } from "../../pages/SingleVideoPage/SingleVideoPage.module.css";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { useLocation } from "react-router";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../ToastMessage/ToastMessage";
 
 
 
@@ -50,6 +52,8 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     const { userProfile } = useProfile();
     const navigate = useNavigate();
     const location = useLocation();
+    const { toastDispatch } = useToast();
+    
 
     const {
         videoContainer,
@@ -92,7 +96,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     useEffect(() => {
         if (likeStatus === `success`) {
             const {
-                data: { video },
+                data: { video, message },
             } = likeResponse;
 
             playlistsDispatch({
@@ -102,13 +106,22 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     playlist: playlistsState.likedVideosData.likedVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+              
+                videoId
+            })
+
         }
     }, [likeStatus, likeResponse, playlistsDispatch]);
 
     useEffect(() => {
         if (removeFromLikeStatus === `success`) {
             const {
-                data: { video },
+                data: { video, message },
             } = removeFromLikedResponse;
 
             playlistsDispatch({
@@ -118,6 +131,15 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     playlist: playlistsState.likedVideosData.likedVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+              
+                videoId,
+                type: `danger`
+            })
         }
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
 
@@ -125,7 +147,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     useEffect(() => {
         if (watchLaterStatus === `success`) {
             const {
-                data: { video },
+                data: { video, message },
             } = watchLaterResponse;
 
             playlistsDispatch({
@@ -135,6 +157,14 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     playlist: playlistsState.watchLaterVideosData.watchLaterVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+              
+                videoId
+            })
         }
     }, [watchLaterStatus, watchLaterResponse, playlistsDispatch]);
 
@@ -142,7 +172,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     useEffect(() => {
         if (removeFromWatchLaterStatus === `success`) {
             const {
-                data: { video },
+                data: { video, message },
             } = removeFromWatchLaterResponse;
 
             playlistsDispatch({
@@ -152,6 +182,15 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     playlist: playlistsState.watchLaterVideosData.watchLaterVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+              
+                videoId,
+                type: `danger`
+            })
         }
     }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
 
@@ -159,7 +198,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { video },
+                    data: { video, message },
                 } = updateVideoResponse;
 
                 videosDispatch({
@@ -433,7 +472,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         </div>
         </>
 
-    }
+    } 
 
 
 

@@ -1,4 +1,4 @@
-import { Checkbox ,Loader} from "kaali-ui";
+import { Checkbox, Loader, useToast } from "kaali-ui";
 import { useEffect, useState } from "react";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { Playlist } from "../../constants/playlists.types";
@@ -7,11 +7,15 @@ import { useAsync } from "../../hooks/useAxios";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
 import { addToPlaylistService } from "../../services/playlists/addToPlaylistService";
 import { checkIfVideoIsAlreadyPresentInSpecifiedPlaylist } from "../../utils/checkIfVideoIsAlreadyPresentInSpecifiedPlaylist";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../ToastMessage/ToastMessage";
 
 
 export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video: Video }) => {
     const [isChecked, setIsChecked] = useState<Boolean>(false);
     const { playlistsDispatch } = usePlaylists();
+    const { toastDispatch } = useToast();
+    const videoId = video._id;
 
     const { execute: executeRemoveFromPlaylist, status: removeFromPlaylistStatus, response: removeFromPlaylistResponse } = useAsync(removeFromPlaylistService, false, null);
 
@@ -20,7 +24,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
 
     useEffect(() => {
         if (removeFromPlaylistStatus === `success`) {
-            const { data: { video } } = removeFromPlaylistResponse;
+            const { data: { message, video } } = removeFromPlaylistResponse;
             playlistsDispatch({
                 type: `REMOVE_FROM_PLAYLIST`,
                 payload: {
@@ -28,19 +32,37 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
                     video
                 }
             })
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+               
+                videoId,
+                type: `danger`
+            })
         }
     }, [removeFromPlaylistStatus, playlistsDispatch, removeFromPlaylistResponse])
 
 
     useEffect(() => {
         if (addToPlaylistServiceStatus === `success`) {
-            const { data: { video } } = addToPlaylistServiceResponse
+            const { data: { message, video } } = addToPlaylistServiceResponse
             playlistsDispatch({
                 type: `ADD_TO_PLAYLIST`,
                 payload: {
                     playlist,
                     video
                 }
+            })
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId} />
+                ),
+              
+                videoId,
+
             })
         }
     }, [addToPlaylistServiceResponse, addToPlaylistServiceStatus, playlistsDispatch,])
@@ -49,7 +71,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
     const onChangeHandler = () => {
         setIsChecked(prevState => {
             if (prevState) {
-                
+
 
                 executeRemoveFromPlaylist({
                     videoId: video._id,
@@ -57,7 +79,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
                 })
 
             } else {
-                
+
 
                 executeAddToPlaylistService({
                     video,

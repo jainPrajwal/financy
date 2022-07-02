@@ -1,4 +1,4 @@
-import { Avatar, Loader } from "kaali-ui";
+import { Avatar, Loader, useToast } from "kaali-ui";
 
 import { useParams } from "react-router-dom"
 import { useVideos } from "../../hooks/useVideos";
@@ -30,6 +30,8 @@ import ReactPlayer from "react-player/youtube"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -92,7 +94,8 @@ export const SingleVideoPage = () => {
     const { playlistsState, playlistsDispatch } = usePlaylists();
 
     const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
-    const { authState } = useAuth()
+    const { authState } = useAuth();
+    const { toastDispatch } = useToast();
 
     const { execute: executeAddToLikeService, status: likeStatus, response: likeResponse } = useAsync(addToPlaylistService, false, null);
 
@@ -138,7 +141,7 @@ export const SingleVideoPage = () => {
         try {
             if (status === `success`) {
 
-                const { data: { video }, status, success } = response;
+                const { data: { message, video }, status, success } = response;
 
 
                 if (status === 201 && success) {
@@ -162,7 +165,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         if (likeStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = likeResponse;
 
             playlistsDispatch({
@@ -172,6 +175,15 @@ export const SingleVideoPage = () => {
                     playlist: playlistsState.likedVideosData.likedVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId || `default`} />
+                ),
+               
+                videoId: videoId || `default`,
+
+            })
 
         }
     }, [likeStatus, likeResponse, playlistsDispatch]);
@@ -179,7 +191,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         if (removeFromLikeStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = removeFromLikedResponse;
 
             playlistsDispatch({
@@ -189,6 +201,15 @@ export const SingleVideoPage = () => {
                     playlist: playlistsState.likedVideosData.likedVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId || `default`} />
+                ),
+               
+                videoId: videoId || `default`,
+                type: `danger`
+            })
 
         }
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
@@ -197,7 +218,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         if (watchLaterStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = watchLaterResponse;
 
             playlistsDispatch({
@@ -207,6 +228,15 @@ export const SingleVideoPage = () => {
                     playlist: playlistsState.watchLaterVideosData.watchLaterVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId || `default`} />
+                ),
+               
+                videoId: videoId || `default`,
+
+            })
         }
     }, [watchLaterStatus, watchLaterResponse, playlistsDispatch]);
 
@@ -214,7 +244,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         if (removeFromWatchLaterStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = removeFromWatchLaterResponse;
 
             playlistsDispatch({
@@ -224,13 +254,22 @@ export const SingleVideoPage = () => {
                     playlist: playlistsState.watchLaterVideosData.watchLaterVideos
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId || `default`} />
+                ),
+               
+                videoId: videoId || `default`,
+                type: `danger`
+            })
         }
     }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
 
     useEffect(() => {
         if (addToHistoryStatus === `success`) {
             const {
-                data: { video },
+                data: { message, video },
             } = addToHistoryResponse;
 
             playlistsDispatch({
@@ -240,6 +279,15 @@ export const SingleVideoPage = () => {
                     playlist: playlistsState.historyData.history
                 },
             });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={videoId || `default`} />
+                ),
+               
+                videoId: videoId || `default`,
+
+            })
 
         }
     }, [addToHistoryStatus, addToHistoryResponse, playlistsDispatch]);
@@ -249,7 +297,7 @@ export const SingleVideoPage = () => {
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { video }, status, success
+                    data: { message, video }, status, success
                 } = updateVideoResponse;
 
                 if (status === 201 && success) {
@@ -286,7 +334,7 @@ export const SingleVideoPage = () => {
                     currentPageNumber: videosState.currentPageNumber,
                 });
                 const {
-                    data: { videos },
+                    data: { message, videos },
                 } = response;
 
                 videosDispatch({
@@ -328,7 +376,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (saveNotesStatus === `success`) {
-                const { data: { note } } = saveNotesResponse;
+                const { data: { message, note } } = saveNotesResponse;
 
                 notesDispatch({
                     type: `ADD_NOTE`,
@@ -346,7 +394,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (getNotesStatus === `success`) {
-                const { data: { notes } } = getNotesResponse;
+                const { data: { message, notes } } = getNotesResponse;
                 if (notes) {
 
                     notesDispatch({
@@ -366,7 +414,7 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (editNotesStatus === `success`) {
-                const { data: { note } } = editNotesResponse;
+                const { data: { message, note } } = editNotesResponse;
 
                 notesDispatch({
                     type: `UPDATE_NOTE`,
@@ -439,7 +487,8 @@ export const SingleVideoPage = () => {
                                                         video: alreadyPresentInHistoryVideo,
                                                         playlist: playlistsState.historyData.history
                                                     }
-                                                })
+                                                });
+
 
                                             }
                                             executeAddHistoryService({
@@ -739,7 +788,7 @@ export const SingleVideoPage = () => {
                                         if (editNote.isEditNote) {
                                             executeEditNotesService({
                                                 noteId: editNote.noteId,
-                                                videoId,
+                                                videoId: videoId || `default`,
                                                 note: userDefinedNote
                                             })
 

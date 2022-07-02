@@ -18,6 +18,8 @@ import { CLEAR_ALL, FILTER_BY_CATEGORY, SORT_BY } from "../../constants/actions.
 import { BUSINESSCASESTUDIES, CRYPTO, GOLD, INVESTMENTSTRATEGIES, NFTS, SCAMS, STOCKMARKET } from "../../constants/videos.types";
 import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useProfile } from "../../hooks/useProfile";
+import { Navbar } from "../../components/Navbar/Navbar";
+import { SortBy } from "../../components/SortBy/SortBy";
 
 export const Explore = () => {
   const {
@@ -92,7 +94,7 @@ export const Explore = () => {
   if (videosState.sortBy) {
 
     switch (videosState.sortBy) {
-      case `mostliked`:
+      case `most liked`:
         sortedData = [...filteredData].sort((video1, video2) => {
           const totalLikes1 = video1.likes.male + video1.likes.female + video1.likes.others;
           const totalLikes2 = video2.likes.male + video2.likes.female + video2.likes.others;
@@ -101,7 +103,7 @@ export const Explore = () => {
 
         break;
 
-      case `mostviewed`:
+      case `most viewed`:
         sortedData = [...filteredData].sort((video1, video2) => {
           const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
           const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
@@ -109,12 +111,12 @@ export const Explore = () => {
         })
         break;
 
-      case `latestfirst`: sortedData = [...filteredData].sort((video1, video2) => {
+      case `latest first`: sortedData = [...filteredData].sort((video1, video2) => {
 
         return new Date(video2.createdAt).getMilliseconds() - new Date(video1.createdAt).getMilliseconds()
       })
         break;
-      case `oldestfirst`: sortedData = [...filteredData].sort((video1, video2) => {
+      case `oldest first`: sortedData = [...filteredData].sort((video1, video2) => {
 
         return new Date(video1.createdAt).getMilliseconds() - new Date(video2.createdAt).getMilliseconds()
       })
@@ -131,38 +133,9 @@ export const Explore = () => {
 
   return (
     <>
-      <header className={`${navbar} pr-lg`}>
-        <div
-          className={`${hamburgerMenu} text-white`}
-          role="button"
-          onClick={() => setSidebar(true)}
-        >
-          <MdMenu size={28} />
-        </div>
-        <div className={`${wrapperLogo}`}>
-          <img
-            src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
-            alt="logo"
-            width={`100%`}
-            height={`100%`}
-          />
-        </div>
-        <div className={`${wrapperSearch}`}>
-          <SearchBar
-            searchbar={searchbar}
-            setSearchbar={setSearchbar}
-          />
-        </div>
-        <div >
-          <div className={`${publisherAvatar}`}>
-            <Avatar
-              size={`sm`}
-              imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
-            />
-          </div>
-        </div>
-      </header>
+      <Navbar setSidebar={setSidebar} />
       <MobileSidebar status={{ sidebar, setSidebar }} />
+
       <div className={`${exploreContainer}`}>
         <div
           className={`${headerContainer} header header-secondary text-white`}
@@ -174,12 +147,15 @@ export const Explore = () => {
           const filterBy = (e.target as HTMLButtonElement).value;
           const appliedFilter = searchParams.get(`filterBy`);
 
+          console.log(`clearing`,searchParams.get(`filterBy`))
           if (filterBy === CLEAR_ALL.toLowerCase()) {
             searchParams.delete(`filterBy`);
+            searchParams.delete(`sortBy`);
             setSearchParams(searchParams)
           }
 
           else if (filterBy) {
+            console.log(`setting`)
             if (appliedFilter === filterBy) {
 
               searchParams.delete(`filterBy`);
@@ -194,6 +170,11 @@ export const Explore = () => {
 
 
         }}>
+
+          <button
+
+            className={`btn ${searchParams.get(`filterBy`) === null ? `${chipSolid}` : `${chip}`} p-lg`} value={CLEAR_ALL.toLowerCase()}>All Videos</button>
+
 
           <button className={`btn ${searchParams.get(`filterBy`) === STOCKMARKET.toLowerCase() ? `${chipSolid}` : `${chip}`} p-lg`} value={STOCKMARKET.toLowerCase()}>Stock Market</button>
 
@@ -216,12 +197,14 @@ export const Explore = () => {
           <button className={`btn ${searchParams.get(`filterBy`) === INVESTMENTSTRATEGIES.toLowerCase() ? `${chipSolid}` : `${chip}`} p-lg`} value={INVESTMENTSTRATEGIES.toLowerCase()}>Investment Strategies</button>
 
 
-          <button
 
-            className={`btn ${chip} ${chipClear} p-lg`} value={CLEAR_ALL.toLowerCase()}>Clear All</button>
         </div>
         <div className={``}>
           <Sidebar />
+          <div className="d-flex jc-end">
+
+            <SortBy />
+          </div>
           <div
             className={`${exploreWrapperContainer} gap-10 tube-text-secondary-color`}
             style={{ marginLeft: `0px` }}

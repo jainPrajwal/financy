@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -8,21 +7,23 @@ import { VideosProvider } from './contexts/videos-context';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { PlaylistsProvider } from './contexts/playlists-context';
 import { ProfileProvider } from './contexts/profile-context';
-
+import { ToastProvider } from "kaali-ui";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <Router>
-    <AuthProvider>
-      <ProfileProvider>
-      <VideosProvider>
-        <PlaylistsProvider>
-          <App />
-        </PlaylistsProvider>
-      </VideosProvider>
-      </ProfileProvider>
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <ProfileProvider>
+          <VideosProvider>
+            <PlaylistsProvider>
+              <App />
+            </PlaylistsProvider>
+          </VideosProvider>
+        </ProfileProvider>
+      </AuthProvider>
+    </ToastProvider>
   </Router>
 );
 

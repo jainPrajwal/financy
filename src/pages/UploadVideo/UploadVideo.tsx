@@ -1,3 +1,4 @@
+import { useToast } from "kaali-ui"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CATEGORIES, UserUploadedVideo, Video } from "../../constants/videos.types";
@@ -10,13 +11,16 @@ import { Navbar } from "../../components/Navbar/Navbar";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { default as uploadStyles } from "./UploadVideo.module.css";
+import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
+import { showToast } from "../../utils/showToast";
 
 export const UploadVideo = () => {
     const [videoDetails, setVideoDetails] = useState<UserUploadedVideo>({
         url: null,
         category: null,
     });
-    const [sidebar, setSidebar] = useState(false)
+    const [sidebar, setSidebar] = useState(false);
+    const { toastDispatch } = useToast();
 
     const { execute, status, response } = useAsync(uploadVideoService, false, null);
 
@@ -29,12 +33,21 @@ export const UploadVideo = () => {
     const { videosDispatch } = useVideos();
     useEffect(() => {
         if (status === `success`) {
-            const { data: { video } } = response;
+            const { data: { message, video } } = response;
             videosDispatch({
                 type: `UPLOAD_VIDEO`,
                 payload: {
                     video
                 }
+            });
+            showToast({
+                toastDispatch,
+                element: (
+                    <ToastMessage message={message} videoId={video._id} />
+                ),
+
+                videoId: video._id,
+
             })
         }
     }, [status, response, videosDispatch])
@@ -82,14 +95,16 @@ export const UploadVideo = () => {
 
                     }}>
                     <label htmlFor="url" className="text-white">Enter Youtube URL</label>
-                    <input type="text" placeholder="Enter URL of any youtube video"
+                    <input
+
+                        type="text" placeholder="Enter URL of any youtube video"
                         className={`p-lg m-sm ${inputStyle}`}
                         id={`url`}
                         onChange={(e) => setVideoDetails(prevState => ({ ...prevState, url: e.target.value }))} required autoFocus />
 
                     <label htmlFor="category" className="text-white">Category</label>
                     <select
-
+                        required
                         name="category" id="category" className={`${inputStyle} p-lg cursor-pointer`} onChange={(e) => setVideoDetails(prevState => ({ ...prevState, category: e.target.value }))}>
                         <option value="">Please select an option</option>
                         {
