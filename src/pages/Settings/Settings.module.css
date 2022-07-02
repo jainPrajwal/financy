@@ -1,258 +1,281 @@
 .relatedContainer {
-    background-color: #211e27;
-    flex-shrink: 3;
-    padding: 12px;
-    border-radius: 12px;
-    position: relative;
-    width: 100%;
-  }
-  .exploreContainer {
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    padding: 12px;
-    flex-direction: column;
-    margin-left: 100px;
-    overflow: hidden;
-  }
-  
-  .statsOverlay {
-    position: absolute;
-    background: #98a3c7c4;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    background-image: url("https://res.cloudinary.com/dmk11fqw8/image/upload/v1654521431/crown-svgrepo-com_kdnbrh.svg");
-    background-size: 380px;
-    background-repeat: no-repeat;
-    background-position: center;
-    top: 0;
-    left: 0;
-  }
-  .getPremiumWrapper {
-    position: absolute;
-    background: #98a3c7c4;
-    z-index: 1;
-    border-radius: 12px;
-    left: 10%;
-    top: 70%;
-    width: 380px;
-  }
-  .statsOverlay::after {
-    position: absolute;
-  
-    content: "Get Premium!!";
-    top: 50%;
-    left: 50%;
-    white-space: nowrap;
-    font-size: 2rem;
-    transform: translateX(10px, 10px);
-    transform: translate(-50%, 10px);
-    color: black;
-    font-weight: 600;
-  }
+  background-color: #211e27;
+  flex-shrink: 3;
+  padding: 12px;
+  border-radius: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.exploreContainer {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 12px;
+  flex-direction: column;
+  margin-left: 100px;
+  overflow: hidden;
+}
+
+.statsOverlay {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  background-image: url("https://res.cloudinary.com/dmk11fqw8/image/upload/v1654521431/crown-svgrepo-com_kdnbrh.svg");
+  background-size: 380px;
+  background-repeat: no-repeat;
+  background-position: center;
+  top: 0;
+  left: 0;
+}
+
+.getPremiumWrapper {
+  position: absolute;
+  background: #98a3c7c4;
+  z-index: 1;
+  border-radius: 12px;
+  left: 10%;
+  top: 70%;
+  width: 380px;
+}
+
+.statsOverlay::after {
+  position: absolute;
+
+  content: "Get Premium!!";
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  font-size: 2rem;
+  transform: translateX(10px, 10px);
+  transform: translate(-50%, 10px);
+  color: black;
+  font-weight: 600;
+}
+
+.headerContainer {
+  font-size: 3rem;
+  margin-top: 2rem;
+}
+
+.videoNumber {
+  position: absolute;
+  left: -27px;
+
+  color: #c1c0c582;
+  font-size: 2.8rem;
+  letter-spacing: px;
+}
+
+.videoThumbnailWrapper {
+  /* height: 100%; */
+  /* width: 320px; */
+  width: 100%;
+  width: 300px;
+  position: relative;
+}
+
+.videoContent {
+  padding: 1rem;
+}
+
+.videoMetrics {
+  padding-block: 1rem;
+
+  gap: 1rem;
+}
+
+.likeIconButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 0px;
+}
+
+
+.videoWrapperContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  width: 90%;
+  background-color: #211e27;
+  padding: 12px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.doughnutChartWrapper {
+  max-width: 280px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.videoThumbnailContainer {
+  width: fit-content;
+}
+
+.settingsWrapperContainer {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.videoDuration {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  background: black;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.chipsContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid var(--tube-theme-primary);
+  border-radius: 2rem;
+  background-color: transparent;
+  color: white;
+}
+
+.chip:focus {
+  background-color: var(--tube-theme-primary);
+}
+
+.chipClear {
+  position: absolute;
+  right: 10px;
+  top: -50px;
+  border: 1px solid var(--tube-theme-error);
+}
+
+.chipClear:focus {
+  background-color: var(--tube-theme-error);
+}
+
+.editProfileIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.editProfileButton {
+  background-color: transparent;
+  padding: 4px;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editProfileButton:focus {
+  color: white;
+  background-color: var(--tube-theme-primary);
+}
+
+@media (max-width: 1140px) {
   .headerContainer {
-    font-size: 3rem;
-    margin-top: 2rem;
-  }
-  
-  .videoNumber {
-    position: absolute;
-    left: -27px;
-  
-    color: #c1c0c582;
-    font-size: 2.8rem;
-    letter-spacing: px;
-  }
-  
-  .videoThumbnailWrapper {
-    /* height: 100%; */
-    /* width: 320px; */
-    width: 100%;
-    width: 300px;
-    position: relative;
-  }
-  
-  .videoContent {
-    padding: 1rem;
-  }
-  
-  .videoMetrics {
-    padding-block: 1rem;
-  
-    gap: 1rem;
-  }
-  
-  .likeIconButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 32px;
-    height: 32px;
-    background-color: white;
-    border-radius: 50%;
-    padding: 0px;
+    margin-top: 1rem;
+    margin-bottom: 0px;
   }
 
-  
-  .videoWrapperContainer {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-    width: 90%;
-    background-color: #211e27;
-    padding: 12px;
-    border-radius: 12px;
-    position: relative;
-  }
-  .doughnutChartWrapper {
-    max-width: 280px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-  .videoThumbnailContainer {
-    width: fit-content;
-  }
-  .settingsWrapperContainer {
-    display: flex;
-    align-items: flex-start;
+  .videoThumbnailWrapper {
     width: 100%;
-  
-    max-width: 1920px;
-    margin: 0 auto;
   }
-  
-  .videoDuration {
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
-    background: black;
+
+  .videoWrapperContainer {
+    width: 95%;
+  }
+
+  .videoContainer {
+    flex-wrap: wrap;
     padding: 4px;
-    border-radius: 4px;
-    font-size: 0.8rem;
   }
-  
-  .chipsContainer {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    gap: 24px;
+
+  .videoThumbnailContainer {
+    padding: 4px;
+    width: 100%;
+  }
+
+  .videoContent {
+    padding: 8px;
+    margin-top: 4px;
+  }
+
+  .settingsWrapperContainer {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 860px) {
+  .doughnutWrapper {
     flex-wrap: wrap;
   }
-  
-  .chip {
-    border: 1px solid var(--tube-theme-primary);
-    border-radius: 2rem;
-    background-color: transparent;
-    color: white;
+
+  .statsOverlay {
+    background-size: 280px;
   }
-  
-  .chip:focus {
-    background-color: var(--tube-theme-primary);
+
+  .settingsWrapperContainer {
+    flex-direction: column-reverse;
+    gap: 10px;
   }
-  
-  .chipClear {
-    position: absolute;
-    right: 10px;
-    top: -50px;
-    border: 1px solid var(--tube-theme-error);
+
+  .videoWrapperContainer {
+    width: 100%;
   }
-  .chipClear:focus {
-    background-color: var(--tube-theme-error);
+
+  .exploreContainer {
+    margin-left: 0;
   }
-  
-  .editProfileIcon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+
+  .headerContainer {
+    margin-top: 1rem;
+    margin-bottom: 0px;
+    font-size: 2rem;
   }
-  .editProfileButton {
-    background-color: transparent;
+
+  .chipsContainer {
+    gap: 12px;
+  }
+
+  .videoContainer {
+    flex-wrap: wrap;
     padding: 4px;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-  .editProfileButton:focus {
-    color: white;
-    background-color: var(--tube-theme-primary);
+
+  .videoThumbnailContainer {
+    padding: 4px;
   }
-  @media (max-width: 1140px) {
-    .headerContainer {
-      margin-top: 1rem;
-      margin-bottom: 0px;
-    }
-    .videoThumbnailWrapper {
-      width: 100%;
-    }
-    .videoWrapperContainer {
-      width: 95%;
-    }
-    .videoContainer {
-      flex-wrap: wrap;
-      padding: 4px;
-    }
-  
-    .videoThumbnailContainer {
-      padding: 4px;
-      width: 100%;
-    }
-  
-    .videoContent {
-      padding: 8px;
-      margin-top: 4px;
-    }
-    .settingsWrapperContainer {
-      gap: 10px;
-    }
+
+  .videoContent {
+    padding: 8px;
+    margin-top: 4px;
   }
-  @media (max-width: 860px) {
-    .doughnutWrapper {
-      flex-wrap: wrap;
-    }
-    .statsOverlay {
-      background-size: 280px;
-    }
-    .settingsWrapperContainer {
-      flex-direction: column-reverse;
-      gap: 10px;
-    }
-    .videoWrapperContainer {
-      width: 100%;
-    }
-    .exploreContainer {
-      margin-left: 0;
-    }
-    .headerContainer {
-      margin-top: 1rem;
-      margin-bottom: 0px;
-      font-size: 2rem;
-    }
-    .chipsContainer {
-      gap: 12px;
-    }
-    .videoContainer {
-      flex-wrap: wrap;
-      padding: 4px;
-    }
-  
-    .videoThumbnailContainer {
-      padding: 4px;
-    }
-  
-    .videoContent {
-      padding: 8px;
-      margin-top: 4px;
-    }
-  
-    .videoNumber {
-      display: none;
-    }
-    .exploreContainer {
-      margin-bottom: 5rem;
-    }
+
+  .videoNumber {
+    display: none;
   }
-  
+
+  .exploreContainer {
+    margin-bottom: 5rem;
+  }
+}
