@@ -1,27 +1,30 @@
 import { useNavigate } from "react-router";
 
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useVideos } from "../../hooks/useVideos";
 import { getSearchedData } from "../../utils/getSearchedData";
 import { default as common } from "../../common/common.module.css";
 import { default as searchStyles } from "./SearchBar.module.css";
+import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
-const SearchBar = ({ searchbar, setSearchbar }) => {
+const SearchBar = ({ searchbar, setSearchbar }: { searchbar: boolean, setSearchbar: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { videosState, videosDispatch } = useVideos();
   const [localSearchQuery, setLocalSearchQuery] = useState("");
-  const [timerId, setTimerId] = useState(null);
+  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
   const dataWithSearchedResults = getSearchedData(
     videosState.videos,
     videosState.searchQuery
   );
-
+  const SearchBarRef = useRef(null);
   let navigate = useNavigate();
   const { autocomplete, searchBox, autocompleteItems, autocompleteItem } =
     searchStyles;
   const { inputStyle } = common;
+console.log(`search`, searchbar)
+  useOnClickOutside(SearchBarRef, setSearchbar);
   return (
     <>
-      <div className={`${autocomplete}`}>
+      <div ref={SearchBarRef} className={`${autocomplete}`}>
         <input
           type="text"
           className={`${searchBox} ${inputStyle}`}
@@ -29,10 +32,13 @@ const SearchBar = ({ searchbar, setSearchbar }) => {
           placeholder="Search by name"
           onKeyUp={(e) => {
             if (e.key === `ArrowDown`) {
-              [...e.target.nextElementSibling.children][0]?.focus();
+              const target = e.target as HTMLInputElement;
+              const nextElementSibling = target.nextElementSibling;
+              target && nextElementSibling && ([...nextElementSibling.children][0] as HTMLInputElement)?.focus();
             }
           }}
           onChange={(event) => {
+            setSearchbar(false)
             setLocalSearchQuery(() => event.target.value);
             if (timerId) {
               clearTimeout(timerId);
@@ -50,7 +56,7 @@ const SearchBar = ({ searchbar, setSearchbar }) => {
             );
           }}
         />
-        <div className={`${autocompleteItems}`}>
+        { !searchbar && <div className={`${autocompleteItems}`}>
           {localSearchQuery.length > 0 &&
             dataWithSearchedResults.map((video, index) => {
               let lowerCaseItemName = video.title.toLowerCase();
@@ -63,21 +69,24 @@ const SearchBar = ({ searchbar, setSearchbar }) => {
                     navigate(`/videos/${video._id}`);
                   }}
                   onKeyUp={(e) => {
+                    const target = e.target as HTMLInputElement;
                     if (index >= 0 && index < dataWithSearchedResults.length) {
                       if (e?.key === `Enter`) navigate(`/videos/${video._id}`);
                       else if (e.key === `ArrowDown`) {
-                        e.target?.nextElementSibling?.focus();
+                        ((target)?.nextElementSibling as HTMLInputElement)?.focus();
                       } else if (e?.key === `ArrowUp`) {
-                        if (e.target?.previousElementSibling)
-                          e.target?.previousElementSibling?.focus();
+                        if ((e.target as HTMLInputElement)?.previousElementSibling)
+                          ((target)?.previousElementSibling as HTMLInputElement)?.focus();
                         else {
-                          e.target.parentNode.previousElementSibling.focus();
+                          const parentNode = target.parentNode;
+                          const previousElementSibling = parentNode?.previousSibling;
+                          parentNode && previousElementSibling && (previousElementSibling as HTMLInputElement).focus();
                         }
                       }
                     }
                   }}
                   key={video._id}
-                  tabIndex={parseInt(index / 10, 10)}
+                  tabIndex={Number(index / 10)}
                 >
                   {`${lowerCaseItemName}`.slice(
                     0,
@@ -94,7 +103,7 @@ const SearchBar = ({ searchbar, setSearchbar }) => {
                 </div>
               );
             })}
-        </div>
+        </div>}
       </div>
     </>
   );
