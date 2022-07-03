@@ -203,7 +203,7 @@ export const Explore = () => {
         </div>
         <div className={``}>
           <Sidebar />
-          <div className="d-flex jc-end">
+          <div className="d-flex jc-end my-md">
 
             <SortBy />
           </div>

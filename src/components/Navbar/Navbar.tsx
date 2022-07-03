@@ -14,21 +14,22 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
         publisherAvatar,
         wrapperLogo,
         hamburgerMenu,
-        wrapperSearch
+        wrapperSearch,
+        financyLogo
     } = common;
     const { logoutContainer, positionRelative, showElement } = navbarStyles;
     const { userProfile } = useProfile();
     const [popOver, setShowPopOver] = useState(false);
     const { logout, authState } = useAuth();
     const [searchbar, setSearchbar] = useState(false);
-    console.log(`searchbar`, searchbar)
+    
     return <header className={`${navbar} pr-lg`}>
         <div
             className={`${hamburgerMenu} text-white`}
             role="button"
             onClick={() => setSidebar(true)}
         >
-            <MdMenu size={28} />
+            <MdMenu size={32} />
         </div>
         <div className={`${wrapperLogo}`}>
             <img
@@ -36,6 +37,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 alt="logo"
                 width={`100%`}
                 height={`100%`}
+                className={`${financyLogo}`}
             />
         </div>
         <div className={`${wrapperSearch}`}>
@@ -60,8 +62,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         const token = localStorage.getItem(`token`);
                         console.log({ token });
-                        // localStorage.removeItem(`token`);
-                        // window.localStorage.removeItem(`token`);
+                      
                         logout();
 
                     }}>Logout</div>

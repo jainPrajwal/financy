@@ -21,10 +21,10 @@ import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 
 export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
   const sidebarRef = useRef<null | HTMLElement>(null);
-  const {userProfile} = useProfile();
+  const { userProfile } = useProfile();
 
   useEffect(() => {
- 
+
     const handleClickOutside = (e: any) => {
       if (
         sidebarRef &&
@@ -49,39 +49,37 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
     getPremimumMobileWrapper,
     btnGetPremium,
     sideNavItemsWrapper,
-    sidebarStyle
+    sidebarStyle,
   } = common;
   return (
     <>
       <div
-        className={`${sidebarStyle} modal-bg  ${
-          sidebar === true ? "modal-bg-active" : ""
-        }`}
+        className={`${sidebarStyle} modal-bg  ${sidebar === true ? "modal-bg-active" : ""
+          }`}
       >
         <nav
-          className={`nav-menu ${
-            sidebar ? "active" : ""
-          } f-direction-col jc-center ai-center`}
+          className={`nav-menu ${sidebar ? "active" : ""
+            } f-direction-col jc-center ai-center`}
           ref={sidebarRef}
         >
           <div className={`${sideNav} d-flex f-direction-col ai-center`}>
             <div
-              className={`${userProfileWrapper} d-flex ai-center p-lg mb-lg w-100`}
+              className={`${userProfileWrapper} d-flex ai-center  mb-lg w-100`}
             >
-              <div className={`${"publisherAvatar"}`}>
-                <Avatar
-                  size={`md`}
-                 imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
+              <div style={{ width: `36px`, height: `36px` }}>
+                <img
+                  src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
+                  alt="logo"
+                  width={`100%`}
+                  height={`100%`}
+
                 />
               </div>
-              <div className={`${"publisherName"}  pl-lg `}>
-                <div className="d-flex ai-center">
-                  <div className="text-bold ">Prasad Lendwe</div>
-                  <span style={{ color: `white` }}>
-                    <MdVerifiedUser size={20} />
-                  </span>
-                </div>
-              </div>
+
+
+              <div className="header-secondary ">Financy</div>
+
+
             </div>
             <div
               className={`${sideNavItemsWrapper} d-flex f-direction-col gap-10 mt-lg`}
