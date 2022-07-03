@@ -34,6 +34,7 @@ import { showToast } from "../../utils/showToast";
 import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
+import { copyVideoLink } from "../../utils/copyVideoLink";
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -802,8 +803,15 @@ export const SingleVideoPage = () => {
 
 
                                     <button
-                                        onClick={() => {
-                                            // window.navigator.clipboard(``)
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            copyVideoLink({ text: `https://www.youtube.com/watch?v=${video._id}` });
+                                            showToast({
+                                                toastDispatch,
+                                                element: <ToastMessage message="Copied Successfully" videoId={`${video._id}`} />,
+                                                videoId: video._id,
+                                                type: `success`
+                                            })
                                         }}
                                         className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                     >
