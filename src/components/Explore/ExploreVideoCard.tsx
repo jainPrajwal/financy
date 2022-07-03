@@ -57,7 +57,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     const navigate = useNavigate();
     const location = useLocation();
     const { toastDispatch } = useToast();
-    
+
 
 
     const {
@@ -102,7 +102,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (likeStatus === `success`) {
                 const {
-                   status, data: { video, message,  success },
+                    status, data: { video, message, success },
                 } = likeResponse;
 
 
@@ -151,7 +151,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (removeFromLikeStatus === `success`) {
                 const {
-                   status, data: { video, message,  success },
+                    status, data: { video, message, success },
                 } = removeFromLikedResponse;
 
 
@@ -199,7 +199,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (watchLaterStatus === `success`) {
                 const {
-                   status, data: { video, message,  success },
+                    status, data: { video, message, success },
                 } = watchLaterResponse;
 
 
@@ -248,7 +248,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (removeFromWatchLaterStatus === `success`) {
                 const {
-                   status, data: { video, message,  success },
+                    status, data: { video, message, success },
                 } = removeFromWatchLaterResponse;
 
 
@@ -295,7 +295,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                   status, data: { video, message,  success },
+                    status, data: { video, message, success },
                 } = updateVideoResponse;
                 if (status === 201 && success) {
 
@@ -326,7 +326,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-        console.log(`isVideoAlreadyPresentInLikedPlaylist `,isVideoAlreadyPresentInLikedPlaylist)
+    console.log(`isVideoAlreadyPresentInLikedPlaylist `, isVideoAlreadyPresentInLikedPlaylist)
     const path = location.pathname;
 
     if (index === videosState.videos.length - 1) {
@@ -356,7 +356,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                 <div
                     className={`${videoContent}  d-flex f-direction-col jc-space-between`}
                 >
-                    <div className={`${videoHeader} text-white text-bold fs-3`}>
+                    <div className={`${videoHeader} text-white fs-3`}>
                         {video.title}
                     </div>
                     <div
@@ -391,7 +391,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     style={{ color: `gold` }}
                                     className="pl-sm"
                                 >
-                                    <RiVipCrown2Fill size={20} />
+                                    {userProfile?.isAPremiumMember && <RiVipCrown2Fill size={20} />}
                                 </span>
                             </div>
                         </div>
@@ -639,7 +639,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                         style={{ color: `gold` }}
                                         className="pl-sm"
                                     >
-                                        <RiVipCrown2Fill size={20} />
+                                        {userProfile?.isAPremiumMember && <RiVipCrown2Fill size={20} />}
                                     </span>
                                 </div>
                             </div>
