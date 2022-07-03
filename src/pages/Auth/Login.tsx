@@ -1,4 +1,4 @@
-import { Tooltip } from "kaali-ui";
+import { Tooltip, Loader } from "kaali-ui";
 import { useAuth } from "../../hooks/useAuth";
 
 
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { UserLoginCredentials } from "../../constants/auth.types";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 
 
 const Login = () => {
@@ -54,7 +55,9 @@ const Login = () => {
     }
   });
 
-  const { loginUserWithCredentials } = useAuth();
+  const { loginUserWithCredentials, status } = useAuth();
+
+
   const LoginHandler = async () => { };
 
   return (
@@ -68,7 +71,7 @@ const Login = () => {
         >
           Start Your Investment Journey Now!!
         </div>
-        <form
+        {status === `idle` || status === `success`? <form
           className={`${signinForm}`}
           onSubmit={(e) => {
             e.preventDefault();
@@ -240,7 +243,13 @@ const Login = () => {
             </div>
             <div className="p-md">
               <button
-                onClick={async () => { }}
+                onClick={async () => {
+
+                  loginUserWithCredentials({
+                    email: `elon@musk.com`,
+                    password: `12345`
+                  });
+                }}
                 name="loginAsGest"
                 className="btn btn-danger w-100"
                 style={{ paddingInline: 0, margin: 0 }}
@@ -249,14 +258,18 @@ const Login = () => {
               </button>
             </div>
             <div className="p-sm text-center">
+                  Don't have an Account with us? 
               <Link to="/signup">
-                <span className={`text-white`}>
-                  Don't have an Account with us? Click here to Sign Up
+                <span className={`text-white `}>
+                  <span className="border-bottom-sm"> Click here to Sign up</span>
                 </span>
               </Link>
             </div>
           </div>
-        </form>
+        </form> :
+          status === `loading` && <FlexContainer>
+            <Loader /> </FlexContainer>}
+
       </div>
     </>
   );

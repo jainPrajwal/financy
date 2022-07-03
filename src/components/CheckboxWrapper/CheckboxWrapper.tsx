@@ -23,29 +23,39 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
 
 
     useEffect(() => {
-        if (removeFromPlaylistStatus === `success`) {
-            const { data: { message, video } } = removeFromPlaylistResponse;
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    playlist,
-                    video
-                }
-            })
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId} />
-                ),
-               
-                videoId,
-                type: `danger`
-            })
+        try {
+            if (removeFromPlaylistStatus === `success`) {
+                const { data: { message, video } } = removeFromPlaylistResponse;
+                playlistsDispatch({
+                    type: `REMOVE_FROM_PLAYLIST`,
+                    payload: {
+                        playlist,
+                        video
+                    }
+                })
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
+    
+                    videoId,
+                    type: `danger`
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+      
     }, [removeFromPlaylistStatus, playlistsDispatch, removeFromPlaylistResponse])
 
 
     useEffect(() => {
+        try {
+
+        } catch (error) {
+            console.error(`error `, error)
+        }
         if (addToPlaylistServiceStatus === `success`) {
             const { data: { message, video } } = addToPlaylistServiceResponse
             playlistsDispatch({
@@ -60,7 +70,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
                 element: (
                     <ToastMessage message={message} videoId={videoId} />
                 ),
-              
+
                 videoId,
 
             })

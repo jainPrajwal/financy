@@ -13,6 +13,7 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { default as uploadStyles } from "./UploadVideo.module.css";
 import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { showToast } from "../../utils/showToast";
+import { YOUTUBE_REPL_API } from "../../constants/api";
 
 export const UploadVideo = () => {
     const [videoDetails, setVideoDetails] = useState<UserUploadedVideo>({
@@ -32,24 +33,29 @@ export const UploadVideo = () => {
     } = uploadStyles;
     const { videosDispatch } = useVideos();
     useEffect(() => {
-        if (status === `success`) {
-            const { data: { message, video } } = response;
-            videosDispatch({
-                type: `UPLOAD_VIDEO`,
-                payload: {
-                    video
-                }
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={video._id} />
-                ),
+        try {
+            if (status === `success`) {
+                const { data: { message, video } } = response;
+                videosDispatch({
+                    type: `UPLOAD_VIDEO`,
+                    payload: {
+                        video
+                    }
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={video._id} />
+                    ),
 
-                videoId: video._id,
+                    videoId: video._id,
 
-            })
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [status, response, videosDispatch])
 
     return <>
@@ -74,7 +80,7 @@ export const UploadVideo = () => {
                         e.preventDefault();
                         const url = videoDetails.url;
                         const videoId = url?.split(`=`)[1];
-                        const response = await axios.get(`https://getYoutubeVideoDetails.prajwaljain.repl.co/videos/${videoId}/${videoDetails.category}`);
+                        const response = await axios.get(`${YOUTUBE_REPL_API}/videos/${videoId}/${videoDetails.category}`);
 
                         const { data: { video } } = response;
                         let videoToBeUploaded: Video = video[0];

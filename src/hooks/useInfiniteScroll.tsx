@@ -22,41 +22,46 @@ export const useInfiniteScroll = ({
   );
 
   useEffect(() => {
-    (async () => {
-      try {
-        videosDispatch({
-          type: `SET_LOADING`,
-          payload: {
-            loading: `loading`,
-          },
-        });
-        const response = await getAllVideos({
-          currentPageNumber: videosState.currentPageNumber,
-        });
-        const {
-          data: { videos },
-        } = response;
-        videosDispatch({
-          type: `SET_LOADING`,
-          payload: {
-            loading: `success`,
-          },
-        });
-        videosDispatch({
-          type: `LOAD_VIDEOS`,
-          payload: {
-            videos: videos,
-          },
-        });
-      } catch (error) {
-        videosDispatch({
-          type: `SET_LOADING`,
-          payload: {
-            loading: `error`,
-          },
-        });
-      }
-    })();
+    try {
+      (async () => {
+        try {
+          videosDispatch({
+            type: `SET_LOADING`,
+            payload: {
+              loading: `loading`,
+            },
+          });
+          const response = await getAllVideos({
+            currentPageNumber: videosState.currentPageNumber,
+          });
+          const {
+            data: { videos },
+          } = response;
+          videosDispatch({
+            type: `SET_LOADING`,
+            payload: {
+              loading: `success`,
+            },
+          });
+          videosDispatch({
+            type: `LOAD_VIDEOS`,
+            payload: {
+              videos: videos,
+            },
+          });
+        } catch (error) {
+          videosDispatch({
+            type: `SET_LOADING`,
+            payload: {
+              loading: `error`,
+            },
+          });
+        }
+      })();
+    } catch (error) {
+      console.error(`error `, error)
+    }
+
   }, [videosState.currentPageNumber, videosDispatch]);
 
   useEffect(() => {

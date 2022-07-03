@@ -1,9 +1,11 @@
 import { Avatar } from "kaali-ui"
 import React, { useState } from "react";
-import { MdMenu } from "react-icons/md";
+import { MdArrowDropDown, MdMenu } from "react-icons/md";
 import { default as common } from "../../common/common.module.css";
+import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
+import { useAuth } from "../../hooks/useAuth";
 import { useProfile } from "../../hooks/useProfile";
-
+import { default as navbarStyles } from "./Navbar.module.css"
 export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const {
@@ -13,7 +15,11 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
         hamburgerMenu,
 
     } = common;
+    const { logoutContainer, positionRelative, showElement } = navbarStyles;
     const { userProfile } = useProfile();
+    const [popOver, setShowPopOver] = useState(false);
+    const { logout, authState } = useAuth();
+
     return <header className={`${navbar} pr-lg`}>
         <div
             className={`${hamburgerMenu} text-white`}
@@ -30,13 +36,36 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 height={`100%`}
             />
         </div>
-        <div className="ml-auto">
-            <div className={`${publisherAvatar}`}>
+
+        {authState.token && <div className={`ml-auto d-flex ai-center `}>
+
+            <div className={`${publisherAvatar} ${positionRelative}`} onMouseOver={() => {
+                setShowPopOver(true)
+            }} onMouseOut={() => {
+                setShowPopOver(false)
+            }}>
                 <Avatar
                     size={`sm`}
-                    imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                    imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                 />
+                <div className={`${logoutContainer} ${popOver ? `${showElement}` : ``}`}>
+                    <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
+                        const token = localStorage.getItem(`token`);
+                        console.log({ token });
+                        // localStorage.removeItem(`token`);
+                        // window.localStorage.removeItem(`token`);
+                        logout();
+
+                    }}>Logout</div>
+                </div>
             </div>
-        </div>
+
+            <div>
+                <MdArrowDropDown color="#fff" size={24} /></div>
+
+        </div>}
+
+
+
     </header>
 }

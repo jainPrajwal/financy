@@ -11,7 +11,7 @@ import { ToastMessage } from "../components/ToastMessage/ToastMessage";
 import { AuthState, signupUserCredentials, UserLoginCredentials } from "../constants/auth.types";
 import { loading, ProviderProps } from "../constants/videos.types";
 import { useAsync } from "../hooks/useAxios";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+
 import { AuthReducer } from "../reducers/AuthReducer";
 import {
   loginService,
@@ -28,10 +28,12 @@ export const AuthContext = createContext<{
   ) => void;
   signUpUserWithCredentials: (userSignUpCredentials: signupUserCredentials) => void;
   status: loading;
+  logout: () => void
 }>({
   authState: { loggedInUser: null, token: null },
   loginUserWithCredentials: (userLoginCredentials: UserLoginCredentials) => { },
   signUpUserWithCredentials: (userSignUpCredentials: signupUserCredentials) => { },
+  logout: () => { },
   status: `idle`,
 });
 
@@ -52,112 +54,145 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const { execute, status, response } = useAsync(loginService, false, null);
   const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
 
-  const [localStorageItem, setLocalStorageItem] = useLocalStorage<AuthState>(
-    `token`,
-    {
-      loggedInUser: null,
-      token: null,
-    }
-  );
+ 
 
-  const logout = useCallback(() => {
-    localStorage.clear();
+  const logout = () => {
+    localStorage.removeItem(`token`)
+
     authDispatch({
       type: `LOGOUT`,
     });
-  }, []);
+    navigate(`/login`);
+    showToast({
+      toastDispatch,
+      element: (
+        <ToastMessage message={`Logged Out! See you soon..😿`} videoId={authState.token || `default`} />
+      ),
+
+      videoId: authState.token || `default`,
+
+    })
+  }
+
 
   useEffect(() => {
-
-    if (localStorageItem.token) {
-      authDispatch({
-        type: `LOGIN_USER`,
-        payload: localStorageItem,
-      });
-      (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
-    } else {
-      if (status === `success`) {
-        const {
-          data: { message, token },
-        } = response;
-        const authState = {
-          loggedInUser: email,
-          token,
-        };
-
+    try {
+      const localItem = localStorage.getItem(`token`);
+      const localStorageItem = localItem && JSON.parse(localItem);
+      if (localStorageItem && localStorageItem?.token) {
+        console.log(`yahase hona to nai chaiye `, localStorageItem)
         authDispatch({
           type: `LOGIN_USER`,
-          payload: authState,
+          payload: localStorageItem,
         });
-        showToast({
-          toastDispatch,
-          element: (
-            <ToastMessage message={message} videoId={token} />
-          ),
-         
-          videoId: token,
+        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+      } else {
+        if (status === `success`) {
+          const {
+            data: { message, token },
+          } = response;
+          const authState = {
+            loggedInUser: email,
+            token,
+          };
+          console.log(`yaaha se`)
+          authDispatch({
+            type: `LOGIN_USER`,
+            payload: authState,
+          });
 
-        })
-        setupAuthHeaderForServiceCalls(authState.token);
-        setLocalStorageItem(authState);
-        console.log(`state`, state);
-        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
+          localStorage.setItem(`token`, JSON.stringify(authState))
+          showToast({
+            toastDispatch,
+            element: (
+              <ToastMessage message={message} videoId={token} />
+            ),
+
+            videoId: token,
+
+
+          })
+          setupAuthHeaderForServiceCalls(authState.token);
+
+          console.log(`state`, state);
+
+          (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+        }
       }
+    } catch (error) {
+      console.error(`error `, error)
     }
+
+
 
   }, [status]);
 
   useEffect(() => {
-    if (localStorageItem.token) {
-      authDispatch({
-        type: `LOGIN_USER`,
-        payload: localStorageItem,
-      });
-      (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
-    } else {
-      if (signupStatus === `success`) {
-        const {
-          data: { message, token, user },
-        } = signupResponse;
-        const authState = {
-          loggedInUser: user?.email,
-          token,
-        };
-
+    try {
+      const localItem = localStorage.getItem(`token`);
+      const localStorageItem = localItem && JSON.parse(localItem);
+      if (localStorageItem && localStorageItem.token) {
         authDispatch({
           type: `LOGIN_USER`,
-          payload: authState,
+          payload: localStorageItem,
         });
-        setupAuthHeaderForServiceCalls(authState.token);
-        setLocalStorageItem(authState);
+        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+      } else {
+        if (signupStatus === `success`) {
+          const {
+            data: { message, token, user },
+          } = signupResponse;
+          const authState = {
+            loggedInUser: user?.email,
+            token,
+          };
 
-        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
+          authDispatch({
+            type: `LOGIN_USER`,
+            payload: authState,
+          });
+
+          localStorage.setItem(`token`, JSON.stringify(authState))
+          setupAuthHeaderForServiceCalls(authState.token);
+
+
+          (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
+        }
       }
+    } catch (error) {
+      console.error(`error `, error)
     }
+
 
   }, [signupStatus]);
 
   useEffect(() => {
-    if (localStorageItem.token) {
+    try {
+      const localItem = localStorage.getItem(`token`);
+      const localStorageItem = localItem && JSON.parse(localItem);
+      if (localStorageItem && localStorageItem.token) {
 
-      setupAuthHeaderForServiceCalls(localStorageItem.token);
-    } else if (authState.token) {
+        setupAuthHeaderForServiceCalls(localStorageItem.token);
+      } else if (authState.token) {
 
 
-      setupAuthHeaderForServiceCalls(authState.token);
+        setupAuthHeaderForServiceCalls(authState.token);
+      }
+    } catch (error) {
+      console.error(`error `, error)
     }
-  }, [authState.token, localStorageItem]);
 
-  const loginUserWithCredentials = useCallback(
+  }, [authState.token]);
+
+  const loginUserWithCredentials =
     (userLoginCredentials: UserLoginCredentials) => {
 
       setEmail(userLoginCredentials.email);
 
 
       execute(userLoginCredentials);
-    },
-    [execute]
-  );
+    }
+
 
   const signUpUserWithCredentials = useCallback((userSignUpCredentials: signupUserCredentials) => {
     console.log(`user`, userSignUpCredentials)
@@ -168,7 +203,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ authState, loginUserWithCredentials, status, signUpUserWithCredentials }}
+      value={{ authState, loginUserWithCredentials, status, signUpUserWithCredentials, logout }}
     >
       {children}
     </AuthContext.Provider>

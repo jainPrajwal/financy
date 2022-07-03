@@ -1,0 +1,25 @@
+.logoutContainer {
+    position: absolute;
+    top: 36px;
+    right: -20px;
+    height: auto;
+    background-color: #211E27;
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+    transform: opacity 0.9s ease;
+}
+
+.positionRelative {
+    position: relative;
+}
+
+.showElement {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hideElement {
+    visibility: hidden;
+    opacity: 0;
+}

@@ -22,7 +22,7 @@ const SortBy = () => {
             <div className={`cursor-pointer w-100`}>
                 sort By :
                 <span className="text-primary ml-lg">
-                    {searchParams.get(`sortBy`)}
+                    {searchParams.get(`sortBy`) || `recommended`}
                 </span>
             </div>
 

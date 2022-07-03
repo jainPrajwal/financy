@@ -8,7 +8,6 @@ import { useAsync } from "../../hooks/useAxios";
 import { checkIfVideoIsAlreadyPresentInSpecifiedPlaylist } from "../../utils/checkIfVideoIsAlreadyPresentInSpecifiedPlaylist";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
 import { addToPlaylistService } from "../../services/playlists/addToPlaylistService";
-import { clearHistoryService } from "../../services/playlists/clearHistoryService";
 import { getSingeVideoPageService } from "../../services/videos/getSingleVideoPageService";
 import { AddToPlaylistModal } from "../../components/PlaylistModal/AddToPlaylistModal";
 import { updateVideoService } from "../../services/videos/updateVideoService";
@@ -32,6 +31,8 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { showToast } from "../../utils/showToast";
 import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
+import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
+import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -128,13 +129,18 @@ export const SingleVideoPage = () => {
     const video = videosState?.videos?.find(video => video._id === videoId);
 
     useEffect(() => {
-        const video = videosState.videos.find(video => video._id === videoId)
-        if (!video) {
+        try {
+            const video = videosState.videos.find(video => video._id === videoId)
+            if (!video) {
 
-            executeGetSingeVideoPageService({
-                videoId
-            })
+                executeGetSingeVideoPageService({
+                    videoId
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [videoId, executeGetSingeVideoPageService, videosState.videos]);
 
     useEffect(() => {
@@ -163,133 +169,158 @@ export const SingleVideoPage = () => {
 
 
     useEffect(() => {
-        if (likeStatus === `success`) {
-            const {
-                data: { message, video },
-            } = likeResponse;
 
-            playlistsDispatch({
-                type: `ADD_TO_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.likedVideosData.likedVideos
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId || `default`} />
-                ),
-               
-                videoId: videoId || `default`,
+        try {
+            if (likeStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = likeResponse;
 
-            })
+                playlistsDispatch({
+                    type: `ADD_TO_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.likedVideosData.likedVideos
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId || `default`} />
+                    ),
 
+                    videoId: videoId || `default`,
+
+                })
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
     }, [likeStatus, likeResponse, playlistsDispatch]);
 
     useEffect(() => {
-        if (removeFromLikeStatus === `success`) {
-            const {
-                data: { message, video },
-            } = removeFromLikedResponse;
+        try {
+            if (removeFromLikeStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = removeFromLikedResponse;
 
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.likedVideosData.likedVideos
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId || `default`} />
-                ),
-               
-                videoId: videoId || `default`,
-                type: `danger`
-            })
+                playlistsDispatch({
+                    type: `REMOVE_FROM_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.likedVideosData.likedVideos
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId || `default`} />
+                    ),
 
+                    videoId: videoId || `default`,
+                    type: `danger`
+                })
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
 
 
     useEffect(() => {
-        if (watchLaterStatus === `success`) {
-            const {
-                data: { message, video },
-            } = watchLaterResponse;
+        try {
+            if (watchLaterStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = watchLaterResponse;
 
-            playlistsDispatch({
-                type: `ADD_TO_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId || `default`} />
-                ),
-               
-                videoId: videoId || `default`,
+                playlistsDispatch({
+                    type: `ADD_TO_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId || `default`} />
+                    ),
 
-            })
+                    videoId: videoId || `default`,
+
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [watchLaterStatus, watchLaterResponse, playlistsDispatch]);
 
 
     useEffect(() => {
-        if (removeFromWatchLaterStatus === `success`) {
-            const {
-                data: { message, video },
-            } = removeFromWatchLaterResponse;
+        try {
+            if (removeFromWatchLaterStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = removeFromWatchLaterResponse;
 
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId || `default`} />
-                ),
-               
-                videoId: videoId || `default`,
-                type: `danger`
-            })
+                playlistsDispatch({
+                    type: `REMOVE_FROM_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId || `default`} />
+                    ),
+
+                    videoId: videoId || `default`,
+                    type: `danger`
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
 
     useEffect(() => {
-        if (addToHistoryStatus === `success`) {
-            const {
-                data: { message, video },
-            } = addToHistoryResponse;
+        try {
+            if (addToHistoryStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = addToHistoryResponse;
 
-            playlistsDispatch({
-                type: `ADD_TO_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.historyData.history
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId || `default`} />
-                ),
-               
-                videoId: videoId || `default`,
+                playlistsDispatch({
+                    type: `ADD_TO_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.historyData.history
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId || `default`} />
+                    ),
 
-            })
+                    videoId: videoId || `default`,
 
+                })
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [addToHistoryStatus, addToHistoryResponse, playlistsDispatch]);
 
 
@@ -311,56 +342,65 @@ export const SingleVideoPage = () => {
 
             }
         } catch (error) {
+            console.error(`error `, error)
+        }
+        try {
+
+        } catch (error) {
             console.error(`error`, error);
 
         }
     }, [updateVideoStatus, updateVideoResponse, videosDispatch]);
 
     useEffect(() => {
+        try {
+            (async () => {
 
 
-        (async () => {
+                try {
+                    videosDispatch({
+                        type: `SET_LOADING`,
+                        payload: {
+                            loading: `loading`,
+                        },
+                    });
+
+                    const response = await getAllVideos({
+                        currentPageNumber: videosState.currentPageNumber,
+                    });
+                    const {
+                        data: { message, videos },
+                    } = response;
+
+                    videosDispatch({
+                        type: `SET_LOADING`,
+                        payload: {
+                            loading: `success`,
+                        },
+                    });
+
+                    videosDispatch({
+                        type: `LOAD_VIDEOS`,
+                        payload: {
+                            videos: videos,
+                        },
+
+                    });
+
+                } catch (error) {
+                    videosDispatch({
+                        type: `SET_LOADING`,
+                        payload: {
+                            loading: `error`,
+                        },
+                    });
+                }
+            })();
+        } catch (error) {
+            console.error(`error `, error)
+        }
 
 
-            try {
-                videosDispatch({
-                    type: `SET_LOADING`,
-                    payload: {
-                        loading: `loading`,
-                    },
-                });
-
-                const response = await getAllVideos({
-                    currentPageNumber: videosState.currentPageNumber,
-                });
-                const {
-                    data: { message, videos },
-                } = response;
-
-                videosDispatch({
-                    type: `SET_LOADING`,
-                    payload: {
-                        loading: `success`,
-                    },
-                });
-
-                videosDispatch({
-                    type: `LOAD_VIDEOS`,
-                    payload: {
-                        videos: videos,
-                    },
-
-                });
-
-            } catch (error) {
-                videosDispatch({
-                    type: `SET_LOADING`,
-                    payload: {
-                        loading: `error`,
-                    },
-                });
-            }
-        })();
     }, []);
 
     useEffect(() => {
@@ -550,7 +590,7 @@ export const SingleVideoPage = () => {
                                     <div className={`${publisherAvatar}`}>
                                         <Avatar
                                             size={`md`}
-                                            imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                                            imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                                         />
                                     </div>
                                     <div
@@ -755,7 +795,7 @@ export const SingleVideoPage = () => {
                                             <span>
                                                 <IoMdHeart size={20} />
                                             </span>
-                                            <span className="pl-md "> {video.likes.male + video.likes.female + video.likes.others} likes</span>
+                                            <span className="pl-md "> {getLikesOfAVideo(video)} likes</span>
                                         </div>
                                         <div className="d-flex ai-center">
                                             <span>
@@ -805,6 +845,7 @@ export const SingleVideoPage = () => {
                                     <div className="w-100">
                                         <div  >
                                             <input type="text"
+                                                required
                                                 className={`${notesInput}`}
                                                 style={{ minHeight: `none`, background: `#211E27` }}
                                                 value={userDefinedNote?.title || ``}
@@ -816,6 +857,7 @@ export const SingleVideoPage = () => {
                                         <div className={`${notes} mt-lg`}>
 
                                             <textarea
+                                                required
                                                 value={userDefinedNote?.description || ``}
                                                 name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `320px`, }}
                                                 className={`${notesTextarea} w-100 `}

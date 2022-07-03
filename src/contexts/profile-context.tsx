@@ -19,6 +19,11 @@ export const ProfileProvider = ({ children }: ProviderProps) => {
     const { authState } = useAuth();
 
     useEffect(() => {
+        try {
+
+        } catch (error) {
+            console.error(`error `, error)
+        }
         if (userProfile === null && authState.token) {
 
 

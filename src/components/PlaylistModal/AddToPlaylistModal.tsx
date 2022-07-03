@@ -45,17 +45,22 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
 
     useEffect(() => {
-        if (createPlaylistServiceStatus === `success`) {
-            const { data: { playlist } } = createPlaylistServiceResponse
-            playlistsDispatch({
-                type: CREATE_PLAYLIST,
-                payload: {
-                    playlist
-                }
-            })
-
-            setnewPlaylistDetails(UserPlaylist)
+        try {
+            if (createPlaylistServiceStatus === `success`) {
+                const { data: { playlist } } = createPlaylistServiceResponse
+                playlistsDispatch({
+                    type: CREATE_PLAYLIST,
+                    payload: {
+                        playlist
+                    }
+                })
+    
+                setnewPlaylistDetails(UserPlaylist)
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+      
     }, [createPlaylistServiceStatus, createPlaylistServiceResponse, playlistsDispatch])
 
 

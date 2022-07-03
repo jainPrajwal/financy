@@ -11,7 +11,7 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { useVideos } from "../../hooks/useVideos";
 import { Video } from "../../constants/videos.types";
 import axios from "axios";
-import { BASE_API } from "../../constants/api";
+import { AVATAR_FEMALE, AVATAR_MALE, BASE_API } from "../../constants/api";
 import { getAllVideos } from "../../services/videos/getAllVideos";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -59,32 +59,37 @@ export const Home = () => {
     const { userProfile } = useProfile();
 
     useEffect(() => {
-        (async () => {
-            setMostWatched(prevState => ({ ...prevState, status: `loading` }))
-            try {
-                const response = await getAllVideos({ currentPageNumber: 1 })
-                if (response.status === 200) {
-                    const videos = response.data.videos;
-                    let mostWatched = [] as any;
-                    if (videos) {
-                        mostWatched = [...videos].sort((video1, video2) => {
-                            const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
-                            const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
-                            return totalLikes2 - totalLikes1
-                        }).slice(0, 4)
+        try {
+            (async () => {
+                setMostWatched(prevState => ({ ...prevState, status: `loading` }))
+                try {
+                    const response = await getAllVideos({ currentPageNumber: 1 })
+                    if (response.status === 200) {
+                        const videos = response.data.videos;
+                        let mostWatched = [] as any;
+                        if (videos) {
+                            mostWatched = [...videos].sort((video1, video2) => {
+                                const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
+                                const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
+                                return totalLikes2 - totalLikes1
+                            }).slice(0, 4)
+                        }
+                        setMostWatched(prevState => ({
+                            ...prevState,
+                            videos: mostWatched,
+                            status: `success`
+                        }))
                     }
-                    setMostWatched(prevState => ({
-                        ...prevState,
-                        videos: mostWatched,
-                        status: `success`
-                    }))
+    
+                } catch (error) {
+                    console.error(`error`, error)
+                    setMostWatched(prevState => ({ ...prevState, status: `error` }))
                 }
-
-            } catch (error) {
-                console.error(`error`, error)
-                setMostWatched(prevState => ({ ...prevState, status: `error` }))
-            }
-        })();
+            })();
+        } catch (error) {
+            console.error(`error `, error)
+    }
+       
 
     }, [])
 
@@ -130,7 +135,7 @@ export const Home = () => {
                                                 showStatus
                                                 sizeOfStatus={`md`}
                                                 size={`lg`}
-                                                imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                                                imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                                             />
                                         </div>
                                         <div className={`${publisherName} text-white pl-lg `}>
@@ -176,7 +181,7 @@ export const Home = () => {
                                                 showStatus
                                                 sizeOfStatus={`md`}
                                                 size={`lg`}
-                                                imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                                                imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                                             />
                                         </div>
                                         <div className={`${publisherName} text-white pl-lg `}>
@@ -233,7 +238,7 @@ export const Home = () => {
                                                         showStatus
                                                         sizeOfStatus={`sm`}
                                                         size={`md`}
-                                                        imageUrl={video.publisher.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                                                        imageUrl={video.publisher.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                                                     />
                                                 </div>
                                             </div>

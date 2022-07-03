@@ -82,15 +82,20 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
 
 
   useEffect(() => {
-    const local = localStorage.getItem(`token`);
-    const localtoken = local ? JSON.parse(local) : null;
-
-    if (token || localtoken?.token) {
-      execute(null);
+    try {
+      const local = localStorage.getItem(`token`);
+      const localtoken = local ? JSON.parse(local) : null;
+  
+      if (token || localtoken?.token) {
+        execute(null);
+      }
+    } catch (error) {
+        console.error(`error `, error)
     }
+  
   }, [token, execute]);
   useEffect(() => {
-
+ 
     playlistsDispatch({
       type: `SET_LOADING`,
       payload: {

@@ -18,21 +18,26 @@ export const Videos = () => {
   const { chipsContainer, chip, chipClear } = chipsStyles;
 
   useEffect(() => {
-    const filters = searchParams.get(`filterBy`);
-    const sortBy = searchParams.get(`sortBy`);
+    try {
+      const filters = searchParams.get(`filterBy`);
+      const sortBy = searchParams.get(`sortBy`);
 
-    videosDispatch({
-      type: FILTER_BY_CATEGORY,
-      payload: {
-        selectedCategory: filters || ``
-      }
-    })
-    videosDispatch({
-      type: SORT_BY,
-      payload: {
-        sortBy
-      }
-    })
+      videosDispatch({
+        type: FILTER_BY_CATEGORY,
+        payload: {
+          selectedCategory: filters || ``
+        }
+      })
+      videosDispatch({
+        type: SORT_BY,
+        payload: {
+          sortBy
+        }
+      })
+    } catch (error) {
+      console.error(`error `, error)
+    }
+
 
   }, [searchParams, videosDispatch]);
 
@@ -120,7 +125,7 @@ export const Videos = () => {
         <div>
 
           <input type="radio"
-          checked={videosState.sortBy === `most liked`}
+            checked={videosState.sortBy === `most liked`}
             value={`most liked`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
@@ -146,7 +151,7 @@ export const Videos = () => {
 
         <div>
           <input type="radio"
-           checked={videosState.sortBy === `latest first`}
+            checked={videosState.sortBy === `latest first`}
             value={`latest first`}
             onChange={(e) => {
               searchParams.set(`sortBy`, e.target.value)
@@ -158,7 +163,7 @@ export const Videos = () => {
 
 
         <div>
-      
+
           <input type="radio"
             checked={videosState.sortBy === `oldest first`}
             value={`oldest first`}

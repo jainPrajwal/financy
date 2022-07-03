@@ -117,7 +117,7 @@ export const Signup = () => {
                         if (form.isFormValid) {
 
                             signUpUserWithCredentials({
-                               name: form.name,
+                                name: form.name,
                                 email: form.email,
                                 password: form.confirmPassword,
                                 gender: form.gender,
@@ -493,9 +493,10 @@ export const Signup = () => {
                             </button>
                         </div>
                         <div className="p-sm text-center">
+                            Already have an Account?
                             <Link to="/login">
                                 <span className={`text-white`}>
-                                    Already have an Account? Click here to Log In
+                                    <span className="border-bottom-sm"> Click here to Login</span>
                                 </span>
                             </Link>
                         </div>

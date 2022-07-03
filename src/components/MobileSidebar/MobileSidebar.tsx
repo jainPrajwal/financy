@@ -17,12 +17,14 @@ import {
 } from "react-icons/md";
 import { BsHeartFill } from "react-icons/bs";
 import { useProfile } from "../../hooks/useProfile";
+import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 
 export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
   const sidebarRef = useRef<null | HTMLElement>(null);
   const {userProfile} = useProfile();
 
   useEffect(() => {
+ 
     const handleClickOutside = (e: any) => {
       if (
         sidebarRef &&
@@ -69,7 +71,7 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
               <div className={`${"publisherAvatar"}`}>
                 <Avatar
                   size={`md`}
-                 imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                 imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                 />
               </div>
               <div className={`${"publisherName"}  pl-lg `}>
@@ -210,7 +212,7 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                 <span>
                   <RiShieldFlashFill size={20} />
                 </span>
-                <span className={`ml-md`}> Go Premium </span>
+                <span className={`ml-md`}> Get Premium </span>
               </button>
             </div>
 

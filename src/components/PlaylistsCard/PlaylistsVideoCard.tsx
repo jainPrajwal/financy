@@ -63,68 +63,82 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
     const videoId = video?._id;
 
     useEffect(() => {
-        if (removeFromHistoryStatus === `success`) {
-            const {
-                data: { message, video },
-            } = removeFromHistoryResponse;
+        try {
+            if (removeFromHistoryStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = removeFromHistoryResponse;
 
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.historyData.history
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId} />
-                ),
-               
-                videoId,
-                type: `danger`
-            })
+                playlistsDispatch({
+                    type: `REMOVE_FROM_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.historyData.history
+                    },
+                });
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
+
+                    videoId,
+                    type: `danger`
+                })
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [removeFromHistoryStatus, removeFromHistoryResponse, playlistsDispatch]);
 
     useEffect(() => {
-        if (removeFromLikeStatus === `success`) {
-            const {
-                data: { message, video },
-            } = removeFromLikedResponse;
+        try {
+            if (removeFromLikeStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = removeFromLikedResponse;
 
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.likedVideosData.likedVideos
-                },
-            }); showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId} />
-                ),
-               
-                videoId,
-                type: `danger`
-            })
+                playlistsDispatch({
+                    type: `REMOVE_FROM_PLAYLIST`,
+                    payload: {
+                        video,
+                        playlist: playlistsState.likedVideosData.likedVideos
+                    },
+                }); showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
 
+                    videoId,
+                    type: `danger`
+                })
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
 
     useEffect(() => {
+
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { message, video },
+                    data: { message, video, status, success },
                 } = updateVideoResponse;
 
-                videosDispatch({
-                    type: `UPDATE_VIDEO`,
-                    payload: {
-                        video
-                    },
-                });
+                if (status === 201 && success) {
+
+                    videosDispatch({
+                        type: `UPDATE_VIDEO`,
+                        payload: {
+                            video
+                        },
+                    });
+                }
             }
         } catch (error) {
             console.error(`error`, error);
@@ -134,55 +148,65 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
 
 
     useEffect(() => {
-        if (removeFromWatchLaterStatus === `success`) {
-            const {
-                data: { message, video },
-            } = removeFromWatchLaterResponse;
-
-            playlistsDispatch({
-                type: `REMOVE_FROM_PLAYLIST`,
-                payload: {
-                    video,
-                    playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                },
-            });
-            showToast({
-                toastDispatch,
-                element: (
-                    <ToastMessage message={message} videoId={videoId} />
-                ),
-               
-                videoId,
-                type: `danger`
-            })
-        }
-    }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
-
-
-    useEffect(() => {
-        if (removeFromPlaylistStatus === `success`) {
-            const playlist = playlistsState.customPlaylistsData.customPlaylists.find(playlist => playlist._id === playlistId);
-            const { data: { message, video } } = removeFromPlaylistResponse;
-            if (playlist) {
+        try {
+            if (removeFromWatchLaterStatus === `success`) {
+                const {
+                    data: { message, video },
+                } = removeFromWatchLaterResponse;
 
                 playlistsDispatch({
                     type: `REMOVE_FROM_PLAYLIST`,
                     payload: {
-                        playlist: playlist,
-                        video
-                    }
+                        video,
+                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                    },
                 });
                 showToast({
                     toastDispatch,
                     element: (
                         <ToastMessage message={message} videoId={videoId} />
                     ),
-                 
+
                     videoId,
                     type: `danger`
                 })
             }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
+    }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
+
+
+    useEffect(() => {
+        try {
+            if (removeFromPlaylistStatus === `success`) {
+                const playlist = playlistsState.customPlaylistsData.customPlaylists.find(playlist => playlist._id === playlistId);
+                const { data: { message, video } } = removeFromPlaylistResponse;
+                if (playlist) {
+
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            playlist: playlist,
+                            video
+                        }
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId} />
+                        ),
+
+                        videoId,
+                        type: `danger`
+                    })
+                }
+            }
+        } catch (error) {
+            console.error(`error `, error)
+        }
+
     }, [removeFromPlaylistStatus, playlistsDispatch, removeFromPlaylistResponse])
 
 

@@ -20,6 +20,8 @@ import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { useProfile } from "../../hooks/useProfile";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { SortBy } from "../../components/SortBy/SortBy";
+import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
+import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
 
 export const Explore = () => {
   const {
@@ -96,18 +98,18 @@ export const Explore = () => {
     switch (videosState.sortBy) {
       case `most liked`:
         sortedData = [...filteredData].sort((video1, video2) => {
-          const totalLikes1 = video1.likes.male + video1.likes.female + video1.likes.others;
-          const totalLikes2 = video2.likes.male + video2.likes.female + video2.likes.others;
-          return totalLikes2 - totalLikes1
+          const totalLikes1 = getLikesOfAVideo(video1);
+          const totalLikes2 = getLikesOfAVideo(video2)
+          return totalLikes2 - totalLikes1;
         })
 
         break;
 
       case `most viewed`:
         sortedData = [...filteredData].sort((video1, video2) => {
-          const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
-          const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
-          return totalLikes2 - totalLikes1
+          const totalViews1 = getViewsOfAVideo(video1);
+          const totalViews2 = getViewsOfAVideo(video2)
+          return totalViews2 - totalViews1
         })
         break;
 
@@ -147,7 +149,7 @@ export const Explore = () => {
           const filterBy = (e.target as HTMLButtonElement).value;
           const appliedFilter = searchParams.get(`filterBy`);
 
-          console.log(`clearing`,searchParams.get(`filterBy`))
+          console.log(`clearing`, searchParams.get(`filterBy`))
           if (filterBy === CLEAR_ALL.toLowerCase()) {
             searchParams.delete(`filterBy`);
             searchParams.delete(`sortBy`);

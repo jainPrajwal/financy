@@ -22,12 +22,16 @@ import { getPaymentDetailsService } from "../../services/payment/getPaymentDetai
 import { Video } from "../../constants/videos.types";
 import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { RiShieldFlashFill } from "react-icons/ri";
+import { getTotalViewsOnPublishedVideos } from "../../utils/Videos/getTotalViewsOnPublishedVideos";
+import { getTotallikesOnPublishedVideos } from "../../utils/Videos/getTotalLikesOnPublishedVideos";
+import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 
 ChartJS.register(ArcElement);
 ChartJS.register([Tooltip]);
 
 
-
+const initialState = { male: 0, female: 0, others: 0 };
 const dummyData = {
     labels: [`Male`, `Female`, `Others`],
     datasets: [
@@ -74,13 +78,9 @@ export const Settings = () => {
 
 
     const publishedVideos = userProfile?.publishedVideos;
-    const views = publishedVideos?.reduce((acc: { male: number, female: number, others: number }, current: Video) => {
-        return { ...acc, male: acc.male + current.views.male, female: acc.female + current.views.female, others: acc.others + current.views.others }
-    }, { male: 0, female: 0, others: 0 })
+    const views = publishedVideos?.reduce(getTotalViewsOnPublishedVideos, initialState)
 
-    const likes = publishedVideos?.reduce((acc: { male: number, female: number, others: number }, current: Video) => {
-        return { ...acc, male: acc.male + current.likes.male, female: acc.female + current.likes.female, others: acc.others + current.likes.others }
-    }, { male: 0, female: 0, others: 0 })
+    const likes = publishedVideos?.reduce(getTotallikesOnPublishedVideos, initialState)
 
     const viewsData = {
         labels: [`Male`, `Female`, `Others`],
@@ -119,12 +119,18 @@ export const Settings = () => {
 
     const { execute, response, status } = useAsync(getPaymentDetailsService, false, null);
     useEffect(() => {
-        if (!paymentDetails) {
-            execute(null);
+        try {
+            if (!paymentDetails) {
+                execute(null);
+            }
+        } catch (error) {
+            console.error(`error `, error)
         }
+
     }, []);
 
     useEffect(() => {
+
         try {
             if (status === `success`) {
                 const { data: { payment } } = response;
@@ -145,7 +151,7 @@ export const Settings = () => {
             {
                 !ismodalHidden && <ProfileModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} />
             }
-         <Navbar setSidebar={setSidebar}/>
+            <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${exploreContainer}`}>
                 <div
@@ -245,7 +251,7 @@ export const Settings = () => {
                                         isVerified
                                         showStatus
                                         size={`lg`}
-                                        imageUrl={userProfile?.gender === `male` ? `https://res.cloudinary.com/dmk11fqw8/image/upload/v1653926221/man_6_ewkhrj.png` : `https://res.cloudinary.com/dmk11fqw8/image/upload/v1656501210/woman_1_jotf2w.png`}
+                                        imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
                                     />
                                 </div>
                                 <div className={`${"publisherName"} text-bold text-white pl-lg `}>
@@ -315,7 +321,11 @@ export const Settings = () => {
                                 : <div>
                                     <button
                                         onClick={() => displayRazorPayModal({ setPaymentDetails, setUserProfile })}
-                                        className={`btn ${btnGetPremium} my-1 `}>{`get premium`.toUpperCase()}</button>
+                                        className={`btn ${btnGetPremium} my-1 `}>
+                                        <span>
+                                            <RiShieldFlashFill size={20} />
+                                        </span>
+                                        {`get premium`.toUpperCase()}</button>
                                 </div>}
                         </div>
                     </div>
