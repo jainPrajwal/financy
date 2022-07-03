@@ -8,6 +8,7 @@ import { useAsync } from "../../hooks/useAxios";
 import { checkIfVideoIsAlreadyPresentInSpecifiedPlaylist } from "../../utils/checkIfVideoIsAlreadyPresentInSpecifiedPlaylist";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
 import { addToPlaylistService } from "../../services/playlists/addToPlaylistService";
+
 import { getSingeVideoPageService } from "../../services/videos/getSingleVideoPageService";
 import { AddToPlaylistModal } from "../../components/PlaylistModal/AddToPlaylistModal";
 import { updateVideoService } from "../../services/videos/updateVideoService";
@@ -147,7 +148,7 @@ export const SingleVideoPage = () => {
         try {
             if (status === `success`) {
 
-                const { data: { message, video }, status, success } = response;
+                const { status, data: { message, video }, success } = response;
 
 
                 if (status === 201 && success) {
@@ -173,25 +174,29 @@ export const SingleVideoPage = () => {
         try {
             if (likeStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = likeResponse;
 
-                playlistsDispatch({
-                    type: `ADD_TO_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.likedVideosData.likedVideos
-                    },
-                });
-                showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId || `default`} />
-                    ),
+                if (status === 201 && success) {
+                    playlistsDispatch({
+                        type: `ADD_TO_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.likedVideosData.likedVideos
+                        },
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                    videoId: videoId || `default`,
+                        videoId: videoId || `default`,
 
-                })
+                    })
+                }
+
+
 
             }
         } catch (error) {
@@ -203,25 +208,29 @@ export const SingleVideoPage = () => {
         try {
             if (removeFromLikeStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = removeFromLikedResponse;
 
-                playlistsDispatch({
-                    type: `REMOVE_FROM_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.likedVideosData.likedVideos
-                    },
-                });
-                showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId || `default`} />
-                    ),
+                if (status === 200 && success) {
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.likedVideosData.likedVideos
+                        },
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                    videoId: videoId || `default`,
-                    type: `danger`
-                })
+                        videoId: videoId || `default`,
+                        type: `danger`
+                    })
+                }
+
+
 
             }
         } catch (error) {
@@ -235,25 +244,29 @@ export const SingleVideoPage = () => {
         try {
             if (watchLaterStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = watchLaterResponse;
 
-                playlistsDispatch({
-                    type: `ADD_TO_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                    },
-                });
-                showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId || `default`} />
-                    ),
+                if (status === 201 && success) {
+                    playlistsDispatch({
+                        type: `ADD_TO_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                        },
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                    videoId: videoId || `default`,
+                        videoId: videoId || `default`,
 
-                })
+                    })
+                }
+
+
             }
         } catch (error) {
             console.error(`error `, error)
@@ -266,25 +279,29 @@ export const SingleVideoPage = () => {
         try {
             if (removeFromWatchLaterStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = removeFromWatchLaterResponse;
 
-                playlistsDispatch({
-                    type: `REMOVE_FROM_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                    },
-                });
-                showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId || `default`} />
-                    ),
+                if (status === 200 && success) {
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                        },
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                    videoId: videoId || `default`,
-                    type: `danger`
-                })
+                        videoId: videoId || `default`,
+                        type: `danger`
+                    })
+                }
+
+
             }
         } catch (error) {
             console.error(`error `, error)
@@ -296,25 +313,29 @@ export const SingleVideoPage = () => {
         try {
             if (addToHistoryStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = addToHistoryResponse;
 
-                playlistsDispatch({
-                    type: `ADD_TO_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.historyData.history
-                    },
-                });
-                showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId || `default`} />
-                    ),
+                if (status === 201 && success) {
+                    playlistsDispatch({
+                        type: `ADD_TO_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.historyData.history
+                        },
+                    });
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                    videoId: videoId || `default`,
+                        videoId: videoId || `default`,
 
-                })
+                    })
+                }
+
+
 
             }
         } catch (error) {
@@ -328,7 +349,7 @@ export const SingleVideoPage = () => {
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { message, video }, status, success
+                    status, data: { message, video }, success
                 } = updateVideoResponse;
 
                 if (status === 201 && success) {
@@ -343,12 +364,6 @@ export const SingleVideoPage = () => {
             }
         } catch (error) {
             console.error(`error `, error)
-        }
-        try {
-
-        } catch (error) {
-            console.error(`error`, error);
-
         }
     }, [updateVideoStatus, updateVideoResponse, videosDispatch]);
 
@@ -369,23 +384,26 @@ export const SingleVideoPage = () => {
                         currentPageNumber: videosState.currentPageNumber,
                     });
                     const {
-                        data: { message, videos },
+                        status, data: { message, videos, success },
                     } = response;
 
-                    videosDispatch({
-                        type: `SET_LOADING`,
-                        payload: {
-                            loading: `success`,
-                        },
-                    });
+                    if (status === 200 && success) {
+                        videosDispatch({
+                            type: `SET_LOADING`,
+                            payload: {
+                                loading: `success`,
+                            },
+                        });
 
-                    videosDispatch({
-                        type: `LOAD_VIDEOS`,
-                        payload: {
-                            videos: videos,
-                        },
+                        videosDispatch({
+                            type: `LOAD_VIDEOS`,
+                            payload: {
+                                videos: videos,
+                            },
 
-                    });
+                        });
+                    }
+
 
                 } catch (error) {
                     videosDispatch({
@@ -416,14 +434,27 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (saveNotesStatus === `success`) {
-                const { data: { message, note } } = saveNotesResponse;
+                const { status, data: { message, note, success } } = saveNotesResponse;
 
-                notesDispatch({
-                    type: `ADD_NOTE`,
-                    payload: {
-                        note
-                    }
-                })
+                if (status === 201 && success) {
+                    notesDispatch({
+                        type: `ADD_NOTE`,
+                        payload: {
+                            note
+                        }
+                    })
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
+
+                        videoId: videoId || `default`,
+
+                    })
+                }
+
+
             }
         } catch (error) {
             console.error(`error`, error);
@@ -434,8 +465,8 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (getNotesStatus === `success`) {
-                const { data: { message, notes } } = getNotesResponse;
-                if (notes) {
+                const { status, data: { message, notes, success } } = getNotesResponse;
+                if (status === 200 && success) {
 
                     notesDispatch({
                         type: `LOAD_NOTES`,
@@ -454,14 +485,25 @@ export const SingleVideoPage = () => {
     useEffect(() => {
         try {
             if (editNotesStatus === `success`) {
-                const { data: { message, note } } = editNotesResponse;
+                const { status, data: { message, note, success } } = editNotesResponse;
+                if (status === 201 && success) {
+                    notesDispatch({
+                        type: `UPDATE_NOTE`,
+                        payload: {
+                            note
+                        }
+                    })
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
-                notesDispatch({
-                    type: `UPDATE_NOTE`,
-                    payload: {
-                        note
-                    }
-                })
+                        videoId: videoId || `default`,
+
+                    })
+                }
+
             }
         } catch (error) {
             console.error(`error`, error);

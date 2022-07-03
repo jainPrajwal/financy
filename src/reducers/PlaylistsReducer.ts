@@ -139,6 +139,7 @@ const actionMap = new Map([
       if (action.type === REMOVE_FROM_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `liked`:
+            console.log(` action.payload.video._id`,  action.payload.video._id)
             return {
               ...state,
               likedVideosData: {

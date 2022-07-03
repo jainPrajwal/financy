@@ -26,6 +26,7 @@ import { ToastMessage } from "../ToastMessage/ToastMessage";
 import { copyVideoLink } from "../../utils/copyVideoLink";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
+import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
 
 
 
@@ -56,7 +57,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     const navigate = useNavigate();
     const location = useLocation();
     const { toastDispatch } = useToast();
-    const ShareLinkRef = useRef<HTMLButtonElement | null>(null)
+    
 
 
     const {
@@ -101,7 +102,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (likeStatus === `success`) {
                 const {
-                    data: { video, message, status, success },
+                   status, data: { video, message,  success },
                 } = likeResponse;
 
 
@@ -150,11 +151,11 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (removeFromLikeStatus === `success`) {
                 const {
-                    data: { video, message, status, success },
+                   status, data: { video, message,  success },
                 } = removeFromLikedResponse;
 
 
-                if (status === 201 && success) {
+                if (status === 200 && success) {
                     playlistsDispatch({
                         type: `REMOVE_FROM_PLAYLIST`,
                         payload: {
@@ -198,7 +199,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (watchLaterStatus === `success`) {
                 const {
-                    data: { video, message, status, success },
+                   status, data: { video, message,  success },
                 } = watchLaterResponse;
 
 
@@ -247,11 +248,11 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (removeFromWatchLaterStatus === `success`) {
                 const {
-                    data: { video, message, status, success },
+                   status, data: { video, message,  success },
                 } = removeFromWatchLaterResponse;
 
 
-                if (status === 201 && success) {
+                if (status === 200 && success) {
                     playlistsDispatch({
                         type: `REMOVE_FROM_PLAYLIST`,
                         payload: {
@@ -294,7 +295,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { video, message, status, success },
+                   status, data: { video, message,  success },
                 } = updateVideoResponse;
                 if (status === 201 && success) {
 
@@ -324,6 +325,8 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
             video,
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
+
+        console.log(`isVideoAlreadyPresentInLikedPlaylist `,isVideoAlreadyPresentInLikedPlaylist)
     const path = location.pathname;
 
     if (index === videosState.videos.length - 1) {
@@ -369,7 +372,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                             <span>
                                 <MdRemoveRedEye size={20} />
                             </span>
-                            <span className="pl-md "> {video.views.male + video.views.female + video.views.others} views</span>
+                            <span className="pl-md "> {getViewsOfAVideo(video)} views</span>
                         </div>
                     </div>
                     <div className={`${publisherDetails} d-flex ai-center`}>
@@ -513,11 +516,9 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     >
                         {likeStatus === `loading` ?
                             <span className="w-100 h-100 d-flex jc-center">
-                                <Loader
-                                    borderTopColor={`#ef4444`}
-                                    width={`16px`} height={`16px`} borderWidth={`2px`} />
+                                <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
                             </span>
-                            : <IoMdHeartEmpty size={24} />}
+                            : <IoMdHeartEmpty size={2} />}
 
                     </button> :
 
@@ -563,9 +564,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                         >
                             {removeFromLikeStatus === `loading` ?
                                 <span className="w-100 h-100 d-flex jc-center">
-                                    <Loader
-                                        borderTopColor={`#ef4444`}
-                                        width={`16px`} height={`16px`} borderWidth={`2px`} />
+                                    <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
                                 </span>
                                 : <IoMdHeart size={24} />}
 
@@ -616,103 +615,109 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     >
                         <div className="d-flex ai-center">
                             <span>
-                                <BsHeartFill size={20} />
+                                <BsHeartFill size={16} />
                             </span>
                             <span className="pl-md ">{getLikesOfAVideo(video)}  likes</span>
                         </div>
                         <div className="d-flex ai-center">
                             <span>
-                                <MdRemoveRedEye size={20} />
+                                <MdRemoveRedEye size={18} />
                             </span>
-                            <span className="pl-md "> {video.views.male + video.views.female + video.views.others} views</span>
+                            <span className="pl-md "> {getViewsOfAVideo(video)} views</span>
                         </div>
                     </div>
-                    <div className={`${publisherDetails} d-flex ai-center`}>
-                        <div className={``}>
-                            <Avatar
-                                size={`sm`}
-                                imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
-                            />
-                        </div>
-                        <div
-                            className={`${publisherName} text-bold text-white pl-lg `}
-                        >
-                            <div className="d-flex ai-center">
-                                <div>{video.publisher.name}</div>
-                                <span
-                                    style={{ color: `gold` }}
-                                    className="pl-sm"
-                                >
-                                    <RiVipCrown2Fill size={20} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className={`${videoActions} d-flex ml-auto`}>
-
-                            {!isVideoAlreadyPresentInWatchLaterPlaylist ? <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    executeAddToWatchLaterService({
-                                        video,
-                                        playlistId:
-                                            playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                    });
-                                }}
-                                className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
-                            >
-                                {watchLaterStatus === `loading` ?
-                                    <span className="w-100 h-100 d-flex jc-center">
-                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                    <div className={`${publisherDetails} `}>
+                        <div className={`d-flex ai-center`}>
+                            <div className="d-flex ai-center w-100">
+                                <Avatar
+                                    size={`sm`}
+                                    imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
+                                />
+                                <div className="d-flex ai-center ml-md">
+                                    <div>{video.publisher.name}</div>
+                                    <span
+                                        style={{ color: `gold` }}
+                                        className="pl-sm"
+                                    >
+                                        <RiVipCrown2Fill size={20} />
                                     </span>
-                                    : <MdOutlineWatchLater size={22} />}
+                                </div>
+                            </div>
+
+                            <div className={`${videoActions} d-flex ml-auto`}>
+
+                                {!isVideoAlreadyPresentInWatchLaterPlaylist ? <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        executeAddToWatchLaterService({
+                                            video,
+                                            playlistId:
+                                                playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                        });
+                                    }}
+                                    className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
+                                >
+                                    {watchLaterStatus === `loading` ?
+                                        <span className="w-100 h-100 d-flex jc-center">
+                                            <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                        </span>
+                                        : <MdOutlineWatchLater size={22} />}
 
 
-                            </button> :
+                                </button> :
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            executeRemoveFromWatchLater({
+                                                videoId: video._id,
+                                                playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            })
+                                        }}
+                                        className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
+                                    >
+                                        {removeFromWatchLaterStatus === `loading` ?
+                                            <span className="w-100 h-100 d-flex jc-center">
+                                                <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                            </span>
+                                            : <MdWatchLater size={22} color={`#0ea5e9`} />}
+
+
+                                    </button>}
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        executeRemoveFromWatchLater({
+                                        setIsModalHidden(false)
+                                    }}
+                                    className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
+                                >
+                                    <MdPlaylistAdd size={22} />
+                                </button>
+
+
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        copyVideoLink({ text: `https://www.youtube.com/watch?v=${video.url}` });
+                                        showToast({
+                                            toastDispatch,
+                                            element: <ToastMessage message="Copied Successfully" videoId={`${video._id}`} />,
                                             videoId: video._id,
-                                            playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            type: `success`
                                         })
                                     }}
                                     className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                 >
-                                    {removeFromWatchLaterStatus === `loading` ?
-                                        <span className="w-100 h-100 d-flex jc-center">
-                                            <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
-                                        </span>
-                                        : <MdWatchLater size={22} color={`#0ea5e9`} />}
-
-
-                                </button>}
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsModalHidden(false)
-                                }}
-                                className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
-                            >
-                                <MdPlaylistAdd size={22} />
-                            </button>
-
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    copyVideoLink({ text: `https://www.youtube.com/watch?v=${video.url}` });
-                                    showToast({
-                                        toastDispatch,
-                                        element: <ToastMessage message="Copied Successfully" videoId={`${video._id}`} />,
-                                        videoId: video._id,
-                                        type: `success`
-                                    })
-                                }}
-                                className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
-                            >
-                                <MdShare size={22} />
-                            </button>
+                                    <MdShare size={22} />
+                                </button>
+                            </div>
                         </div>
+
+                        {/* <div
+                            className={`${publisherName} text-bold text-white pl-lg `}
+                        >
+                           
+                        </div> */}
+
                     </div>
 
 

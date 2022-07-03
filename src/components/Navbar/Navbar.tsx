@@ -5,6 +5,7 @@ import { default as common } from "../../common/common.module.css";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { useAuth } from "../../hooks/useAuth";
 import { useProfile } from "../../hooks/useProfile";
+import { SearchBar } from "../SearchBar/SearchBar";
 import { default as navbarStyles } from "./Navbar.module.css"
 export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -13,13 +14,14 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
         publisherAvatar,
         wrapperLogo,
         hamburgerMenu,
-
+        wrapperSearch
     } = common;
     const { logoutContainer, positionRelative, showElement } = navbarStyles;
     const { userProfile } = useProfile();
     const [popOver, setShowPopOver] = useState(false);
     const { logout, authState } = useAuth();
-
+    const [searchbar, setSearchbar] = useState(false);
+    console.log(`searchbar`, searchbar)
     return <header className={`${navbar} pr-lg`}>
         <div
             className={`${hamburgerMenu} text-white`}
@@ -34,6 +36,12 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 alt="logo"
                 width={`100%`}
                 height={`100%`}
+            />
+        </div>
+        <div className={`${wrapperSearch}`}>
+            <SearchBar
+                searchbar={searchbar}
+                setSearchbar={setSearchbar}
             />
         </div>
 

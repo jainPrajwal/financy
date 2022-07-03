@@ -4,7 +4,7 @@ import { Video } from "../constants/videos.types";
 export const checkIfVideoIsAlreadyPresentInSpecifiedPlaylist = (
   video: Video | undefined,
   playlist: Playlist
-): Boolean => {
+): boolean => {
   const isVideoAlreadyPresent = playlist.videos.some(
     (videoInPlaylist) => videoInPlaylist._id === video?._id
   );

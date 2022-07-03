@@ -394,10 +394,14 @@
   }
 
   .iconButton {
-    width: 36px;
-    height: 36px;
+    width:48px;
+    height:48px;
   }
 
+  .iconButtonLike {
+    width: inherit;
+    height: inherit;
+  }
   .chip,.chipSolid {
     position: relative;
     left: 300px;

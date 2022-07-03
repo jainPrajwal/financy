@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const { execute, status, response } = useAsync(loginService, false, null);
   const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
 
- 
+
 
   const logout = () => {
     localStorage.removeItem(`token`)
@@ -80,12 +80,12 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       const localItem = localStorage.getItem(`token`);
       const localStorageItem = localItem && JSON.parse(localItem);
       if (localStorageItem && localStorageItem?.token) {
-        console.log(`yahase hona to nai chaiye `, localStorageItem)
+
         authDispatch({
           type: `LOGIN_USER`,
           payload: localStorageItem,
         });
-        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
       } else {
         if (status === `success`) {
           const {
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             loggedInUser: email,
             token,
           };
-          console.log(`yaaha se`)
+
           authDispatch({
             type: `LOGIN_USER`,
             payload: authState,
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
           console.log(`state`, state);
 
-          (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+          (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
         }
       }
     } catch (error) {
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
           type: `LOGIN_USER`,
           payload: localStorageItem,
         });
-        (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+        (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
       } else {
         if (signupStatus === `success`) {
           const {
