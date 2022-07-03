@@ -607,7 +607,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                 <div
                     className={`${videoContent}  d-flex f-direction-col jc-space-between`}
                 >
-                    <div className={`${videoHeader} text-white text-bold fs-3`}>
+                    <div className={`${videoHeader} text-white fs-3`}>
                         {video.title}
                     </div>
                     <div
