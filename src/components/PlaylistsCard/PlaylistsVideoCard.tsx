@@ -66,16 +66,51 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         try {
             if (removeFromHistoryStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = removeFromHistoryResponse;
 
-                playlistsDispatch({
-                    type: `REMOVE_FROM_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.historyData.history
-                    },
-                });
+                if (status === 200 && success) {
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.historyData.history
+                        },
+                    });
+                }
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
+
+                    videoId,
+                    type: `danger`
+                })
+
+            }
+        } catch (error) {
+            console.error(`error `, error)
+        }
+
+    }, [removeFromHistoryStatus, removeFromHistoryResponse, playlistsDispatch]);
+
+    useEffect(() => {
+        try {
+            if (removeFromLikeStatus === `success`) {
+                const {
+                    status, data: { message, video, success },
+                } = removeFromLikedResponse;
+
+                if (status === 200 && success) {
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.likedVideosData.likedVideos
+                        },
+                    });
+                }
                 showToast({
                     toastDispatch,
                     element: (
@@ -90,36 +125,6 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
             console.error(`error `, error)
         }
 
-    }, [removeFromHistoryStatus, removeFromHistoryResponse, playlistsDispatch]);
-
-    useEffect(() => {
-        try {
-            if (removeFromLikeStatus === `success`) {
-                const {
-                    data: { message, video },
-                } = removeFromLikedResponse;
-
-                playlistsDispatch({
-                    type: `REMOVE_FROM_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.likedVideosData.likedVideos
-                    },
-                }); showToast({
-                    toastDispatch,
-                    element: (
-                        <ToastMessage message={message} videoId={videoId} />
-                    ),
-
-                    videoId,
-                    type: `danger`
-                })
-
-            }
-        } catch (error) {
-            console.error(`error `, error)
-        }
-
     }, [removeFromLikeStatus, removeFromLikedResponse, playlistsDispatch]);
 
     useEffect(() => {
@@ -127,7 +132,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    data: { message, video, status, success },
+                    status, data: { message, video, success },
                 } = updateVideoResponse;
 
                 if (status === 201 && success) {
@@ -151,16 +156,19 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         try {
             if (removeFromWatchLaterStatus === `success`) {
                 const {
-                    data: { message, video },
+                    status, data: { message, video, success },
                 } = removeFromWatchLaterResponse;
 
-                playlistsDispatch({
-                    type: `REMOVE_FROM_PLAYLIST`,
-                    payload: {
-                        video,
-                        playlist: playlistsState.watchLaterVideosData.watchLaterVideos
-                    },
-                });
+                if (status === 200 && success) {
+
+                    playlistsDispatch({
+                        type: `REMOVE_FROM_PLAYLIST`,
+                        payload: {
+                            video,
+                            playlist: playlistsState.watchLaterVideosData.watchLaterVideos
+                        },
+                    });
+                }
                 showToast({
                     toastDispatch,
                     element: (
@@ -182,8 +190,8 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         try {
             if (removeFromPlaylistStatus === `success`) {
                 const playlist = playlistsState.customPlaylistsData.customPlaylists.find(playlist => playlist._id === playlistId);
-                const { data: { message, video } } = removeFromPlaylistResponse;
-                if (playlist) {
+                const { status, data: { message, video, success } } = removeFromPlaylistResponse;
+                if (status === 200 && success && playlist) {
 
                     playlistsDispatch({
                         type: `REMOVE_FROM_PLAYLIST`,
@@ -192,16 +200,16 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                             video
                         }
                     });
-                    showToast({
-                        toastDispatch,
-                        element: (
-                            <ToastMessage message={message} videoId={videoId} />
-                        ),
-
-                        videoId,
-                        type: `danger`
-                    })
                 }
+                showToast({
+                    toastDispatch,
+                    element: (
+                        <ToastMessage message={message} videoId={videoId} />
+                    ),
+
+                    videoId,
+                    type: `danger`
+                })
             }
         } catch (error) {
             console.error(`error `, error)

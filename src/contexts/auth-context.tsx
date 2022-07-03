@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
           console.log(`state`, state);
 
-          (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
+          (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
         }
       }
     } catch (error) {

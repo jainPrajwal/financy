@@ -32,10 +32,11 @@
 .videoNumber {
   position: absolute;
   left: -27px;
-
   color: #c1c0c582;
-  font-size: 2.8rem;
   z-index: 1;
+  background: black;
+  border-radius: 12px;
+  padding: 8px;
 }
 
 .videoThumbnailWrapper {
@@ -154,18 +155,19 @@
 }
 
 .chipsContainer::-webkit-scrollbar {
-    width: 1px;
-    height: 0px;
-  }
-  
-  .chipsContainer::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-  
-  .chipsContainer::-webkit-scrollbar-thumb {
-    background-color: var(--kaali-danger);
-    outline: 1px solid var(--kaali-danger);
-  }
+  width: 1px;
+  height: 0px;
+}
+
+.chipsContainer::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.chipsContainer::-webkit-scrollbar-thumb {
+  background-color: var(--kaali-danger);
+  outline: 1px solid var(--kaali-danger);
+}
+
 .chip {
   border: 1px solid var(--tube-theme-primary);
   border-radius: 2rem;
@@ -215,6 +217,7 @@
   white-space: nowrap;
   max-width: 220px;
   overflow: hidden;
+
 }
 
 .relatedVideoMetrics {
@@ -255,6 +258,10 @@
   border-radius: 12px;
 }
 
+.videoHeader {
+  padding-right: 36px;
+}
+
 @media (max-width: 1140px) {
   .headerContainer {
     margin-top: 1rem;
@@ -289,8 +296,8 @@
   }
 
 
-  .chip, 
-  .chipSolid  {
+  .chip,
+  .chipSolid {
     position: relative;
     left: 150px;
     white-space: nowrap;
@@ -359,7 +366,8 @@
 
 
 
-  .chip,.chipSolid {
+  .chip,
+  .chipSolid {
     position: relative;
     left: 220px;
     white-space: nowrap;
@@ -378,7 +386,7 @@
     line-clamp: 2;
     -webkit-box-orient: vertical;
     display: -webkit-box;
-
+    padding: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
@@ -394,15 +402,17 @@
   }
 
   .iconButton {
-    width:48px;
-    height:48px;
+    width: 48px;
+    height: 48px;
   }
 
   .iconButtonLike {
     width: inherit;
     height: inherit;
   }
-  .chip,.chipSolid {
+
+  .chip,
+  .chipSolid {
     position: relative;
     left: 300px;
     white-space: nowrap;

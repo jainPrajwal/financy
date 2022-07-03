@@ -196,7 +196,18 @@ export const SingleVideoPage = () => {
 
                     })
                 }
+                else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
 
 
             }
@@ -230,7 +241,18 @@ export const SingleVideoPage = () => {
                         type: `danger`
                     })
                 }
+                else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
 
 
             }
@@ -266,7 +288,18 @@ export const SingleVideoPage = () => {
 
                     })
                 }
+                else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
 
             }
         } catch (error) {
@@ -301,7 +334,18 @@ export const SingleVideoPage = () => {
                         type: `danger`
                     })
                 }
+                else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
 
             }
         } catch (error) {
@@ -335,7 +379,18 @@ export const SingleVideoPage = () => {
 
                     })
                 }
+                else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
 
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
 
 
             }
@@ -453,6 +508,17 @@ export const SingleVideoPage = () => {
                         videoId: videoId || `default`,
 
                     })
+                } else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
+
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
                 }
 
 
@@ -503,6 +569,17 @@ export const SingleVideoPage = () => {
                         videoId: videoId || `default`,
 
                     })
+                } else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
+
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
                 }
 
             }
@@ -524,7 +601,7 @@ export const SingleVideoPage = () => {
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-    const isVideoAlreadyPresentInHistoryPlaylist = video && checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(video, playlistsState.historyData.history)
+    console.log(` notesData.notes.length > 0 &&`, notesData.notes.length)
 
     if (status === `loading`) {
         return <div className="d-flex ai-center jc-center h-100 w-100">
@@ -933,27 +1010,27 @@ export const SingleVideoPage = () => {
 
 
 
-                                <div className={`${popular} my-1 `}>
-                                    {
-                                        <div>
-                                            {getNotesStatus === `loading` ?
-                                                <span className="w-100 h-100 d-flex jc-center">
-                                                    <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
-                                                </span>
-                                                : notesData.notes.map(note => {
-                                                    return <div key={note._id}>
-                                                        <div className={`fs-3 mb-lg`}>{note.title}</div>
-                                                        <div className="">
-                                                            {
-                                                                note.description
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                })}
+                                {getNotesStatus === `loading` ?
+                                    <span className="w-100 h-100 d-flex jc-center">
+                                        <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                    </span>
+                                    : <>{notesData.notes.length > 0 && <div className={`${popular} my-1 `}>
+                                        {
 
-                                        </div>
-                                    }
-                                </div>
+                                            notesData.notes.map(note => {
+                                                return <div key={note._id}>
+                                                    <div className={`fs-3 mb-lg`}>{note.title}</div>
+                                                    <div className="">
+                                                        {
+                                                            note.description
+                                                        }
+                                                    </div>
+                                                </div>
+                                            })
+
+
+                                        }
+                                    </div>}</>}
                             </div>
                         </div>
                     </div>

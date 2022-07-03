@@ -1,6 +1,7 @@
 import { Avatar } from "kaali-ui"
 import React, { useState } from "react";
 import { MdArrowDropDown, MdMenu } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { default as common } from "../../common/common.module.css";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { useAuth } from "../../hooks/useAuth";
@@ -22,7 +23,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
     const [popOver, setShowPopOver] = useState(false);
     const { logout, authState } = useAuth();
     const [searchbar, setSearchbar] = useState(false);
-    
+
     return <header className={`${navbar} pr-lg`}>
         <div
             className={`${hamburgerMenu} text-white`}
@@ -32,13 +33,15 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
             <MdMenu size={32} />
         </div>
         <div className={`${wrapperLogo}`}>
-            <img
-                src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
-                alt="logo"
-                width={`100%`}
-                height={`100%`}
-                className={`${financyLogo}`}
-            />
+            <Link to={`/home`}>
+                <img
+                    src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
+                    alt="logo"
+                    width={`100%`}
+                    height={`100%`}
+                    className={`${financyLogo}`}
+                />
+            </Link>
         </div>
         <div className={`${wrapperSearch}`}>
             <SearchBar
@@ -62,7 +65,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         const token = localStorage.getItem(`token`);
                         console.log({ token });
-                      
+
                         logout();
 
                     }}>Logout</div>

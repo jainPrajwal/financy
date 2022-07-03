@@ -341,7 +341,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                     navigate(`/videos/${video._id}`)
                 }}>
 
-                {path === `/trending` && <div className={`${videoNumber} header-secondary`}>{`#${index < 10 ? `0${index + 1}` : `${index + 1}`}`}</div>}
+                {path === `/trending` && <div className={`${videoNumber} header-tertiary`}>{`#${index < 9 ? `0${index + 1}` : `${index + 1}`}`}</div>}
 
                 <div className={`p-lg w-100 ${videoThumbnailContainer}`}>
                     <div className={`${videoThumbnailWrapper}`}>
@@ -356,7 +356,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                 <div
                     className={`${videoContent}  d-flex f-direction-col jc-space-between`}
                 >
-                    <div className={`${videoHeader} text-white fs-3`}>
+                    <div className={`${videoHeader} text-white fs-3 pr-lg`}>
                         {video.title}
                     </div>
                     <div
@@ -514,11 +514,14 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                         }}
 
                     >
-                        {likeStatus === `loading` ?
+                         {likeStatus === `loading` ?
                             <span className="w-100 h-100 d-flex jc-center">
-                                <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
+                                <Loader
+                                    borderTopColor={`#ef4444`}
+                                    width={`16px`} height={`16px`} borderWidth={`2px`} />
                             </span>
-                            : <IoMdHeartEmpty size={2} />}
+                            : <IoMdHeartEmpty size={24} />}
+
 
                     </button> :
 
@@ -592,7 +595,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                 navigate(`/videos/${video._id}`)
             }}>
 
-                {path === `/trending` && <div className={`${videoNumber} header-secondary`}>{`#${index < 10 ? `0${index + 1}` : `${index + 1}`}`}</div>}
+                {path === `/trending` && <div className={`${videoNumber} header-secondary`}>{`#${index < 9 ? `0${index + 1}` : `${index + 1}`}`}</div>}
 
                 <div className={`p-lg w-100 ${videoThumbnailContainer}`}>
                     <div className={`${videoThumbnailWrapper}`}>
