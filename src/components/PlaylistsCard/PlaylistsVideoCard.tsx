@@ -47,15 +47,16 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
         cardImageWrapper,
 
         cardImage,
-        cardTitle,
-        iconDelete
+        cardTitle,  iconDelete
+        
     } = historyStyles;
     const {
         navbar,
         publisherAvatar,
         wrapperLogo,
         hamburgerMenu,
-        btnTrash
+        btnTrash,
+      
     } = common;
 
     const location = useLocation();
@@ -243,7 +244,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                 <button className={`btn ${btnTrash}`} onClick={() => {
                                     switch (location.pathname) {
                                         case `/history`:
-                                            console.log(`removing`)
+                                            
                                             executeRemoveFromHistory({
                                                 videoId: video._id,
                                                 playlistId: playlistsState.historyData.history._id
@@ -293,7 +294,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                         })
                                             break;
                                         case `/playlists/${playlistId}`:
-                                            console.log(`playlistId`, playlistId)
+                                            
                                             if (playlistId) {
                                                 executeRemoveFromPlaylist({
                                                     videoId: video._id,
@@ -301,7 +302,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                                 })
                                             }
                                             break;
-                                        default: console.log(`location default`, location)
+                                        default: 
                                             break;
                                     }
                                 }

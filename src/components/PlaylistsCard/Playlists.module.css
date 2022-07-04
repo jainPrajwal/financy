@@ -76,13 +76,13 @@
     border-top-right-radius: 12px;
 }
 
-.cardTitle {
+/* .cardTitle {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     padding-block: 4px;
     max-width: 300px;
-}
+} */
 
 .iconDelete {
     color: var(--tube-theme-error);

@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Sidebar } from "../Sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { Playlist } from "../../constants/playlists.types";
+import { IoMdTrash } from "react-icons/io";
 export const PlaylistsCard = ({ playlist }: { playlist: Playlist }) => {
 
     const {
@@ -27,6 +28,7 @@ export const PlaylistsCard = ({ playlist }: { playlist: Playlist }) => {
 
         cardOverlay
     } = playlistsStyles;
+
     const navigate = useNavigate();
 
     const videoInMostRecentPlaylist = playlist.videos[playlist.videos.length - 1];
@@ -59,6 +61,7 @@ export const PlaylistsCard = ({ playlist }: { playlist: Playlist }) => {
                     <div className={`${cardTitle}`}>
                         {playlist.name}
                     </div>
+                  
                 </div>
             </div>
 

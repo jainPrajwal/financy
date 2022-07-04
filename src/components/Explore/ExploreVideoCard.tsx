@@ -122,7 +122,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                         ),
 
                         videoId,
-                        type: `danger`
+                       
                     })
 
                 } else {
@@ -326,7 +326,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-    console.log(`isVideoAlreadyPresentInLikedPlaylist `, isVideoAlreadyPresentInLikedPlaylist)
+    
     const path = location.pathname;
 
     if (index === videosState.videos.length - 1) {

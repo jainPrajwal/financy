@@ -16,6 +16,7 @@ import { Video } from "../../constants/videos.types";
 import { default as common } from "../../common/common.module.css";
 import { showToast } from "../../utils/showToast";
 import { ToastMessage } from "../ToastMessage/ToastMessage";
+import { Fallback } from "../Fallback/Fallback";
 
 const UserPlaylist: UserDefinedPlaylist = {
     name: null,
@@ -123,7 +124,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                                     <ModalRow extendedClassNames={`row-saved-collection f-direction-col ai-start`}>
 
                                         {
-                                            playlistsState?.customPlaylistsData?.customPlaylists.map((customPlaylist: Playlist, index: number) => {
+                                            playlistsState?.customPlaylistsData?.customPlaylists.length > 0 ? playlistsState?.customPlaylistsData?.customPlaylists.map((customPlaylist: Playlist, index: number) => {
                                                 if (index > 1) return <div key={customPlaylist._id}></div>
                                                 return <div className="collection saved-collection w-100" key={customPlaylist._id}>
                                                     <div className="modal-save-item-to-icon save-symbol" style={{ minWidth: `48px`, height: `48px` }}>
@@ -140,7 +141,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                                                         <CheckboxWrapper playlist={customPlaylist} video={video} />
                                                     </div>
                                                 </div>
-                                            })
+                                            }) : <Fallback fallbackTitle="No Playlists Found..!" />
                                         }
 
 
@@ -152,7 +153,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                                         <div className={`collection create-new-collection w-100 f-direction-col ai-center ${showPlaylistInput ? `${showInput}` : `${hideInput}`}`}>
 
                                             <div className="create-text w-100 my-sm">
-                                                <input type="text" placeholder="Create new playlist" className={`p-lg ${inputStyle}`} autoFocus
+                                                <input type="text" placeholder="Create new playlist" className={`p-lg ${inputStyle} fs-2`} autoFocus
                                                     ref={InputRef}
                                                     required={showPlaylistInput ? true : false}
                                                     name="playlist name"
@@ -161,7 +162,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
                                             </div>
                                             <div className="create-text w-100 my-sm">
-                                                <textarea placeholder="Description" className={`p-lg ${inputStyle}`} style={{ resize: `none` }}
+                                                <textarea placeholder="Description" className={`p-lg ${inputStyle} fs-2`} style={{ resize: `none` }}
                                                     name="playlist description"
                                                     onChange={(e) => setnewPlaylistDetails(prevState => ({ ...prevState, description: e.target.value, }))}
                                                 />

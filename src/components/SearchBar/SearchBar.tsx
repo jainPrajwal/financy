@@ -20,7 +20,7 @@ const SearchBar = ({ searchbar, setSearchbar }: { searchbar: boolean, setSearchb
   const { autocomplete, searchBox, autocompleteItems, autocompleteItem } =
     searchStyles;
   const { inputStyle } = common;
-console.log(`search`, searchbar)
+
   useOnClickOutside(SearchBarRef, setSearchbar);
   return (
     <>

@@ -35,7 +35,7 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
         try {
             if (status === `success`) {
                 const { data } = response;
-                console.log(data);
+                
                 setUserProfile(data.profile)
 
             }

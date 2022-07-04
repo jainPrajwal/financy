@@ -1,6 +1,7 @@
 import { Avatar } from "kaali-ui"
 import React, { useState } from "react";
 import { MdArrowDropDown, MdMenu } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { default as common } from "../../common/common.module.css";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
@@ -50,7 +51,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
             />
         </div>
 
-        {authState.token && <div className={`ml-auto d-flex ai-center `}>
+        {authState.token ? <div className={`ml-auto d-flex ai-center `}>
 
             <div className={`${publisherAvatar} ${positionRelative}`} onMouseOver={() => {
                 setShowPopOver(true)
@@ -64,7 +65,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 <div className={`${logoutContainer} ${popOver ? `${showElement}` : ``}`}>
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         const token = localStorage.getItem(`token`);
-                        console.log({ token });
+                        
 
                         logout();
 
@@ -75,7 +76,13 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
             <div>
                 <MdArrowDropDown color="#fff" size={24} /></div>
 
-        </div>}
+        </div> : <div className={`ml-auto d-flex ai-center text-white fs-2 pr-lg`}>
+            <NavLink to={`/login`} style={{color: `#fff`}}
+            className={`border-bottom-sm`}
+            >Login</NavLink>
+        </div>
+
+        }
 
 
 
