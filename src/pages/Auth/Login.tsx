@@ -55,27 +55,42 @@ const Login = () => {
     }
   });
 
-  const { loginUserWithCredentials, status } = useAuth();
+  const { loginUserWithCredentials, loginStatus } = useAuth();
 
 
   const LoginHandler = async () => { };
 
   return (
-    <>
+    <div className="p-1">
+
       <div
-        className={`p-1`}
-        style={{ height: `100vh`, display: `flex`, flexDirection: `column` }}
+        className={`d-flex jc-center ai-center`}
       >
-        <div
-          className={`white-space-nowrap header-secondary text-white text-center text-bold p-lg m-lg`}
-        >
-          Start Your Investment Journey Now!!
+        <div style={{ width: `48px`, height: `48px` }}>
+          <img
+            src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
+            alt="logo"
+            width={`100%`}
+            height={`100%`}
+          />
         </div>
-        {status === `idle` || status === `success`? <form
-          className={`${signinForm}`}
+        <div className="header-secondary text-white">Financy</div>
+      </div>
+      <div
+        className={`white-space-nowrap header-secondary text-white text-center text-bold p-lg m-lg`}
+      >
+        Start Your Investment Journey Now!!
+      </div>
+      <div
+        className={`p-1 ${signinForm}`}
+
+      >
+
+        <form
+
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(`Sign Up succesful!`, form);
+            
             if (form.isFormValid) {
 
               loginUserWithCredentials({
@@ -85,9 +100,8 @@ const Login = () => {
             }
           }}
         >
-          <div>
-          </div>
-          <div className="p-1">
+
+          <div >
             <div
               className={`${formHeader} text-bold header header-secondary  text-upper`}
             >
@@ -238,40 +252,44 @@ const Login = () => {
                 className="btn btn-danger w-100"
                 style={{ paddingInline: 0, margin: 0 }}
               >
-                <span className="text-upper text-bold">{`${`CONTINUE`}`}</span>
+                {`continue`.toUpperCase()}
               </button>
             </div>
-            <div className="p-md">
-              <button
-                onClick={async () => {
 
-                  loginUserWithCredentials({
-                    email: `elon@musk.com`,
-                    password: `12345`
-                  });
-                }}
-                name="loginAsGest"
-                className="btn btn-danger w-100"
-                style={{ paddingInline: 0, margin: 0 }}
-              >
-                <span className="text-upper text-bold">{`${`log in as guest`}`}</span>
-              </button>
-            </div>
-            <div className="p-sm text-center">
-                  Don't have an Account with us? 
-              <Link to="/signup">
-                <span className={`text-white `}>
-                  <span className="border-bottom-sm"> Click here to Sign up</span>
-                </span>
-              </Link>
-            </div>
           </div>
-        </form> :
-          status === `loading` && <FlexContainer>
-            <Loader /> </FlexContainer>}
+        </form>
+        <div className="p-md">
+          <button
+            onClick={() => {
+
+              loginUserWithCredentials({
+                email: `elon@musk.com`,
+                password: `12345`
+              });
+            }}
+            name="loginAsGest"
+            className="btn btn-danger w-100"
+            style={{ paddingInline: 0, margin: 0 }}
+          >
+            <span className="text-upper text-bold">{`${`log in as guest`}`}</span>
+          </button>
+        </div>
+        <div className="p-sm text-center">
+          Don't have an Account with us?
+          <Link to="/signup">
+            <span className={`text-white `}>
+              <span className="border-bottom-sm"> Click here to Sign up</span>
+            </span>
+          </Link>
+        </div>
 
       </div>
-    </>
+      <div className="pt-lg">
+        {loginStatus === `loading` && <FlexContainer>
+          <Loader /></FlexContainer>}
+      </div>
+
+    </div>
   );
 };
 

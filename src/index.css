@@ -48,6 +48,18 @@
 
 }
 
+.premium-pink {
+  color: hsl(302, calc(var(--saturation-factor, 1)*100%), 72.5%);
+}
+
+.premium-purple {
+  color: #776bff;
+}
+
+.premium-gold {
+  color: #fee64f;
+}
+
 body::-webkit-scrollbar {
   width: 2px;
 }

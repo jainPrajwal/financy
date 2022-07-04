@@ -11,7 +11,7 @@ import { ToastMessage } from "../components/ToastMessage/ToastMessage";
 import { AuthState, signupUserCredentials, UserLoginCredentials } from "../constants/auth.types";
 import { loading, ProviderProps } from "../constants/videos.types";
 import { useAsync } from "../hooks/useAxios";
-
+import { v4 as uuid } from "uuid"
 import { AuthReducer } from "../reducers/AuthReducer";
 import {
   loginService,
@@ -27,14 +27,16 @@ export const AuthContext = createContext<{
     userLoginCredentials: UserLoginCredentials
   ) => void;
   signUpUserWithCredentials: (userSignUpCredentials: signupUserCredentials) => void;
-  status: loading;
+  loginStatus: loading;
+  signupStatus: loading;
   logout: () => void
 }>({
   authState: { loggedInUser: null, token: null },
   loginUserWithCredentials: (userLoginCredentials: UserLoginCredentials) => { },
   signUpUserWithCredentials: (userSignUpCredentials: signupUserCredentials) => { },
   logout: () => { },
-  status: `idle`,
+  loginStatus: `idle`,
+  signupStatus: `idle`
 });
 
 export const initialAuthState: AuthState = {
@@ -51,7 +53,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const { state } = useLocation();
   const { toastDispatch } = useToast();
 
-  const { execute, status, response } = useAsync(loginService, false, null);
+  const { execute, status: loginStatus, response } = useAsync(loginService, false, null);
   const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
 
 
@@ -87,45 +89,70 @@ export const AuthProvider = ({ children }: ProviderProps) => {
         });
         (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
       } else {
-        if (status === `success`) {
+        if (loginStatus === `success`) {
           const {
-            data: { message, token },
+            status, data: { message, token, success },
           } = response;
           const authState = {
             loggedInUser: email,
             token,
           };
+          if (status === 201 && success) {
+            authDispatch({
+              type: `LOGIN_USER`,
+              payload: authState,
+            });
 
-          authDispatch({
-            type: `LOGIN_USER`,
-            payload: authState,
-          });
+            localStorage.setItem(`token`, JSON.stringify(authState))
+            showToast({
+              toastDispatch,
+              element: (
+                <ToastMessage message={message} videoId={token} />
+              ),
 
-          localStorage.setItem(`token`, JSON.stringify(authState))
-          showToast({
-            toastDispatch,
-            element: (
-              <ToastMessage message={message} videoId={token} />
-            ),
-
-            videoId: token,
+              videoId: token,
 
 
-          })
-          setupAuthHeaderForServiceCalls(authState.token);
+            })
+            // setupAuthHeaderForServiceCalls(authState.token);
 
-          console.log(`state`, state);
+            console.log(`state`, state);
+
+          } else {
+            showToast({
+              toastDispatch,
+              element: (
+                <ToastMessage message={message} videoId={token} />
+              ),
+
+              videoId: token,
+
+
+            })
+          }
 
           (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
         }
       }
     } catch (error) {
-      console.error(`error `, error)
+      console.error(`error 138`, error)
+      const id = uuid();
+      showToast({
+        toastDispatch,
+        element: (
+          <ToastMessage message={`${error}`} videoId={id} />
+        ),
+
+        videoId: id,
+
+
+      });
+
     }
 
 
 
-  }, [status]);
+  }, [loginStatus]);
 
   useEffect(() => {
     try {
@@ -140,27 +167,46 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       } else {
         if (signupStatus === `success`) {
           const {
-            data: { message, token, user },
+            status, data: { message, token, user, success },
           } = signupResponse;
           const authState = {
             loggedInUser: user?.email,
             token,
           };
 
-          authDispatch({
-            type: `LOGIN_USER`,
-            payload: authState,
-          });
 
-          localStorage.setItem(`token`, JSON.stringify(authState))
-          setupAuthHeaderForServiceCalls(authState.token);
+          if (status === 201 && success) {
+            authDispatch({
+              type: `LOGIN_USER`,
+              payload: authState,
+            });
+
+            localStorage.setItem(`token`, JSON.stringify(authState))
+            // setupAuthHeaderForServiceCalls(authState.token);
+
+          } else {
+            console.log(`error should come here `, message)
+
+            showToast({
+              toastDispatch,
+              element: (
+                <ToastMessage message={`${message}`} videoId={token} />
+              ),
+
+              videoId: token,
+
+
+            });
+          }
 
 
           (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
         }
       }
     } catch (error) {
-      console.error(`error `, error)
+      console.error(`error 207`, error)
+    
+
     }
 
 
@@ -199,11 +245,13 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     executeSignup({ userSignUpCredentials })
   }, [executeSignup])
 
+ useEffect(() => {
   setupAuthExceptionHandler({ navigate, logout });
+ },[])
 
   return (
     <AuthContext.Provider
-      value={{ authState, loginUserWithCredentials, status, signUpUserWithCredentials, logout }}
+      value={{ authState, loginUserWithCredentials, loginStatus, signUpUserWithCredentials, logout, signupStatus }}
     >
       {children}
     </AuthContext.Provider>

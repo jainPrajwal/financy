@@ -236,7 +236,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                         <div className="p-md">
 
 
-                            <div className={`${cardTitle} text-white text-bold`}>
+                            <div className={`${cardTitle} text-white`}>
                                 {video.title}
                             </div>
                             <div className={`${iconDelete}`}>

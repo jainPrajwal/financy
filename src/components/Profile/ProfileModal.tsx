@@ -81,10 +81,10 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
 
 
                                         <input
-                                            value={userProfile?.name}
+                                            value={userDefinedDetails?.name || ``}
                                             onChange={(e) => setUserDefinedDetails(prevState => ({ ...prevState, name: e.target.value }))}
                                             type="text" placeholder="Enter new name"
-                                            className={`${inputStyle} p-lg w-100`}
+                                            className={`${inputStyle} p-lg w-100 fs-2`}
                                         />
 
                                     </ModalRow>
@@ -94,7 +94,7 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
                                         <input
                                             readOnly
                                             type="text" value={userProfile?.gender}
-                                            className={`${inputStyle} p-lg w-100`}
+                                            className={`${inputStyle} p-lg w-100 fs-2`}
                                         />
 
                                     </ModalRow>
@@ -104,7 +104,7 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
                                         <input type="text"
                                             readOnly
                                             value={userProfile?.gender}
-                                            className={`${inputStyle} p-lg w-100`}
+                                            className={`${inputStyle} p-lg w-100 fs-2`}
                                         />
 
                                     </ModalRow>
@@ -114,7 +114,7 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
                                         <input type="text"
                                             readOnly
                                             value={userProfile?.email}
-                                            className={`${inputStyle} p-lg w-100`}
+                                            className={`${inputStyle} p-lg w-100 fs-2`}
                                         />
 
                                     </ModalRow>

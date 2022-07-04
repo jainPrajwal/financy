@@ -35,6 +35,10 @@ import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { copyVideoLink } from "../../utils/copyVideoLink";
+import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
+import { RiShieldFlashFill } from "react-icons/ri";
+import { Payment } from "../../constants/payment.types";
+import { Premium } from "../../components/Premium/Premium";
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -73,11 +77,15 @@ export const SingleVideoPage = () => {
         wrapperLogo,
         hamburgerMenu,
         iconButton,
+        btnGetPremium,
+        
     } = common;
     const [sidebar, setSidebar] = useState(false);
 
     const { videoId } = useParams();
     const { videosState, videosDispatch } = useVideos();
+    const { userProfile, setUserProfile } = useProfile();
+    const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
 
     const [userDefinedNote, setUserDefinedNote] = useState<UserDefinedNote | null>(null);
     const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null)
@@ -92,7 +100,7 @@ export const SingleVideoPage = () => {
         notes: []
     });
 
-    const { userProfile } = useProfile();
+
 
     const { playlistsState, playlistsDispatch } = usePlaylists();
 
@@ -624,7 +632,10 @@ export const SingleVideoPage = () => {
                     <div className={`${wrapperContainer}`}>
                         <Sidebar />
                         <div className={`${mainContainer}`}>
-                            <div className={`${playerWrapper}`}>
+                            {video.isPremium  && !userProfile?.isAPremiumMember ? <>
+                                <Premium header={`Get Premium To Watch This Video!`}/>
+
+                            </> : <div className={`${playerWrapper}`}>
                                 <ReactPlayer
                                     className={`${reactPlayer}`}
                                     url={`https://www.youtube.com/watch?v=${video.url}`}
@@ -702,7 +713,7 @@ export const SingleVideoPage = () => {
 
                                     }}
                                 />
-                            </div>
+                            </div>}
                             <div className={`${detailsAndActions}  d-flex mt-lg p-sm`}>
                                 <div
                                     className={`${publisherDetails} d-flex ai-center pt-lg w-100`}
@@ -714,10 +725,10 @@ export const SingleVideoPage = () => {
                                         />
                                     </div>
                                     <div
-                                        className={`${publisherName} text-bold text-white pl-lg fs-2`}
+                                        className={`${publisherName}  text-white pl-lg fs-2`}
                                     >
                                         <div className="d-flex ai-center">
-                                            <div>Prasad Lendwe</div>
+                                            <div>{video.publisher.name}</div>
                                             <span
                                                 style={{ color: `var(--tube-theme-primary)` }}
                                                 className="pl-sm"
@@ -901,7 +912,7 @@ export const SingleVideoPage = () => {
                                 <div
                                     className={`${videoMain} d-flex jc-center f-direction-col p-sm`}
                                 >
-                                    <div className={`${videoHeader} text-white text-bold fs-3`}>
+                                    <div className={`${videoHeader} text-white fs-3`}>
                                         The Men Who Built India | S1 E3- The Cotton Supremacy | Convey
                                     </div>
                                     <div
@@ -986,7 +997,7 @@ export const SingleVideoPage = () => {
                                             <textarea
                                                 required
                                                 value={userDefinedNote?.description || ``}
-                                                name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `320px`, }}
+                                                name="notes" id="notes" rows={10} style={{ resize: `none`, width: `100%`, maxWidth: `360px`, }}
                                                 className={`${notesTextarea} w-100 `}
                                                 placeholder="Write your notes here..."
                                                 onChange={(e) => {

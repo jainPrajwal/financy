@@ -1,10 +1,13 @@
 .relatedContainer {
-  background-color: #211e27;
   flex-shrink: 3;
   padding: 12px;
   border-radius: 12px;
   position: relative;
   width: 100%;
+}
+
+.relatedWrapper {
+  background-color: #211e27;
 }
 
 .exploreContainer {
@@ -17,7 +20,7 @@
   margin-left: 100px;
   overflow: hidden;
 }
- 
+
 .statsOverlay {
   position: absolute;
 
@@ -186,10 +189,6 @@
   justify-content: center;
 }
 
-.editProfileButton:focus {
-  color: white;
-  background-color: var(--tube-theme-primary);
-}
 
 @media (max-width: 1140px) {
   .headerContainer {

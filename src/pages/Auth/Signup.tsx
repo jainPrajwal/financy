@@ -86,31 +86,32 @@ export const Signup = () => {
 
 
     return (
-        <>
+        <div className="p-1">
             <div
-                className={`p-1`}
-                style={{ height: `100vh`, display: `flex`, flexDirection: `column` }}
+                className={`d-flex jc-center ai-center`}
             >
-                <div
-                    className={`d-flex jc-center ai-center`}
-                >
-                    <div style={{ width: `48px`, height: `48px` }}>
-                        <img
-                            src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
-                            alt="logo"
-                            width={`100%`}
-                            height={`100%`}
-                        />
-                    </div>
-                    <div className="header-secondary text-white">Financy</div>
+                <div style={{ width: `48px`, height: `48px` }}>
+                    <img
+                        src="https://res.cloudinary.com/dmk11fqw8/image/upload/v1653841636/Tube_Stox-removebg-preview_ezjluc_qkz2zk.png"
+                        alt="logo"
+                        width={`100%`}
+                        height={`100%`}
+                    />
                 </div>
-                <div
-                    className={`white-space-nowrap header-secondary text-white text-center text-bold p-lg m-lg`}
-                >
-                    Take Your First Step Towards Successful Investment Now!!
-                </div>
+                <div className="header-secondary text-white">Financy</div>
+            </div>
+            <div
+                className={`white-space-nowrap header-secondary text-white text-center text-bold p-lg m-lg`}
+            >
+                Take Your First Step Towards Successful Investment Now!!
+            </div>
+            <div
+               className={`${signinForm} p-1`}
+                
+            >
+
                 <form
-                    className={`${signinForm}`}
+                   
                     onSubmit={(e) => {
                         e.preventDefault();
                         console.log(`Sign Up succesful!`, form);
@@ -505,7 +506,7 @@ export const Signup = () => {
 
 
             </div>
-        </>
+        </div>
     );
 };
 

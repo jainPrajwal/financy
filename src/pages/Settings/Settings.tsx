@@ -22,10 +22,12 @@ import { getPaymentDetailsService } from "../../services/payment/getPaymentDetai
 import { Video } from "../../constants/videos.types";
 import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
 import { Navbar } from "../../components/Navbar/Navbar";
-import { RiShieldFlashFill } from "react-icons/ri";
+import { RiShieldFlashFill, RiVipCrown2Fill } from "react-icons/ri";
 import { getTotalViewsOnPublishedVideos } from "../../utils/Videos/getTotalViewsOnPublishedVideos";
 import { getTotallikesOnPublishedVideos } from "../../utils/Videos/getTotalLikesOnPublishedVideos";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
+import { Premium } from "../../components/Premium/Premium";
+
 
 ChartJS.register(ArcElement);
 ChartJS.register([Tooltip]);
@@ -56,7 +58,8 @@ export const Settings = () => {
 
         wrapperLogo,
         hamburgerMenu,
-        btnGetPremium
+        btnGetPremium,
+        iconButton
     } = common;
     const {
         settingsWrapperContainer,
@@ -68,14 +71,16 @@ export const Settings = () => {
         statsOverlay,
         doughnutWrapper,
         editProfileIcon,
-        editProfileButton
+        editProfileButton,
+        relatedWrapper
     } = settingsStyle;
     const [sidebar, setSidebar] = useState(false);
 
     const { userProfile, setUserProfile } = useProfile();
+    const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
     const { playlistsState } = usePlaylists();
     const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
-
+    
 
     const publishedVideos = userProfile?.publishedVideos;
     const views = publishedVideos?.reduce(getTotalViewsOnPublishedVideos, initialState)
@@ -114,36 +119,10 @@ export const Settings = () => {
         ]
     };
 
-    const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
+    
 
 
-    const { execute, response, status } = useAsync(getPaymentDetailsService, false, null);
-    useEffect(() => {
-        try {
-            if (!paymentDetails) {
-                execute(null);
-            }
-        } catch (error) {
-            console.error(`error `, error)
-        }
-
-    }, []);
-
-    useEffect(() => {
-
-        try {
-            if (status === `success`) {
-                const { data: { payment } } = response;
-                setPaymentDetails({
-                    orderId: payment[0].order_id,
-                    paymentId: payment[0].payment_id
-                })
-            }
-        } catch (error) {
-            console.error(`error`, error);
-
-        }
-    }, [status, response])
+  
     console.log(publishedVideos)
 
     return (
@@ -151,6 +130,7 @@ export const Settings = () => {
             {
                 !ismodalHidden && <ProfileModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} />
             }
+          
             <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${exploreContainer}`}>
@@ -223,111 +203,140 @@ export const Settings = () => {
                                             Itaque, corporis. Rerum velit illo suscipit, voluptates quod
                                         </div>
                                     </div>
-                                    <div>
-                                        Dont Cheat us! We know you well!
-                                        <span role={`img`}>👀</span>
-                                        <button className="btn btn-primary">
+                                    <div className="d-flex ai-center f-direction-col jc-center">
+                                        <div className="header-secondary">
+                                            <div className="text-center">
+                                                Dont cheat us!<span role={`img`}>👀</span>
+                                            </div>
 
-                                        </button>
+                                            <div>
+
+                                                We take immense efforts to gather stats about your videos!
+                                            </div>
+
+                                        </div>
+                                        <button
+                                            onClick={() => displayRazorPayModal({ setPaymentDetails, setUserProfile })}
+                                            className={`btn ${btnGetPremium} my-1 `}>
+                                            <span className="mr-md">
+                                                <RiShieldFlashFill size={20} />
+                                            </span>
+                                            {`get premium`.toUpperCase()}</button>
                                     </div>
                                 </>
                             }
                         </div>
-
                         <div className={`${relatedContainer}`}>
-                            <div className={`${editProfileIcon}`}>
-                                <button className={`btn ${editProfileButton}`} onClick={() => setIsModalHidden(false)}>
-                                    <MdEditNote size={28} />
-                                </button>
-                            </div>
-                            <div className={`header header-secondary text-white text-center`}>
-                                Profile
-                            </div>
-                            <div
-                                className={`${"publisherDetails"} d-flex ai-center jc-center f-direction-col`}
-                            >
-                                <div className={`${publisherAvatar}`}>
-                                    <Avatar
-                                        isVerified
-                                        showStatus
-                                        size={`lg`}
-                                        imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
-                                    />
+                            <div className={`${relatedWrapper} mb-lg p-1`}>
+                                <div className={`${editProfileIcon} ${iconButton}`}>
+                                    <button className={`btn ${editProfileButton}`} onClick={() => setIsModalHidden(false)}>
+                                        <MdEditNote size={28} />
+                                    </button>
                                 </div>
-                                <div className={`${"publisherName"} text-bold text-white pl-lg `}>
-                                    <div className="d-flex ai-center pt-sm">
-                                        <div>{userProfile?.name}</div>
+                                <div className={`header header-secondary text-white text-center`}>
+                                    Profile
+                                </div>
+                                <div
+                                    className={`${"publisherDetails"} d-flex ai-center jc-center f-direction-col`}
+                                >
+                                    <div className={`${publisherAvatar}`}>
+                                        <Avatar
+                                            isVerified
+                                            showStatus
+                                            size={`lg`}
+                                            imageUrl={userProfile?.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
+                                        />
+                                    </div>
+                                    <div className="d-flex ai-center ml-md">
+                                        <div>{userProfile.name}</div>
+                                        <span
+                                            style={{ color: `gold` }}
+                                            className="pl-sm"
+                                        >
+                                            {userProfile.isAPremiumMember && <RiVipCrown2Fill size={20} />}
+                                        </span>
                                     </div>
                                 </div>
+                                <div className={`text-center mt-lg`}>Complete Profile</div>
+                                <div
+                                    className={`d-flex jc-space-around gap-10 m-lg`}
+                                    style={{
+                                        width: "80%",
+                                        margin: "0 auto"
+                                    }}
+                                >
+                                    <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
+                                        <span className={`text-bold fs-1`}>Gender</span>
+                                        <span> {userProfile?.gender} </span>
+                                    </div>
+                                    <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
+                                        <span className={`text-bold fs-1`}>Birth Date</span>
+                                        <span> 02-10-1999 </span>
+                                    </div>
+                                </div>
+                                <div className={`text-center mt-lg`}>Overall Stats</div>
+                                <div
+                                    className={`d-flex jc-space-around gap-10 mt-lg`}
+                                    style={{
+                                        width: "80%",
+                                        margin: "0 auto"
+                                    }}
+                                >
+                                    <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
+                                        <span className={`text-bold fs-1`}>Saved</span>
+                                        <span> {
+                                            playlistsState.customPlaylistsData.customPlaylists.reduce((acc, current) => {
+                                                return acc += current.videos.length
+                                            }, 0)
+
+                                        } </span>
+                                    </div>
+                                    <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
+                                        <span className={`text-bold fs-1`}>Liked</span>
+                                        <span> {playlistsState.likedVideosData.likedVideos.videos.length} </span>
+                                    </div>
+                                    <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
+                                        <span className={`text-bold fs-1`}>Uploaded</span>
+                                        <span> {userProfile?.publishedVideos.length} </span>
+                                    </div>
+                                </div>
+
+                                {userProfile.isAPremiumMember ?
+                                    <div className="d-flex ai-center f-direction-col my-1">
+                                        <div className="header-tertiary text-bold my-md">Payment Details</div>
+                                        <ul >
+                                            <li style={{ listStyle: `initial` }} className={`py-sm`}>
+                                                Order Id: {`${paymentDetails?.orderId}`}
+                                            </li>
+                                            <li style={{ listStyle: `initial` }} className={`py-sm`}>
+                                                Payment Id: {`${paymentDetails?.paymentId}`}
+                                            </li>
+                                        </ul>
+
+                                    </div>
+
+                                    : <div>
+                                        {/* <button
+                                            onClick={() => displayRazorPayModal({ setPaymentDetails, setUserProfile })}
+                                            className={`btn ${btnGetPremium} my-1 `}>
+                                            <span className="mr-md">
+                                                <RiShieldFlashFill size={20} />
+                                            </span>
+                                            {`get premium`.toUpperCase()}</button> */}
+                                    </div>}
+
+
                             </div>
-                            <div className={`text-center mt-lg`}>Complete Profile</div>
-                            <div
-                                className={`d-flex jc-space-around gap-10 m-lg`}
-                                style={{
-                                    width: "80%",
-                                    margin: "0 auto"
-                                }}
-                            >
-                                <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
-                                    <span className={`text-bold fs-1`}>Gender</span>
-                                    <span> {userProfile?.gender} </span>
-                                </div>
-                                <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
-                                    <span className={`text-bold fs-1`}>Birth Date</span>
-                                    <span> 02-10-1999 </span>
-                                </div>
+
+                            <div className={`${relatedWrapper}`}>
+
+                               <Premium header="Premium Benefits"/>
+
                             </div>
-                            <div className={`text-center mt-lg`}>Overall Stats</div>
-                            <div
-                                className={`d-flex jc-space-around gap-10 mt-lg`}
-                                style={{
-                                    width: "80%",
-                                    margin: "0 auto"
-                                }}
-                            >
-                                <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
-                                    <span className={`text-bold fs-1`}>Saved</span>
-                                    <span> {
-                                        playlistsState.customPlaylistsData.customPlaylists.reduce((acc, current) => {
-                                            return acc += current.videos.length
-                                        }, 0)
-
-                                    } </span>
-                                </div>
-                                <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
-                                    <span className={`text-bold fs-1`}>Liked</span>
-                                    <span> {playlistsState.likedVideosData.likedVideos.videos.length} </span>
-                                </div>
-                                <div className={`d-flex f-direction-col ai-center gap-10 mt-lg`}>
-                                    <span className={`text-bold fs-1`}>Uploaded</span>
-                                    <span> {userProfile?.publishedVideos.length} </span>
-                                </div>
-                            </div>
-
-                            {userProfile.isAPremiumMember ?
-                                <div className="d-flex ai-center f-direction-col my-1">
-                                    <div className="header-tertiary text-bold my-md">Payment Details</div>
-                                    <ul >
-                                        <li style={{ listStyle: `initial` }} className={`py-sm`}>
-                                            Order Id: {`${paymentDetails?.orderId}`}
-                                        </li>
-                                        <li style={{ listStyle: `initial` }} className={`py-sm`}>
-                                            Payment Id: {`${paymentDetails?.paymentId}`}
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                                : <div>
-                                    <button
-                                        onClick={() => displayRazorPayModal({ setPaymentDetails, setUserProfile })}
-                                        className={`btn ${btnGetPremium} my-1 `}>
-                                        <span>
-                                            <RiShieldFlashFill size={20} />
-                                        </span>
-                                        {`get premium`.toUpperCase()}</button>
-                                </div>}
                         </div>
+
+
+
                     </div>
                 }
 
