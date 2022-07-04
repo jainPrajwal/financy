@@ -402,13 +402,13 @@
   }
 
   .iconButton {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
   }
 
   .iconButtonLike {
-    width: inherit;
-    height: inherit;
+    width: 36px;
+    height: 36px;
   }
 
   .chip,

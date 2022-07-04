@@ -11,7 +11,7 @@ export const signupService = async ({
     const response = await axios.post(`${BASE_API}/signup`, {
       user: userSignUpCredentials,
     });
-    console.log(`returning response`, response)
+    
     return response;
   } catch (error) {
     console.error(`somehting went wrong while signing up the user `, error);

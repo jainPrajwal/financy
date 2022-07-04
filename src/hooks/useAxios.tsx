@@ -26,10 +26,8 @@ const useAsync = (
 
         try {
           const responseFromAsyncFunction = await asyncFunction(params);
-          console.log(
-            `returning response from useAsync asyncFunction`,
-            responseFromAsyncFunction
-          );
+          
+           
           setResponse(responseFromAsyncFunction);
           setStatus(`success`);
         } catch (error) {

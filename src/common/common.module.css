@@ -125,7 +125,7 @@
 
 .premiumWrapper {
   background-color: #211e27;
-  
+
 }
 
 .hamburgerMenu {
@@ -177,6 +177,31 @@
 
 .inputStyle:focus {
   border: 1px solid rgb(76, 76, 255);
+}
+
+.editProfileIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.editProfileButton {
+  background-color: transparent;
+  padding: 4px;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconDelete {
+  /* position: absolute;
+  bottom: 5px;
+  right: 5px; */
+  color: var(--tube-theme-error);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 860px) {

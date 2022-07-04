@@ -24,8 +24,8 @@ import { useProfile } from "../../hooks/useProfile";
 import { Video } from "../../constants/videos.types";
 import { default as svp } from "./SingleVideoPage.module.css";
 import { default as common } from "../../common/common.module.css"
-import { MdMenu, MdOutlineWatchLater, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
-import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { MdEditNote, MdMenu, MdOutlineWatchLater, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
+import { IoMdHeart, IoMdHeartEmpty, IoMdTrash } from "react-icons/io";
 import ReactPlayer from "react-player/youtube"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
@@ -39,6 +39,7 @@ import { displayRazorPayModal } from "../../services/payment/displayRazorpayModa
 import { RiShieldFlashFill } from "react-icons/ri";
 import { Payment } from "../../constants/payment.types";
 import { Premium } from "../../components/Premium/Premium";
+import { deleteNotesService } from "../../services/notes/deleteNoteService";
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -78,17 +79,21 @@ export const SingleVideoPage = () => {
         hamburgerMenu,
         iconButton,
         btnGetPremium,
+        editProfileIcon,
+        editProfileButton,
+        btnTrash,
+        iconDelete
 
     } = common;
     const [sidebar, setSidebar] = useState(false);
 
     const { videoId } = useParams();
     const { videosState, videosDispatch } = useVideos();
-    const { userProfile, setUserProfile } = useProfile();
-    const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
+    const { userProfile } = useProfile();
+
 
     const [userDefinedNote, setUserDefinedNote] = useState<UserDefinedNote | null>(null);
-    const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null)
+
     const [editNote, setEditNote] = useState<{
         isEditNote: Boolean,
         noteId: string | null
@@ -134,6 +139,8 @@ export const SingleVideoPage = () => {
     const { execute: executeGetNotesService, status: getNotesStatus, response: getNotesResponse } = useAsync(getNotesService, false, null);
 
     const { execute: executeEditNotesService, status: editNotesStatus, response: editNotesResponse } = useAsync(editNotesService, false, null);
+
+    const { execute: executeDeleteNoteService, status: deleteNoteStatus, response: deleteNoteResponse } = useAsync(deleteNotesService, false, null);
 
 
     const video = videosState?.videos?.find(video => video._id === videoId);
@@ -535,7 +542,50 @@ export const SingleVideoPage = () => {
             console.error(`error`, error);
 
         }
-    }, [saveNotesStatus, saveNotesResponse])
+    }, [saveNotesStatus, saveNotesResponse]);
+
+    useEffect(() => {
+        try {
+            if (deleteNoteStatus === `success`) {
+                const { status, data: { message, note, success } } = deleteNoteResponse;
+
+                if (status === 200 && success) {
+                    notesDispatch({
+                        type: `DELETE_NOTE`,
+                        payload: {
+                            noteId: note._id
+                        }
+                    })
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
+
+                        videoId: videoId || `default`,
+
+                    })
+                } else {
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={videoId || `default`} />
+                        ),
+
+                        videoId: videoId || `default`,
+                        type: `danger`
+
+                    })
+                }
+
+
+            }
+        } catch (error) {
+            console.error(`error`, error);
+
+        }
+    }, [deleteNoteStatus, deleteNoteResponse])
+
 
     useEffect(() => {
         try {
@@ -609,7 +659,7 @@ export const SingleVideoPage = () => {
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-    console.log(` notesData.notes.length > 0 &&`, notesData.notes.length)
+    
 
     if (status === `loading`) {
         return <div className="d-flex ai-center jc-center h-100 w-100">
@@ -950,7 +1000,7 @@ export const SingleVideoPage = () => {
                                 <form className="d-flex ai-center" style={{ gap: `24px` }}
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        console.log(userDefinedNote)
+                                        
                                         setUserDefinedNote({
                                             description: ``,
                                             title: ``
@@ -1017,16 +1067,49 @@ export const SingleVideoPage = () => {
                                     <span className="w-100 h-100 d-flex jc-center">
                                         <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
                                     </span>
-                                    : <>{notesData.notes.length > 0 && <div className={`${popular} my-1 `}>
+                                    : <>{notesData.notes.length > 0 && <div className={`${popular} my-1 pos-rel`}>
                                         {
 
                                             notesData.notes.map(note => {
-                                                return <div key={note._id}>
+                                                return <div key={note._id} >
+                                                    <div className={`${editProfileIcon} ${iconButton}`} style={{ top: `0px`, right: `0px` }}>
+                                                        <button
+                                                            className={`btn ${editProfileButton}`}
+
+                                                            onClick={() => {
+                                                                setEditNote(prevState => ({ ...prevState, isEditNote: true, noteId: note._id }));
+                                                                setUserDefinedNote({
+                                                                    title: note.title,
+                                                                    description: note.description
+                                                                })
+                                                            }
+
+                                                            }>
+                                                            <MdEditNote size={28} />
+                                                        </button>
+                                                    </div>
                                                     <div className={`fs-3 mb-lg`}>{note.title}</div>
                                                     <div className="">
                                                         {
                                                             note.description
                                                         }
+                                                    </div>
+                                                    <div className={`${iconDelete}`}>
+                                                        <button className={`btn ${btnTrash}`}
+                                                            onClick={() => {
+                                                                executeDeleteNoteService({
+                                                                    noteId: note._id,
+                                                                    videoId: video._id
+                                                                })
+                                                            }}
+                                                        >
+                                                            <span>
+                                                                {" "}
+                                                                <IoMdTrash size={24} />{" "}
+                                                            </span>{" "}
+
+                                                        </button>
+
                                                     </div>
                                                 </div>
                                             })

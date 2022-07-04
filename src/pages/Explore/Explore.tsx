@@ -22,6 +22,7 @@ import { Navbar } from "../../components/Navbar/Navbar";
 import { SortBy } from "../../components/SortBy/SortBy";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
+import { useTitle } from "../../hooks/useTitle";
 
 export const Explore = () => {
   const {
@@ -62,6 +63,7 @@ export const Explore = () => {
 
 
   useInfiniteScroll({ lastElement, setLastElement });
+  useTitle({ title: `Explore` })
 
   // const relatedVideos = videosState.videos
 
@@ -149,7 +151,7 @@ export const Explore = () => {
           const filterBy = (e.target as HTMLButtonElement).value;
           const appliedFilter = searchParams.get(`filterBy`);
 
-          console.log(`clearing`, searchParams.get(`filterBy`))
+          
           if (filterBy === CLEAR_ALL.toLowerCase()) {
             searchParams.delete(`filterBy`);
             searchParams.delete(`sortBy`);
@@ -157,7 +159,7 @@ export const Explore = () => {
           }
 
           else if (filterBy) {
-            console.log(`setting`)
+            
             if (appliedFilter === filterBy) {
 
               searchParams.delete(`filterBy`);

@@ -7,6 +7,7 @@ import { UserLoginCredentials } from "../../constants/auth.types";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
+import { useTitle } from "../../hooks/useTitle";
 
 
 const Login = () => {
@@ -58,7 +59,7 @@ const Login = () => {
   const { loginUserWithCredentials, loginStatus } = useAuth();
 
 
-  const LoginHandler = async () => { };
+  useTitle({ title: `Login` })
 
   return (
     <div className="p-1">
@@ -90,7 +91,7 @@ const Login = () => {
 
           onSubmit={(e) => {
             e.preventDefault();
-            
+
             if (form.isFormValid) {
 
               loginUserWithCredentials({

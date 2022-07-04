@@ -18,6 +18,7 @@ import { useVideos } from "../../hooks/useVideos";
 import { Video } from "../../constants/videos.types";
 import { PlaylistsCard } from "../../components/PlaylistsCard/PlaylistsCard";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { Fallback } from "../../components/Fallback/Fallback";
 
 export const Playlists = () => {
     const { playlistsState } = usePlaylists();
@@ -49,7 +50,7 @@ export const Playlists = () => {
 
     return (
         <>
-    <Navbar setSidebar={setSidebar} />
+            <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${historyContainer}`}>
                 <div
@@ -65,9 +66,9 @@ export const Playlists = () => {
 
                         {
                             playlistsState.customPlaylistsData.loading === `loading` ? <Loader /> :
-                                playlistsState.customPlaylistsData.customPlaylists.map((customPlaylist: Playlist, index: number) => {
+                                playlistsState.customPlaylistsData.customPlaylists.length > 0 ? playlistsState.customPlaylistsData.customPlaylists.map((customPlaylist: Playlist, index: number) => {
                                     return <PlaylistsCard playlist={customPlaylist} key={customPlaylist._id} />
-                                })
+                                }) : <Fallback fallbackTitle="No Playlist Found..!" />
                         }
 
                     </div>

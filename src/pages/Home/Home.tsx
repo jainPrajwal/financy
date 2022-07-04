@@ -94,7 +94,7 @@ export const Home = () => {
     }, [])
 
 
-    console.log(`mostWatched`, mostWatched)
+    
     return (
         <>
             <Navbar setSidebar={setSidebar} />

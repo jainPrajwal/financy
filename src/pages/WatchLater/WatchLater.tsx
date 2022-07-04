@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MdMenu } from "react-icons/md";
 import { default as common } from "../../common/common.module.css";
 
-import { Video } from "../../constants/videos.types";
+import { NO_VIDEOS_FOUND, Video } from "../../constants/videos.types";
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { default as historyStyles } from "../History/History.module.css";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
@@ -12,6 +12,7 @@ import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVideoCard";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
+import { Fallback } from "../../components/Fallback/Fallback";
 export const WatchLater = () => {
 
   const {
@@ -48,11 +49,11 @@ export const WatchLater = () => {
 
 
             {playlistsState.watchLaterVideosData.loading === `loading` ? <><FlexContainer><Loader /></FlexContainer></> :
-              playlistsState.watchLaterVideosData.watchLaterVideos.videos.map((video: Video) => {
+              playlistsState.watchLaterVideosData.watchLaterVideos.videos.length > 0 ? playlistsState.watchLaterVideosData.watchLaterVideos.videos.map((video: Video) => {
                 return <PlaylistsVideoCard
                   key={video._id} video={video}
                   playlistId={null} />
-              })
+              }) : <Fallback fallbackTitle={`${NO_VIDEOS_FOUND}`} />
             }
 
           </div>

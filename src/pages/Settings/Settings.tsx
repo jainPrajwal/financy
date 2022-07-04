@@ -59,7 +59,8 @@ export const Settings = () => {
         wrapperLogo,
         hamburgerMenu,
         btnGetPremium,
-        iconButton
+        iconButton, editProfileIcon,
+        editProfileButton,
     } = common;
     const {
         settingsWrapperContainer,
@@ -70,8 +71,7 @@ export const Settings = () => {
         exploreContainer,
         statsOverlay,
         doughnutWrapper,
-        editProfileIcon,
-        editProfileButton,
+
         relatedWrapper
     } = settingsStyle;
     const [sidebar, setSidebar] = useState(false);
@@ -80,7 +80,7 @@ export const Settings = () => {
     const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
     const { playlistsState } = usePlaylists();
     const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
-    
+
 
     const publishedVideos = userProfile?.publishedVideos;
     const views = publishedVideos?.reduce(getTotalViewsOnPublishedVideos, initialState)
@@ -119,18 +119,18 @@ export const Settings = () => {
         ]
     };
 
+
+
+
+
     
-
-
-  
-    console.log(publishedVideos)
 
     return (
         <>
             {
                 !ismodalHidden && <ProfileModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} />
             }
-          
+
             <Navbar setSidebar={setSidebar} />
             <MobileSidebar status={{ sidebar, setSidebar }} />
             <div className={`${exploreContainer}`}>
@@ -330,7 +330,7 @@ export const Settings = () => {
 
                             <div className={`${relatedWrapper}`}>
 
-                               <Premium header="Premium Benefits"/>
+                                <Premium header="Premium Benefits" />
 
                             </div>
                         </div>

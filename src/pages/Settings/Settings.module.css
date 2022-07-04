@@ -174,20 +174,8 @@
   background-color: var(--tube-theme-error);
 }
 
-.editProfileIcon {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
 
-.editProfileButton {
-  background-color: transparent;
-  padding: 4px;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 
 @media (max-width: 1140px) {

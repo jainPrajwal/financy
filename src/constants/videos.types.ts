@@ -3,6 +3,7 @@ export type ProviderProps = {
 };
 type gender = [`male`, `female`, `others`];
 export type loading = `idle` | `success` | `loading` | `error`;
+export const NO_VIDEOS_FOUND = `No Videos Found..!`;
 export const QUERY_LIMIT = 10;
 
 export type ThumbnailObject = {

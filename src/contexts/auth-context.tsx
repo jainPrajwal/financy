@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             })
             // setupAuthHeaderForServiceCalls(authState.token);
 
-            console.log(`state`, state);
+            
 
           } else {
             showToast({
@@ -185,7 +185,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             // setupAuthHeaderForServiceCalls(authState.token);
 
           } else {
-            console.log(`error should come here `, message)
+            
 
             showToast({
               toastDispatch,
@@ -241,7 +241,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
 
   const signUpUserWithCredentials = useCallback((userSignUpCredentials: signupUserCredentials) => {
-    console.log(`user`, userSignUpCredentials)
+    
     executeSignup({ userSignUpCredentials })
   }, [executeSignup])
 

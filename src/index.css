@@ -60,6 +60,9 @@
   color: #fee64f;
 }
 
+.pos-rel {
+  position: relative;
+}
 body::-webkit-scrollbar {
   width: 2px;
 }

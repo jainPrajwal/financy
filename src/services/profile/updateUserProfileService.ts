@@ -9,7 +9,7 @@ export const updateUserProfileService = async ({
     name: string;
   };
 }): Promise<AxiosResponse> => {
-    console.log(updatedProfile)
+    
   try {
     const response = await axios.post(`${BASE_API}/profile`, {
       profile: updatedProfile,

@@ -1,23 +1,25 @@
 import axios, { AxiosResponse } from "axios";
 import { BASE_API } from "../../constants/api";
-import { Video } from "../../constants/videos.types";
+import { Note } from "../../constants/notes.types";
+
 import { getErrorMessage } from "../../utils/getErrorMessage";
 
-export const updateVideoService = async ({
-  video,
+export const deleteNotesService = ({
   videoId,
+  noteId,
 }: {
-  video: Video | null;
   videoId: string;
+  noteId: string;
 }): Promise<AxiosResponse> => {
+ 
+ 
   try {
-    
-    const response = await axios.post(`${BASE_API}/videos/${videoId}`, {
-      video,
-    });
+    const response = axios.delete(
+      `${BASE_API}/videos/${videoId}/notes/${noteId}`
+    );
     return response;
   } catch (error) {
-    console.error(`somehting went wrong while updaing video`, error);
+    console.error(`something went wrong while saving notes`, error);
     throw new Error(getErrorMessage(error));
   }
 };

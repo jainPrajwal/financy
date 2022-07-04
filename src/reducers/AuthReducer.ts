@@ -28,7 +28,7 @@ export const actionMap = new Map<
 ]);
 
 export const AuthReducer = (state: AuthState, action: ACTION) => {
-  console.log(`auth reducer called`, action);
+  
   const mappedAction = actionMap.get(action.type);
 
   return mappedAction ? mappedAction(state, action) : state;

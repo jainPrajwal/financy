@@ -4,6 +4,7 @@ import { useState } from "react";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useTitle } from "../../hooks/useTitle";
 
 
 export const Signup = () => {
@@ -83,7 +84,7 @@ export const Signup = () => {
         }
     });
 
-
+    useTitle({ title: `Sign Up` })
 
     return (
         <div className="p-1">
@@ -106,15 +107,15 @@ export const Signup = () => {
                 Take Your First Step Towards Successful Investment Now!!
             </div>
             <div
-               className={`${signinForm} p-1`}
-                
+                className={`${signinForm} p-1`}
+
             >
 
                 <form
-                   
+
                     onSubmit={(e) => {
                         e.preventDefault();
-                        console.log(`Sign Up succesful!`, form);
+
                         if (form.isFormValid) {
 
                             signUpUserWithCredentials({

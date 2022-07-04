@@ -2,6 +2,7 @@ import {
   ACTION,
   ADD_TO_PLAYLIST,
   CREATE_PLAYLIST,
+  DELETE_PLAYLIST,
   REMOVE_FROM_PLAYLIST,
   SET_LOADING,
 } from "../constants/actions.types";
@@ -139,7 +140,7 @@ const actionMap = new Map([
       if (action.type === REMOVE_FROM_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `liked`:
-            console.log(` action.payload.video._id`,  action.payload.video._id)
+            
             return {
               ...state,
               likedVideosData: {
@@ -230,6 +231,23 @@ const actionMap = new Map([
           likedVideosData: {
             ...state.likedVideosData,
             loading: action.payload.loading,
+          },
+        };
+      }
+      return state;
+    },
+  ],
+  [
+    DELETE_PLAYLIST,
+    (state: PlaylistsState, action: ACTION) => {
+      if (action.type === DELETE_PLAYLIST) {
+        return {
+          ...state,
+          customPlaylistsData: {
+            ...state.customPlaylistsData,
+            customPlaylists: state.customPlaylistsData.customPlaylists.filter(
+              (playlist) => playlist._id !== action.payload.playlistId
+            ),
           },
         };
       }
