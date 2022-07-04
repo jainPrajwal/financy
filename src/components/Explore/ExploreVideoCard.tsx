@@ -391,7 +391,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                     style={{ color: `gold` }}
                                     className="pl-sm"
                                 >
-                                    {userProfile?.isAPremiumMember && <RiVipCrown2Fill size={20} />}
+                                    {video.publisher.isAPremiumMember && <RiVipCrown2Fill size={20} />}
                                 </span>
                             </div>
                         </div>
@@ -514,7 +514,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                         }}
 
                     >
-                         {likeStatus === `loading` ?
+                        {likeStatus === `loading` ?
                             <span className="w-100 h-100 d-flex jc-center">
                                 <Loader
                                     borderTopColor={`#ef4444`}
@@ -642,7 +642,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                                         style={{ color: `gold` }}
                                         className="pl-sm"
                                     >
-                                        {userProfile?.isAPremiumMember && <RiVipCrown2Fill size={20} />}
+                                        {video.publisher.isAPremiumMember && <RiVipCrown2Fill size={20} />}
                                     </span>
                                 </div>
                             </div>
