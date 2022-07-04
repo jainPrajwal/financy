@@ -123,6 +123,11 @@
   cursor: pointer;
 }
 
+.premiumWrapper {
+  background-color: #211e27;
+  
+}
+
 .hamburgerMenu {
   display: none;
 }
@@ -194,6 +199,7 @@
   .wrapperContainer {
     flex-wrap: wrap;
     margin: 0;
+    justify-content: center;
   }
 
   .nav {
@@ -212,4 +218,3 @@
   }
 
 }
-
