@@ -6,6 +6,7 @@
 .pnp.js
 relatedContainer.html
 .gitignore
+.vscode
 # testing
 /coverage
 
