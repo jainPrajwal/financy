@@ -64,7 +64,7 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
         >
           <div className={`${sideNav} d-flex f-direction-col ai-center`}>
             <div
-              className={`${userProfileWrapper} d-flex ai-center  mb-lg w-100`}
+              className={`${userProfileWrapper} d-flex ai-center  mb-lg w-100 p-lg`}
             >
               <div style={{ width: `36px`, height: `36px` }}>
                 <img
@@ -77,16 +77,16 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
               </div>
 
 
-              <div className="header-secondary ">Financy</div>
+              <div className="header-secondary">Financy</div>
 
 
             </div>
             <div
-              className={`${sideNavItemsWrapper} d-flex f-direction-col gap-10 mt-lg`}
+              className={`${sideNavItemsWrapper} d-flex f-direction-col gap-10 mt-lg pl-lg`}
             >
-              <div className="jc-center p-md f-direction-col ">
+              <div className="p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/home"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -96,9 +96,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   <span className=" ml-sm"> Home </span>
                 </NavLink>
               </div>
-              <div className="  jc-center p-md f-direction-col ">
+              <div className="  p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/explore"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -108,9 +108,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   <span className=" ml-sm"> Explore </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/trending"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -120,9 +120,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   <span className=" ml-sm"> Trending </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/history"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -132,9 +132,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   <span className=" ml-sm"> History </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/watchlater"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -146,9 +146,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/liked"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -161,9 +161,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                 </NavLink>
               </div>
 
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/upload"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -175,9 +175,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/playlists"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`
@@ -189,9 +189,9 @@ export const MobileSidebar = ({ status: { sidebar, setSidebar } }: any) => {
                   </span>
                 </NavLink>
               </div>
-              <div className=" jc-center p-md f-direction-col ">
+              <div className=" p-md f-direction-col w-100 ">
                 <NavLink
-                  className={`d-flex ai-center jc-center`}
+                  className={`d-flex ai-center jc-start`}
                   to="/settings"
                   style={({ isActive }) => ({
                     color: isActive ? `var(--tube-theme-primary)` : `inherit`

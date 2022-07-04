@@ -78,7 +78,7 @@ export const SingleVideoPage = () => {
         hamburgerMenu,
         iconButton,
         btnGetPremium,
-        
+
     } = common;
     const [sidebar, setSidebar] = useState(false);
 
@@ -632,8 +632,8 @@ export const SingleVideoPage = () => {
                     <div className={`${wrapperContainer}`}>
                         <Sidebar />
                         <div className={`${mainContainer}`}>
-                            {video.isPremium  && !userProfile?.isAPremiumMember ? <>
-                                <Premium header={`Get Premium To Watch This Video!`}/>
+                            {video.isPremium && !userProfile?.isAPremiumMember ? <>
+                                <Premium header={`Get Premium To Watch This Video!`} />
 
                             </> : <div className={`${playerWrapper}`}>
                                 <ReactPlayer
@@ -729,18 +729,10 @@ export const SingleVideoPage = () => {
                                     >
                                         <div className="d-flex ai-center">
                                             <div>{video.publisher.name}</div>
-                                            <span
-                                                style={{ color: `var(--tube-theme-primary)` }}
-                                                className="pl-sm"
-                                            >
-                                                <MdVerifiedUser size={20}
 
-                                                />
-                                            </span>
+
                                         </div>
-                                        <div className="text-gray fs-sm pt-sm">
-                                            1230213 subscribers
-                                        </div>
+
                                     </div>
                                 </div>
 

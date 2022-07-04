@@ -1,4 +1,4 @@
-import { Modal, ModalHeader, ModalFooter, ModalBody, ModalRow, ModalOverlay, ModalContainer } from "kaali-ui"
+import { Modal, ModalHeader, ModalFooter, ModalBody, ModalRow, ModalOverlay, ModalContainer, useToast } from "kaali-ui"
 import { useCallback, useEffect, useRef, useState } from "react";
 import { default as playlistModalStyles } from "./AddToPlaylistModal.module.css";
 import { MdClose, MdPlaylistAdd } from "react-icons/md"
@@ -14,6 +14,8 @@ import { Loader } from "kaali-ui"
 import { CheckboxWrapper } from "../CheckboxWrapper/CheckboxWrapper";
 import { Video } from "../../constants/videos.types";
 import { default as common } from "../../common/common.module.css";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../ToastMessage/ToastMessage";
 
 const UserPlaylist: UserDefinedPlaylist = {
     name: null,
@@ -39,7 +41,8 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     const { execute: executeCreatePlaylistService, status: createPlaylistServiceStatus, response: createPlaylistServiceResponse } = useAsync(createPlaylistService, false, null);
 
     useFocus(InputRef, showPlaylistInput);
-    useOnClickOutside(ModalRef, setIsModalHidden)
+    useOnClickOutside(ModalRef, setIsModalHidden);
+    const { toastDispatch } = useToast();
 
     const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden])
 
@@ -47,20 +50,37 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     useEffect(() => {
         try {
             if (createPlaylistServiceStatus === `success`) {
-                const { data: { playlist } } = createPlaylistServiceResponse
-                playlistsDispatch({
-                    type: CREATE_PLAYLIST,
-                    payload: {
-                        playlist
-                    }
-                })
-    
-                setnewPlaylistDetails(UserPlaylist)
+                const { data: { playlist, message, success }, status } = createPlaylistServiceResponse
+
+                if (status === 201 && success) {
+
+                    playlistsDispatch({
+                        type: CREATE_PLAYLIST,
+                        payload: {
+                            playlist
+                        }
+                    })
+
+                    setnewPlaylistDetails(UserPlaylist);
+                    showToast({
+                        toastDispatch,
+                        element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
+                        videoId: video._id,
+                        type: `success`
+                    })
+                } else {
+                    showToast({
+                        toastDispatch,
+                        element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
+                        videoId: video._id,
+                        type: `danger`
+                    })
+                }
             }
         } catch (error) {
             console.error(`error `, error)
         }
-      
+
     }, [createPlaylistServiceStatus, createPlaylistServiceResponse, playlistsDispatch])
 
 
