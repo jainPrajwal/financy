@@ -57,7 +57,3 @@ Financyy is a one stop video learning platform to learn finance.
     - REST API's
     - Encryption using brcypt
 
-
-## **Demo -**
-
-![bookwise](https://user-images.githubusercontent.com/58260342/161411579-b30b0a4a-37a7-4d9f-9c20-c8a8e182e8f5.gif)

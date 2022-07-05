@@ -21,10 +21,10 @@ export const ProfileProvider = ({ children }: ProviderProps) => {
     const [userProfile, setUserProfile] = useState<Profile | null>(null);
     useEffect(() => {
         try {
-            console.log(`user profile `, userProfile, `token `, authState.token)
+         
             if (!userProfile && authState.token) {
 
-                console.log(`executing get service profile `);
+             
                 executeGetUserProfile(null);
             }
         } catch (error) {

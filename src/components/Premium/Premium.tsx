@@ -29,11 +29,14 @@ export const Premium = ({ header }: { header: string }) => {
 
         try {
             if (status === `success`) {
-                const { data: { payment } } = response;
-                setPaymentDetails({
-                    orderId: payment[0].order_id,
-                    paymentId: payment[0].payment_id
-                })
+                const { status, data: { payment, success, message } } = response;
+                if (status === 200 && success && payment?.length > 0) {
+
+                    setPaymentDetails({
+                        orderId: payment[0].order_id,
+                        paymentId: payment[0].payment_id
+                    })
+                }
             }
         } catch (error) {
             console.error(`error`, error);

@@ -29,7 +29,7 @@ const UserPlaylist: UserDefinedPlaylist = {
 
 
 export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<boolean>>, video: Video }) => {
-    console.log(`add to playulist rendering `)
+    
     const { showInput, hideInput } = playlistModalStyles;
     const { inputStyle, } = common;
 
@@ -48,44 +48,6 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
     const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden])
 
-
-    // useEffect(() => {
-    //     try {
-    //         if (createPlaylistServiceStatus === `success`) {
-    //             const { data: { playlist, message, success }, status } = createPlaylistServiceResponse
-
-    //             if (status === 201 && success) {
-
-    //                 playlistsDispatch({
-    //                     type: CREATE_PLAYLIST,
-    //                     payload: {
-    //                         playlist
-    //                     }
-    //                 })
-
-    //                 setnewPlaylistDetails(UserPlaylist);
-    //                 showToast({
-    //                     toastDispatch,
-    //                     element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
-    //                     videoId: video._id,
-    //                     type: `success`
-    //                 })
-    //             } else {
-    //                 showToast({
-    //                     toastDispatch,
-    //                     element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
-    //                     videoId: video._id,
-    //                     type: `danger`
-    //                 })
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error(`error `, error)
-    //     }
-
-    // }, [createPlaylistServiceStatus, createPlaylistServiceResponse, playlistsDispatch])
-
-console.log(` playlistsState?.customPlaylistsData?.customPlaylists `,  playlistsState?.customPlaylistsData?.customPlaylists)
 
     return (
         <>

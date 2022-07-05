@@ -26,7 +26,7 @@ const useAsync = (
 
         try {
           const responseFromAsyncFunction = await asyncFunction(params);
-          console.log(`return from async function `, responseFromAsyncFunction)
+        
            
           setResponse(responseFromAsyncFunction);
           setStatus(`success`);
@@ -37,13 +37,6 @@ const useAsync = (
           );
           setErrorMessage(`${error}`);
           setStatus(`error`);
-
-          showToast({
-            toastDispatch,
-            element: <ToastMessage message={`${error}`} videoId={Date.now().toString()} key={Date.now().toString()} />,
-            videoId: Date.now().toString(),
-            type: `danger`
-          })
         }
       })();
     },
