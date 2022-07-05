@@ -85,17 +85,17 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
     try {
       const local = localStorage.getItem(`token`);
       const localtoken = local ? JSON.parse(local) : null;
-  
+
       if (token || localtoken?.token) {
         execute(null);
       }
     } catch (error) {
-        console.error(`error `, error)
+      console.error(`error `, error)
     }
-  
+
   }, [token, execute]);
   useEffect(() => {
- 
+
     playlistsDispatch({
       type: `SET_LOADING`,
       payload: {
@@ -106,26 +106,29 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
 
       try {
         const {
-          data: { playlists },
+          status, data: { message, success, playlists },
         } = response;
-        playlistsDispatch({
-          type: `SET_LOADING`,
-          payload: {
-            loading: `success`
-          }
-        })
-        if (playlists?.length > 0) {
+        if (status === 200 && success) {
+          playlistsDispatch({
+            type: `SET_LOADING`,
+            payload: {
+              loading: `success`
+            }
+          })
+          if (playlists?.length > 0) {
 
-          playlists.forEach((playlist: Playlist) => {
+            playlists.forEach((playlist: Playlist) => {
 
-            playlistsDispatch({
-              type: `CREATE_PLAYLIST`,
-              payload: {
-                playlist,
-              },
+              playlistsDispatch({
+                type: `CREATE_PLAYLIST`,
+                payload: {
+                  playlist,
+                },
+              });
             });
-          });
+          }
         }
+
       } catch (error) {
         playlistsDispatch({
           type: `SET_LOADING`,

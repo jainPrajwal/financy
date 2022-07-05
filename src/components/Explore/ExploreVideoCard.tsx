@@ -122,7 +122,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
                         ),
 
                         videoId,
-                       
+
                     })
 
                 } else {
@@ -326,7 +326,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-    
+
     const path = location.pathname;
 
     if (index === videosState.videos.length - 1) {
@@ -583,7 +583,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     }
 
 
-
+    
     return <>
 
         <div>

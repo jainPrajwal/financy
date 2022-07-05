@@ -29,6 +29,7 @@ const UserPlaylist: UserDefinedPlaylist = {
 
 
 export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<boolean>>, video: Video }) => {
+    console.log(`add to playulist rendering `)
     const { showInput, hideInput } = playlistModalStyles;
     const { inputStyle, } = common;
 
@@ -48,43 +49,43 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden])
 
 
-    useEffect(() => {
-        try {
-            if (createPlaylistServiceStatus === `success`) {
-                const { data: { playlist, message, success }, status } = createPlaylistServiceResponse
+    // useEffect(() => {
+    //     try {
+    //         if (createPlaylistServiceStatus === `success`) {
+    //             const { data: { playlist, message, success }, status } = createPlaylistServiceResponse
 
-                if (status === 201 && success) {
+    //             if (status === 201 && success) {
 
-                    playlistsDispatch({
-                        type: CREATE_PLAYLIST,
-                        payload: {
-                            playlist
-                        }
-                    })
+    //                 playlistsDispatch({
+    //                     type: CREATE_PLAYLIST,
+    //                     payload: {
+    //                         playlist
+    //                     }
+    //                 })
 
-                    setnewPlaylistDetails(UserPlaylist);
-                    showToast({
-                        toastDispatch,
-                        element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
-                        videoId: video._id,
-                        type: `success`
-                    })
-                } else {
-                    showToast({
-                        toastDispatch,
-                        element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
-                        videoId: video._id,
-                        type: `danger`
-                    })
-                }
-            }
-        } catch (error) {
-            console.error(`error `, error)
-        }
+    //                 setnewPlaylistDetails(UserPlaylist);
+    //                 showToast({
+    //                     toastDispatch,
+    //                     element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
+    //                     videoId: video._id,
+    //                     type: `success`
+    //                 })
+    //             } else {
+    //                 showToast({
+    //                     toastDispatch,
+    //                     element: <ToastMessage videoId={`${video._id}`} message={`${message}`} key={video._id} />,
+    //                     videoId: video._id,
+    //                     type: `danger`
+    //                 })
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error(`error `, error)
+    //     }
 
-    }, [createPlaylistServiceStatus, createPlaylistServiceResponse, playlistsDispatch])
+    // }, [createPlaylistServiceStatus, createPlaylistServiceResponse, playlistsDispatch])
 
-
+console.log(` playlistsState?.customPlaylistsData?.customPlaylists `,  playlistsState?.customPlaylistsData?.customPlaylists)
 
     return (
         <>
@@ -146,7 +147,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
 
                                     </ModalRow>
-                                    {playlistsState.customPlaylistsData.customPlaylists.length > 3 && <ModalRow extendedClassNames={`d-flex jc-end`}> <Link
+                                    {playlistsState.customPlaylistsData.customPlaylists.length > 1 && <ModalRow extendedClassNames={`d-flex jc-end`}> <Link
                                         style={{ color: `var(--tube-theme-primary)` }}
                                         to={`/playlists`} >See more </Link></ModalRow>}
                                     <ModalRow>

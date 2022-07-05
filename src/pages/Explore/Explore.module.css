@@ -402,11 +402,16 @@
   }
 
   .iconButton {
+    width: 48px;
+    height: 48px;
+  }
+
+  .iconButtonLike {
     width: 36px;
     height: 36px;
   }
 
-  .iconButtonLike {
+  .iconButtonLikeSolid {
     width: 36px;
     height: 36px;
   }

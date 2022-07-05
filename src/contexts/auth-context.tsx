@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
 
             })
-            // setupAuthHeaderForServiceCalls(authState.token);
+            setupAuthHeaderForServiceCalls(authState.token);
 
             
 
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             });
 
             localStorage.setItem(`token`, JSON.stringify(authState))
-            // setupAuthHeaderForServiceCalls(authState.token);
+            setupAuthHeaderForServiceCalls(authState.token);
 
           } else {
             

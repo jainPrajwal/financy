@@ -34,7 +34,7 @@
   --tube-theme-primary: var(--kaali-danger);
   --tube-border-radius-md: 12px;
   --tube-theme-premium: #ffd700;
-
+  
   /* !important is used purposely to override colors imported because of reactive kaali UI */
 }
 

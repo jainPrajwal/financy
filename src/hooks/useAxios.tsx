@@ -26,7 +26,7 @@ const useAsync = (
 
         try {
           const responseFromAsyncFunction = await asyncFunction(params);
-          
+          console.log(`return from async function `, responseFromAsyncFunction)
            
           setResponse(responseFromAsyncFunction);
           setStatus(`success`);

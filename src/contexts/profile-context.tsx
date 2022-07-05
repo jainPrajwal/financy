@@ -18,33 +18,36 @@ export const ProfileProvider = ({ children }: ProviderProps) => {
     const { execute: executeGetUserProfile, response: getUserProfileResponse, status: getUserProfileStatus } = useAsync(getUserProfileService, false, null);
     const { authState } = useAuth();
 
+    const [userProfile, setUserProfile] = useState<Profile | null>(null);
     useEffect(() => {
         try {
+            console.log(`user profile `, userProfile, `token `, authState.token)
+            if (!userProfile && authState.token) {
 
+                console.log(`executing get service profile `);
+                executeGetUserProfile(null);
+            }
         } catch (error) {
             console.error(`error `, error)
         }
-        if (userProfile === null && authState.token) {
 
-
-            executeGetUserProfile(null);
-        }
     }, [authState.token])
 
 
     useEffect(() => {
         try {
             if (getUserProfileStatus === `success`) {
-                const { data: { user } } = getUserProfileResponse;
+                const { status, data: { user, message, success } } = getUserProfileResponse;
+                if (status === 200 && success) {
 
-                setUserProfile(user)
+                    setUserProfile(user)
+                }
             }
         } catch (error) {
             console.error(`error`, error);
         }
 
     }, [getUserProfileResponse, getUserProfileStatus])
-    const [userProfile, setUserProfile] = useState<Profile | null>(null)
     return <ProfileContext.Provider value={{ userProfile, setUserProfile }}>
         {children}
     </ProfileContext.Provider>
