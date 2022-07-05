@@ -56,4 +56,7 @@ Financyy is a one stop video learning platform to learn finance.
     - Mongo DB
     - REST API's
     - Encryption using brcypt
+  
+## Demo
 
+[Financyy.webm](https://user-images.githubusercontent.com/56448543/177322796-88264bf5-9386-4a4e-af78-be2e697d8362.webm)
