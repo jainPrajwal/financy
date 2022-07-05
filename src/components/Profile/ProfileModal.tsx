@@ -34,15 +34,18 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
     useEffect(() => {
         try {
             if (status === `success`) {
-                const { data } = response;
-                
-                setUserProfile(data.profile)
+                const { status, data: { profile }, message, success } = response;
+
+                if (status === 201 && success) {
+
+                    setUserProfile(profile)
+                }
 
             }
         } catch (error) {
             console.error(`error `, error);
         }
-    })
+    }, [status, response, setUserProfile])
 
     return (
         <>
