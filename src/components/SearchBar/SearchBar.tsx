@@ -56,7 +56,7 @@ const SearchBar = ({ searchbar, setSearchbar }: { searchbar: boolean, setSearchb
             );
           }}
         />
-        { !searchbar && <div className={`${autocompleteItems}`}>
+        {!searchbar && localSearchQuery.length && <div className={`${`${autocompleteItems}`} `}>
           {localSearchQuery.length > 0 &&
             dataWithSearchedResults.map((video, index) => {
               let lowerCaseItemName = video.title.toLowerCase();

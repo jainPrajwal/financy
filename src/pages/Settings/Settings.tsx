@@ -123,7 +123,7 @@ export const Settings = () => {
 
 
 
-    
+
 
     return (
         <>
@@ -300,30 +300,6 @@ export const Settings = () => {
                                         <span> {userProfile?.publishedVideos.length} </span>
                                     </div>
                                 </div>
-
-                                {userProfile.isAPremiumMember ?
-                                    <div className="d-flex ai-center f-direction-col my-1">
-                                        <div className="header-tertiary text-bold my-md">Payment Details</div>
-                                        <ul >
-                                            <li style={{ listStyle: `initial` }} className={`py-sm`}>
-                                                Order Id: {`${paymentDetails?.orderId}`}
-                                            </li>
-                                            <li style={{ listStyle: `initial` }} className={`py-sm`}>
-                                                Payment Id: {`${paymentDetails?.paymentId}`}
-                                            </li>
-                                        </ul>
-
-                                    </div>
-
-                                    : <div>
-                                        {/* <button
-                                            onClick={() => displayRazorPayModal({ setPaymentDetails, setUserProfile })}
-                                            className={`btn ${btnGetPremium} my-1 `}>
-                                            <span className="mr-md">
-                                                <RiShieldFlashFill size={20} />
-                                            </span>
-                                            {`get premium`.toUpperCase()}</button> */}
-                                    </div>}
 
 
                             </div>
