@@ -15,8 +15,8 @@ const actionMap = new Map([
       if (action.type === CREATE_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `custom`:
-            
-            const updatedPlaylist =  {
+            console.log(`action payload `, action.payload.playlist);
+            const updatedPlaylist = {
               ...state,
               customPlaylistsData: {
                 ...state.customPlaylistsData,
@@ -26,7 +26,7 @@ const actionMap = new Map([
                   ),
               },
             };
-          
+            console.log(`playlist `, updatedPlaylist);
             return updatedPlaylist;
 
           case `liked`:
@@ -113,7 +113,6 @@ const actionMap = new Map([
             };
 
           case `custom`:
-           
             return {
               ...state,
               customPlaylistsData: {
@@ -144,7 +143,6 @@ const actionMap = new Map([
       if (action.type === REMOVE_FROM_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `liked`:
-            
             return {
               ...state,
               likedVideosData: {

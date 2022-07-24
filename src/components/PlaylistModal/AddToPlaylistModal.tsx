@@ -29,7 +29,7 @@ const UserPlaylist: UserDefinedPlaylist = {
 
 
 export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: { ismodalHidden: boolean, setIsModalHidden: React.Dispatch<React.SetStateAction<boolean>>, video: Video }) => {
-    
+
     const { showInput, hideInput } = playlistModalStyles;
     const { inputStyle, } = common;
 
@@ -46,7 +46,22 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     useOnClickOutside(ModalRef, setIsModalHidden);
     const { toastDispatch } = useToast();
 
-    const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden])
+
+
+    const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden]);
+
+    useEffect(() => {
+        console.log(`createPla`)
+        if (createPlaylistServiceStatus === `success`) {
+            const { data: { success, message, playlist }, status } = createPlaylistServiceResponse;
+            if (status === 201 && success) {
+                playlistsDispatch({
+                    payload: { playlist },
+                    type: CREATE_PLAYLIST
+                })
+            }
+        }
+    }, [createPlaylistServiceResponse, createPlaylistServiceStatus, playlistsDispatch])
 
 
     return (
@@ -143,7 +158,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
                                     >
                                         {createPlaylistServiceStatus === `loading` ? <span className="d-flex jc-center w-100">
-                                            <Loader width={`12px`} height={`12px`} />
+                                            <Loader width={`12px`} height={`12px`} borderWidth={`2px`} />
                                         </span> : `CREATE NEW PLAYLIST`}
                                     </button>
                                 </ModalFooter>
