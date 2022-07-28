@@ -20,13 +20,16 @@ const actionMap = new Map([
               ...state,
               customPlaylistsData: {
                 ...state.customPlaylistsData,
-                customPlaylists:
-                  state.customPlaylistsData.customPlaylists.concat(
-                    action.payload.playlist
-                  ),
+                customPlaylists: state.customPlaylistsData.customPlaylists.some(
+                  (playlist) => playlist._id === action.payload.playlist._id
+                )
+                  ? [action.payload.playlist]
+                  : state.customPlaylistsData.customPlaylists.concat(
+                      action.payload.playlist
+                    ),
               },
             };
-            console.log(`playlist `, updatedPlaylist);
+            console.log(`CREATING `, updatedPlaylist);
             return updatedPlaylist;
 
           case `liked`:

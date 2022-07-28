@@ -83,10 +83,12 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     try {
+     
       const local = localStorage.getItem(`token`);
       const localtoken = local ? JSON.parse(local) : null;
 
       if (token || localtoken?.token) {
+        console.log(`FIRING GET PLAYLISTS`)
         execute(null);
       }
     } catch (error) {
@@ -94,6 +96,8 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
     }
 
   }, [token, execute]);
+
+
   useEffect(() => {
 
     playlistsDispatch({
@@ -150,16 +154,4 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
   );
 };
 
-/**
- *   {
-        _id: ``,
-        _v: -1,
-        description: ``,
-        isDefault: false,
-        name: ``,
-        owner: ``,
-        thumbnail: ``,
-        type: ``,
-        videos: [],
-      },
- */
+
