@@ -1,6 +1,4 @@
-import { RadioButton } from "kaali-ui";
 import { useState } from "react";
-
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -15,7 +13,7 @@ export const Signup = () => {
 
     const { signUpUserWithCredentials } = useAuth();
     const {
-        wrapperSvgWave,
+
         inputPasswordWrapper,
         passwordIcon,
         input,
@@ -84,10 +82,13 @@ export const Signup = () => {
         }
     });
 
-    useTitle({ title: `Sign Up` })
+    useTitle({ title: `Sign Up` });
 
     return (
-        <div className="p-1">
+        <div className="p-1" style={{
+            backgroundImage: `url(https://res.cloudinary.com/dmk11fqw8/image/upload/v1655193437/login-bg.e98b8ea6_iv4xme.svg)`, backgroundRepeat: `no-repeat`,
+            backgroundSize: `cover`, height: `100vh`
+        }}>
             <div
                 className={`d-flex jc-center ai-center`}
             >
@@ -177,6 +178,7 @@ export const Signup = () => {
                                 </span>
                             }
                         </div>
+
                         <div className="p-md">
                             <label className="d-block pos-relative">
                                 <input
@@ -220,6 +222,7 @@ export const Signup = () => {
                                 </span>
                             }
                         </div>
+
                         <div className="p-md">
                             <div className={`${inputPasswordWrapper}`}>
                                 <label className="d-block pos-relative">
@@ -319,6 +322,7 @@ export const Signup = () => {
                                 </span>
                             }
                         </div>
+
                         <div className="p-md">
                             <div className={`${inputPasswordWrapper}`}>
                                 <label className="d-block pos-relative">
@@ -437,6 +441,7 @@ export const Signup = () => {
                                 </span>
                             }
                         </div>
+
                         <div className={`d-flex ai-center jc-space-around p-lg`}>
                             <div className="">
                                 <label htmlFor="male" className={`cursor-pointer ${container}`}>
@@ -484,6 +489,7 @@ export const Signup = () => {
                                 </label>
                             </div>
                         </div>
+
                         <div className="p-md">
                             <button
                                 type="submit"
@@ -491,9 +497,10 @@ export const Signup = () => {
                                 className="btn btn-danger w-100"
                                 style={{ paddingInline: 0, margin: 0 }}
                             >
-                                <span className="text-upper text-bold">{`${`CONTINUE`}`}</span>
+                                <span className="text-upper ">{`${`CONTINUE`}`}</span>
                             </button>
                         </div>
+                        
                         <div className="p-sm text-center">
                             Already have an Account?
                             <Link to="/login">

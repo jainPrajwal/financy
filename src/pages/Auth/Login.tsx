@@ -3,7 +3,6 @@ import { useAuth } from "../../hooks/useAuth";
 
 
 import { useState } from "react";
-import { UserLoginCredentials } from "../../constants/auth.types";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
@@ -17,7 +16,7 @@ const Login = () => {
     confirm: false
   });
   const {
-    wrapperSvgWave,
+
     inputPasswordWrapper,
     passwordIcon,
     input,
@@ -62,7 +61,10 @@ const Login = () => {
   useTitle({ title: `Login` })
 
   return (
-    <div className="p-1">
+    <div className="p-1" style={{
+      backgroundImage: `url(https://res.cloudinary.com/dmk11fqw8/image/upload/v1655193437/login-bg.e98b8ea6_iv4xme.svg)`, backgroundRepeat: `no-repeat`,
+      backgroundSize: `cover`, height: `100vh`
+    }}>
 
       <div
         className={`d-flex jc-center ai-center`}
@@ -83,8 +85,8 @@ const Login = () => {
         Start Your Investment Journey Now!!
       </div>
       <div
-        className={`p-1 ${signinForm}`}
-
+        className={`${signinForm}`}
+        style={{ padding: `2rem` }}
       >
 
         <form
@@ -259,7 +261,8 @@ const Login = () => {
 
           </div>
         </form>
-        <div className="p-md">
+
+        <div className="p-md my-lg ">
           <button
             onClick={() => {
 
@@ -272,10 +275,11 @@ const Login = () => {
             className="btn btn-danger w-100"
             style={{ paddingInline: 0, margin: 0 }}
           >
-            <span className="text-upper text-bold">{`${`log in as guest`}`}</span>
+            <span className="text-upper">{`${`log in as guest`}`}</span>
           </button>
         </div>
-        <div className="p-sm text-center">
+
+        <div className="p-sm text-center my-lg ">
           Don't have an Account with us?
           <Link to="/signup">
             <span className={`text-white `}>

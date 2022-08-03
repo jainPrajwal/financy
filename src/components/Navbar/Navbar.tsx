@@ -1,7 +1,7 @@
 import { Avatar } from "kaali-ui"
 import React, { useState } from "react";
 import { MdArrowDropDown, MdMenu } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { default as common } from "../../common/common.module.css";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
@@ -24,6 +24,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
     const [popOver, setShowPopOver] = useState(false);
     const { logout, authState } = useAuth();
     const [searchbar, setSearchbar] = useState(false);
+    const navigate = useNavigate();
 
     return <header className={`${navbar} pr-lg`}>
         <div
@@ -64,11 +65,10 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 />
                 <div className={`${logoutContainer} ${popOver ? `${showElement}` : ``}`}>
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
-                        const token = localStorage.getItem(`token`);
-                        
-
+                        navigate(`/settings`)
+                    }}>Profile</div>
+                    <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         logout();
-
                     }}>Logout</div>
                 </div>
             </div>
@@ -77,8 +77,8 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                 <MdArrowDropDown color="#fff" size={24} /></div>
 
         </div> : <div className={`ml-auto d-flex ai-center text-white fs-2 pr-lg`}>
-            <NavLink to={`/login`} style={{color: `#fff`}}
-            className={`border-bottom-sm`}
+            <NavLink to={`/login`} style={{ color: `#fff` }}
+                className={`border-bottom-sm`}
             >Login</NavLink>
         </div>
 
