@@ -132,7 +132,7 @@ export const SingleVideoPage = () => {
 
 
 
-    const { execute: executeGetSingeVideoPageService, status, response } = useAsync(getSingeVideoPageService, false, null);
+    const { execute: executeGetSingeVideoPageService, status, response, errorMessage } = useAsync(getSingeVideoPageService, false, null);
 
     const { execute: executesaveNotesService, status: saveNotesStatus, response: saveNotesResponse } = useAsync(saveNotesService, false, null);
 
@@ -143,11 +143,11 @@ export const SingleVideoPage = () => {
     const { execute: executeDeleteNoteService, status: deleteNoteStatus, response: deleteNoteResponse } = useAsync(deleteNotesService, false, null);
 
 
-    const video = videosState?.videos?.find(video => video._id === videoId);
+    const [video, setVideo] = useState<Video | null>(null);
 
     useEffect(() => {
         try {
-            const video = videosState.videos.find(video => video._id === videoId)
+
             if (!video) {
 
                 executeGetSingeVideoPageService({
@@ -158,31 +158,26 @@ export const SingleVideoPage = () => {
             console.error(`error `, error)
         }
 
-    }, [videoId, executeGetSingeVideoPageService, videosState.videos]);
+    }, []);
 
     useEffect(() => {
         try {
             if (status === `success`) {
 
-                const { status, data: { message, video }, success } = response;
+                const { status, data: { message, video, success } } = response;
 
-
-                if (status === 201 && success) {
-                    videosDispatch({
-                        type: UPDATE_VIDEO,
-                        payload: {
-                            video
-                        }
-                    })
+                console.log(`RESP `, response)
+                if (status === 200 && success) {
+                    setVideo(video)
                 }
 
 
             }
         } catch (error) {
-            console.error(`error `, error)
+            console.error(`error `, error, errorMessage)
         }
 
-    }, [status, response, videosDispatch])
+    }, [status, response, videosDispatch, errorMessage])
 
 
     useEffect(() => {
@@ -384,15 +379,7 @@ export const SingleVideoPage = () => {
                             playlist: playlistsState.historyData.history
                         },
                     });
-                    showToast({
-                        toastDispatch,
-                        element: (
-                            <ToastMessage message={message} videoId={videoId || `default`} />
-                        ),
 
-                        videoId: videoId || `default`,
-
-                    })
                 }
                 else {
                     showToast({
@@ -649,7 +636,7 @@ export const SingleVideoPage = () => {
 
     const isVideoAlreadyPresentInLikedPlaylist =
         video && checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(
-            videosState.videos.find(video => video._id === videoId),
+            video,
             playlistsState.likedVideosData.likedVideos
         );
 
@@ -659,7 +646,7 @@ export const SingleVideoPage = () => {
             playlistsState.watchLaterVideosData.watchLaterVideos
         );
 
-    
+
 
     if (status === `loading`) {
         return <div className="d-flex ai-center jc-center h-100 w-100">
@@ -1000,7 +987,7 @@ export const SingleVideoPage = () => {
                                 <form className="d-flex ai-center" style={{ gap: `24px` }}
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        
+
                                         setUserDefinedNote({
                                             description: ``,
                                             title: ``

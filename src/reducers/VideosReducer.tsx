@@ -59,6 +59,7 @@ const actionMap = new Map([
   [
     UPDATE_VIDEO,
     (state: VideosInitialState, action: ACTION) => {
+      console.log(`UPDATE_VIDEO `, state, action)
       if (action.type === UPDATE_VIDEO) {
         return {
           ...state,

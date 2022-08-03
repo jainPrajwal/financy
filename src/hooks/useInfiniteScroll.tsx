@@ -43,6 +43,7 @@ export const useInfiniteScroll = ({
               loading: `success`,
             },
           });
+          
           videosDispatch({
             type: `LOAD_VIDEOS`,
             payload: {

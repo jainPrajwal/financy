@@ -1,71 +1,52 @@
-import { Avatar, Loader } from "kaali-ui";
-import { useVideos } from "../../hooks/useVideos"
-import { default as common } from "../../common/common.module.css";
-import { useState } from "react";
-import { MdMenu } from "react-icons/md";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
+import { Loader } from "kaali-ui";
+import { useEffect, useState } from "react";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { ExploreVideoCard } from "../../components/Explore/ExploreVideoCard";
 import { default as exploreStyles } from "../Explore/Explore.module.css"
 import { Navbar } from "../../components/Navbar/Navbar";
+import { useAsync } from "../../hooks/useAxios";
+import { getTrendingVideos } from "../../services/videos/getTrendingVideos";
+import { Video } from "../../constants/videos.types";
+
+
 export const Trending = () => {
-    const { videosState } = useVideos();
+
     const [sidebar, setSidebar] = useState(false);
-    const [searchbar, setSearchbar] = useState(false);
+    const [trendingVideos, setTrendingVideos] = useState<{ videos: Video[] }>({
+        videos: [],
+    })
 
-    const trendingVideos = [...videosState.videos].sort((video1, video2) => {
-        const timeElapsed2 = new Date().getTime() - new Date(video2.createdAt).getTime();
-        const timeElapsed1 = new Date().getTime() - new Date(video1.createdAt).getTime();
+    const { execute, errorMessage, status, response } = useAsync(getTrendingVideos, false, null);
 
-        let totalVideo2Views = video2.views.female + video2.views.male + video2.views.others
-        let totalVideo1Views = video1.views.female + video1.views.male + video1.views.others
-        if (totalVideo2Views === 0) {
-            totalVideo2Views = -1;
+    useEffect(() => {
+        if (status === `idle`) {
+            execute(null);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (status === `success`) {
+                const { data } = response;
+                if (`videos` in data) {
+                    setTrendingVideos({ videos: data.videos })
+                }
+            }
+        } catch (error) {
+            console.error(`error `, error, errorMessage)
         }
 
-        if (totalVideo1Views === 0) {
-            totalVideo1Views = -1;
-        }
-        return (timeElapsed2 % totalVideo2Views) - (timeElapsed1 % totalVideo1Views)
-    });
-    const {
-        navbar,
+    }, [status, response, errorMessage])
 
-        publisherAvatar,
 
-        wrapperLogo,
-        hamburgerMenu,
-        wrapperSearch
-    } = common;
 
     const {
-        videoContainer,
-        relatedContainer,
+
         exploreContainer,
         headerContainer,
-        videoNumber,
-        videoThumbnailWrapper,
-        videoContent,
-        videoHeader,
-        videoMetrics,
-        publisherName,
-        publisherDetails,
-        likeIconButtonWrapper,
-
         videoWrapperContainer,
         exploreWrapperContainer,
-        videoThumbnailContainer,
-        videoDuration,
-        relatedWrapperContainer,
-        relatedVideoContainer,
-        relatedVideoThumbnailContainer,
-        reltaedVideoThumbnailWrapper,
-        relatedVideoThumbnail,
-        relatedVideoContent,
-        relatedVideoHeader,
-        relatedVideoMetrics,
-        chipsContainer, chip, chipClear, chipSolid
     } = exploreStyles;
     return (
         <>
@@ -91,16 +72,16 @@ export const Trending = () => {
 
                             {
 
-                                trendingVideos.map((video, index) => {
+                                status === `success` && trendingVideos.videos.map((video, index) => {
                                     return <ExploreVideoCard index={index} setLastElement={null} video={video} key={video._id} />
                                 })
                             }
                             {
-                                videosState.loading === `loading` &&
-                                <span className="d-flex jc-center w-100">
+                                status === `loading` ?
+                                    <span className="d-flex jc-center w-100">
 
-                                    <Loader />
-                                </span>
+                                        <Loader />
+                                    </span> : <>Something went wrong..!</>
                             }
 
                         </div>

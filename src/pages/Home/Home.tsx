@@ -17,6 +17,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { Navbar } from "../../components/Navbar/Navbar";
 import { useProfile } from "../../hooks/useProfile";
+import { useAsync } from "../../hooks/useAxios";
+import { getMostWatchedVideos } from "../../services/videos/getMostWatchedVideos";
 
 export const Home = () => {
     const {
@@ -51,12 +53,35 @@ export const Home = () => {
         cardAvatar
     } = homeStyles;
     const [sidebar, setSidebar] = useState(false);
-    const [mostWatched, setMostWatched] = useState({
+    const [mostWatched, setMostWatched] = useState<{ videos: Video[] }>({
         videos: [],
-        status: `idle`
     });
     const navigate = useNavigate();
     const { userProfile } = useProfile();
+
+
+
+    const { execute, errorMessage, status, response } = useAsync(getMostWatchedVideos, false, null);
+
+    useEffect(() => {
+        if (status === `idle`) {
+            execute(null);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (status === `success`) {
+                const { data } = response;
+                if (`videos` in data) {
+                    setMostWatched({ videos: data.videos })
+                }
+            }
+        } catch (error) {
+            console.error(`error `, error, errorMessage)
+        }
+
+    }, [status, response, errorMessage])
 
     useEffect(() => {
         try {
@@ -80,7 +105,7 @@ export const Home = () => {
                             status: `success`
                         }))
                     }
-    
+
                 } catch (error) {
                     console.error(`error`, error)
                     setMostWatched(prevState => ({ ...prevState, status: `error` }))
@@ -88,13 +113,13 @@ export const Home = () => {
             })();
         } catch (error) {
             console.error(`error `, error)
-    }
-       
+        }
+
 
     }, [])
 
 
-    
+
     return (
         <>
             <Navbar setSidebar={setSidebar} />
@@ -164,7 +189,7 @@ export const Home = () => {
                                 backgroundImage: `linear-gradient(315deg, #f5df2e 0%, #f07654 74%)`
                             }}
                         >
-                            <div className={`${bannerContent}`} style={{padding: `1rem`, paddingTop:`2rem`}}>
+                            <div className={`${bannerContent}`} style={{ padding: `1rem`, paddingTop: `2rem` }}>
                                 <div className={`${bannerHeader}`}>
                                     <div className={` text-white text-bold header-tertiary text-center`}>
                                         We Serve,
@@ -212,7 +237,7 @@ export const Home = () => {
                     </div>
                     <div className={`${cardContainer}`}>
                         {
-                            mostWatched.status === `loading`
+                            status === `loading`
                                 ?
                                 <div className="d-flex jc-center w-100">
 
@@ -229,7 +254,7 @@ export const Home = () => {
                                             <div className={`${cardImageWrapper}`}>
                                                 <img
                                                     className={`${cardImage}`}
-                                                    src={`${video.thumbnails[0].standard.url}`}
+                                                    src={`${video.thumbnails[0]?.standard?.url || video.thumbnails[0]?.high?.url}`}
                                                     alt={`noice`}
                                                 />
                                                 <div className={`${cardAvatar}`}>
