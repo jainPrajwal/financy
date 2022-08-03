@@ -1,10 +1,5 @@
-import { Avatar, Loader } from "kaali-ui";
+import { Loader } from "kaali-ui";
 
-import { MdMenu, MdRemoveRedEye } from "react-icons/md";
-import { BsHeartFill } from "react-icons/bs";
-
-import { RiVipCrown2Fill } from "react-icons/ri";
-import { default as common } from "../../common/common.module.css";
 import { default as exploreStyles } from "./Explore.module.css";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar"
 import { Sidebar } from "../../components/Sidebar/Sidebar";
@@ -16,56 +11,42 @@ import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { CLEAR_ALL, FILTER_BY_CATEGORY, SORT_BY } from "../../constants/actions.types";
 
 import { BUSINESSCASESTUDIES, CRYPTO, GOLD, INVESTMENTSTRATEGIES, NFTS, SCAMS, STOCKMARKET } from "../../constants/videos.types";
-import { SearchBar } from "../../components/SearchBar/SearchBar";
+
 import { useProfile } from "../../hooks/useProfile";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { SortBy } from "../../components/SortBy/SortBy";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
 import { useTitle } from "../../hooks/useTitle";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 export const Explore = () => {
-  const {
-    navbar,
 
-    publisherAvatar,
-
-    wrapperLogo,
-    hamburgerMenu,
-    wrapperSearch
-  } = common;
 
   const {
-    videoContainer,
+
     exploreContainer,
     headerContainer,
-    videoNumber,
-    videoThumbnailWrapper,
-    videoContent,
-    videoHeader,
-    videoMetrics,
-    publisherName,
-    publisherDetails,
-    likeIconButtonWrapper,
+
     videoWrapperContainer,
     exploreWrapperContainer,
-    videoThumbnailContainer,
-    videoDuration,
-    chipsContainer, chip, chipClear, chipSolid
+
+    chipsContainer, chip, chipSolid
   } = exploreStyles;
-  // useMediaQuery(`(max-width: 1136px)`);
+
   const [sidebar, setSidebar] = useState(false);
-  const [searchbar, setSearchbar] = useState(false);
+
   const { videosState, videosDispatch } = useVideos();
   const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { userProfile } = useProfile()
+
 
 
   useInfiniteScroll({ lastElement, setLastElement });
-  useTitle({ title: `Explore` })
+  useTitle({ title: `Explore` });
+  useScrollToTop();
 
-  // const relatedVideos = videosState.videos
+
 
 
   useEffect(() => {
@@ -129,10 +110,10 @@ export const Explore = () => {
   }
 
 
-  let searchedData = [...sortedData];
-  if (videosState.searchQuery) {
-    searchedData = videosState.videos.filter(video => (video.category.toLowerCase().includes(videosState.searchQuery.toLowerCase()) || (video.title.toLowerCase().includes(videosState.searchQuery.toLowerCase()))))
-  }
+  // let searchedData = [...sortedData];
+  // if (videosState.searchQuery) {
+  //   searchedData = videosState.videos.filter(video => (video.category.toLowerCase().includes(videosState.searchQuery.toLowerCase()) || (video.title.toLowerCase().includes(videosState.searchQuery.toLowerCase()))))
+  // }
 
 
   return (
@@ -151,7 +132,7 @@ export const Explore = () => {
           const filterBy = (e.target as HTMLButtonElement).value;
           const appliedFilter = searchParams.get(`filterBy`);
 
-          
+
           if (filterBy === CLEAR_ALL.toLowerCase()) {
             searchParams.delete(`filterBy`);
             searchParams.delete(`sortBy`);
@@ -159,7 +140,7 @@ export const Explore = () => {
           }
 
           else if (filterBy) {
-            
+
             if (appliedFilter === filterBy) {
 
               searchParams.delete(`filterBy`);

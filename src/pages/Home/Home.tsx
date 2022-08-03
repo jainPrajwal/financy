@@ -83,41 +83,7 @@ export const Home = () => {
 
     }, [status, response, errorMessage])
 
-    useEffect(() => {
-        try {
-            (async () => {
-                setMostWatched(prevState => ({ ...prevState, status: `loading` }))
-                try {
-                    const response = await getAllVideos({ currentPageNumber: 1 })
-                    if (response.status === 200) {
-                        const videos = response.data.videos;
-                        let mostWatched = [] as any;
-                        if (videos) {
-                            mostWatched = [...videos].sort((video1, video2) => {
-                                const totalLikes1 = video1.views.male + video1.views.female + video1.views.others;
-                                const totalLikes2 = video2.views.male + video2.views.female + video2.views.others;
-                                return totalLikes2 - totalLikes1
-                            }).slice(0, 4)
-                        }
-                        setMostWatched(prevState => ({
-                            ...prevState,
-                            videos: mostWatched,
-                            status: `success`
-                        }))
-                    }
-
-                } catch (error) {
-                    console.error(`error`, error)
-                    setMostWatched(prevState => ({ ...prevState, status: `error` }))
-                }
-            })();
-        } catch (error) {
-            console.error(`error `, error)
-        }
-
-
-    }, [])
-
+  
 
 
     return (

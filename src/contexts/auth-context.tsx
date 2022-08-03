@@ -246,7 +246,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   }, [executeSignup])
 
  useEffect(() => {
-  setupAuthExceptionHandler({ navigate, logout });
+  setupAuthExceptionHandler({toastDispatch});
  },[])
 
   return (

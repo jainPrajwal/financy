@@ -1,9 +1,7 @@
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { loading } from "../constants/videos.types";
-import { useToast } from "kaali-ui"
-import { showToast } from "../utils/showToast";
-import { ToastMessage } from "../components/ToastMessage/ToastMessage";
+
 
 const useAsync = (
   asyncFunction: (params: any) => Promise<AxiosResponse>,
@@ -13,7 +11,7 @@ const useAsync = (
 
   const [status, setStatus] = useState<loading>(`idle`);
   const [response, setResponse] = useState<any>(null);
-  const { toastDispatch } = useToast();
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   //   useCallback, so that execute is not created on each re-render
@@ -26,8 +24,12 @@ const useAsync = (
 
         try {
           const responseFromAsyncFunction = await asyncFunction(params);
-        
-           
+          if (!responseFromAsyncFunction) {
+            setResponse(null);
+            setStatus(`error`);
+            return;
+          }
+
           setResponse(responseFromAsyncFunction);
           setStatus(`success`);
         } catch (error) {

@@ -1,10 +1,8 @@
 import axios, { AxiosResponse } from "axios";
-import { NavigateFunction } from "react-router-dom";
-import { ACTION } from "../../constants/actions.types";
 import { BASE_API } from "../../constants/api";
 import { UserLoginCredentials } from "../../constants/auth.types";
 import { getErrorMessage } from "../../utils/getErrorMessage";
-import { showToast } from "../../utils/showToast";
+
 
 export const setupAuthHeaderForServiceCalls = (
   token: string
@@ -15,13 +13,7 @@ export const setupAuthHeaderForServiceCalls = (
   }
 };
 
-export const setupAuthExceptionHandler = ({
-  logout,
-  navigate,
-}: {
-  logout: () => void;
-  navigate: NavigateFunction;
-}) => {
+export const setupAuthExceptionHandler = ({ toastDispatch }: { toastDispatch: any }) => {
   const AUTH_ERROR = [401, 403, 409];
 
   axios.interceptors.response.use(
@@ -30,7 +22,8 @@ export const setupAuthExceptionHandler = ({
       console.error(`some error occured in auth exception handler`, error?.response?.data?.message);
       if (AUTH_ERROR.includes(error?.response?.status)) {
         return Promise.reject(error?.response?.data?.message);
-      } 
+
+      }
     }
   );
 };

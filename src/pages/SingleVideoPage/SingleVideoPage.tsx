@@ -12,11 +12,10 @@ import { addToPlaylistService } from "../../services/playlists/addToPlaylistServ
 import { getSingeVideoPageService } from "../../services/videos/getSingleVideoPageService";
 import { AddToPlaylistModal } from "../../components/PlaylistModal/AddToPlaylistModal";
 import { updateVideoService } from "../../services/videos/updateVideoService";
-import { UPDATE_VIDEO } from "../../constants/actions.types";
 import { getAllVideos } from "../../services/videos/getAllVideos";
 import { saveNotesService } from "../../services/notes/saveNotesService";
 import { getNotesService } from "../../services/notes/getNotesService";
-import { Note, UserDefinedNote } from "../../constants/notes.types";
+import { UserDefinedNote } from "../../constants/notes.types";
 import { notesReducer } from "../../reducers/NotesReducer";
 import { useAuth } from "../../hooks/useAuth";
 import { editNotesService } from "../../services/notes/editNotesService";
@@ -24,7 +23,7 @@ import { useProfile } from "../../hooks/useProfile";
 import { Video } from "../../constants/videos.types";
 import { default as svp } from "./SingleVideoPage.module.css";
 import { default as common } from "../../common/common.module.css"
-import { MdEditNote, MdMenu, MdOutlineWatchLater, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
+import { MdEditNote, MdOutlineWatchLater, MdPlaylistAdd, MdRemoveRedEye, MdShare, MdSubscriptions, MdVerifiedUser, MdWatchLater } from "react-icons/md";
 import { IoMdHeart, IoMdHeartEmpty, IoMdTrash } from "react-icons/io";
 import ReactPlayer from "react-player/youtube"
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
@@ -35,11 +34,11 @@ import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { copyVideoLink } from "../../utils/copyVideoLink";
-import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
-import { RiShieldFlashFill } from "react-icons/ri";
-import { Payment } from "../../constants/payment.types";
 import { Premium } from "../../components/Premium/Premium";
 import { deleteNotesService } from "../../services/notes/deleteNoteService";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
+
+
 export const SingleVideoPage = () => {
     const {
         detailsAndActions,
@@ -69,16 +68,15 @@ export const SingleVideoPage = () => {
 
         mainContainer,
 
-        navbar,
+
 
         publisherAvatar,
 
         wrapperContainer,
 
-        wrapperLogo,
-        hamburgerMenu,
+
         iconButton,
-        btnGetPremium,
+
         editProfileIcon,
         editProfileButton,
         btnTrash,
@@ -90,6 +88,7 @@ export const SingleVideoPage = () => {
     const { videoId } = useParams();
     const { videosState, videosDispatch } = useVideos();
     const { userProfile } = useProfile();
+    useScrollToTop();
 
 
     const [userDefinedNote, setUserDefinedNote] = useState<UserDefinedNote | null>(null);
@@ -648,24 +647,30 @@ export const SingleVideoPage = () => {
 
 
 
-    if (status === `loading`) {
-        return <div className="d-flex ai-center jc-center h-100 w-100">
-            <Loader />
-
-        </div>
-    }
 
 
 
-    if (video) {
-        return (
-            <>
-                {
-                    !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
-                }
-                <Navbar setSidebar={setSidebar}></Navbar>
-                <MobileSidebar status={{ sidebar, setSidebar }} />
+
+
+
+    return (
+        <>
+
+            {
+                status === `loading` &&
+                <div className="d-flex ai-center jc-center my-lg p-lg w-100">
+                    <Loader />
+
+                </div>
+            }
+            {video &&
+
                 <div className={` ${containerSingleVideoPage}`}>
+                    {
+                        !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
+                    }
+                    <Navbar setSidebar={setSidebar}></Navbar>
+                    <MobileSidebar status={{ sidebar, setSidebar }} />
                     <div className={`${wrapperContainer}`}>
                         <Sidebar />
                         <div className={`${mainContainer}`}>
@@ -942,7 +947,7 @@ export const SingleVideoPage = () => {
                                     className={`${videoMain} d-flex jc-center f-direction-col p-sm`}
                                 >
                                     <div className={`${videoHeader} text-white fs-3`}>
-                                        The Men Who Built India | S1 E3- The Cotton Supremacy | Convey
+                                        {video.title}
                                     </div>
                                     <div
                                         className={`${videoContent} pt-lg`}
@@ -1107,9 +1112,9 @@ export const SingleVideoPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-            </>
-        );
-    }
-    return <><h1>Invalid ID</h1></>
+                </div>}
+        </>
+    );
+
+
 }

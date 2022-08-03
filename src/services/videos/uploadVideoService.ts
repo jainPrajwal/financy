@@ -13,6 +13,13 @@ export const uploadVideoService = ({
     const response = axios.post(`${BASE_API}/videos`, {
       video,
     });
+    if(!response) {
+      console.error(
+        `somehting went wrong while uploading video to the server`,
+       
+      );
+      throw new Error();
+    }
     return response;
   } catch (error) {
     console.error(

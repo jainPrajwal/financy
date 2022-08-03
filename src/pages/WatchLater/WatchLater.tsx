@@ -1,8 +1,7 @@
-import { Avatar, Loader } from "kaali-ui";
+import { Loader } from "kaali-ui";
 
 import { useState } from "react";
-import { MdMenu } from "react-icons/md";
-import { default as common } from "../../common/common.module.css";
+
 
 import { NO_VIDEOS_FOUND, Video } from "../../constants/videos.types";
 import { usePlaylists } from "../../hooks/usePlaylists";
@@ -13,25 +12,21 @@ import { PlaylistsVideoCard } from "../../components/PlaylistsCard/PlaylistsVide
 import { Navbar } from "../../components/Navbar/Navbar";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 import { Fallback } from "../../components/Fallback/Fallback";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 export const WatchLater = () => {
 
   const {
     historyContainer,
     headerContainer,
     mainContainer,
-    publisherName,
-    cardContainer,
-    card,
-    cardWrapper,
-    cardImageWrapper,
 
-    cardImage,
-    cardTitle,
-    iconDelete
+    cardContainer,
+
   } = historyStyles;
 
   const [sidebar, setSidebar] = useState(false);
   const { playlistsState } = usePlaylists();
+  useScrollToTop();
   return (
     <>
       <Navbar setSidebar={setSidebar} />

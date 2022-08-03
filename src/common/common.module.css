@@ -173,6 +173,7 @@
   border: 1px solid transparent;
   caret-color: rgb(76, 76, 255);
   color: white;
+  font-size: 1rem;
 }
 
 .inputStyle:focus {

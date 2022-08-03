@@ -1,13 +1,9 @@
-// import { BsHeartFill } from "react-icons/bs";
 import { Avatar, Loader } from "kaali-ui";
-
-
-import { MdEditNote, MdMenu, MdVerifiedUser } from "react-icons/md";
-
+import { MdEditNote, } from "react-icons/md";
 import { default as settingsStyle } from "./Settings.module.css";
 import { default as common } from "../../common/common.module.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
@@ -17,9 +13,7 @@ import { usePlaylists } from "../../hooks/usePlaylists";
 import { ProfileModal } from "../../components/Profile/ProfileModal";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 import { Payment } from "../../constants/payment.types";
-import { useAsync } from "../../hooks/useAxios";
-import { getPaymentDetailsService } from "../../services/payment/getPaymentDetailsService";
-import { Video } from "../../constants/videos.types";
+
 import { displayRazorPayModal } from "../../services/payment/displayRazorpayModal";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { RiShieldFlashFill, RiVipCrown2Fill } from "react-icons/ri";
@@ -27,6 +21,7 @@ import { getTotalViewsOnPublishedVideos } from "../../utils/Videos/getTotalViews
 import { getTotallikesOnPublishedVideos } from "../../utils/Videos/getTotalLikesOnPublishedVideos";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { Premium } from "../../components/Premium/Premium";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 
 ChartJS.register(ArcElement);
@@ -52,12 +47,11 @@ const dummyData = {
 
 export const Settings = () => {
     const {
-        navbar,
+
 
         publisherAvatar,
 
-        wrapperLogo,
-        hamburgerMenu,
+
         btnGetPremium,
         iconButton, editProfileIcon,
         editProfileButton,
@@ -79,6 +73,8 @@ export const Settings = () => {
     const { userProfile, setUserProfile } = useProfile();
     const [paymentDetails, setPaymentDetails] = useState<Payment | null>(null)
     const { playlistsState } = usePlaylists();
+    useScrollToTop();
+
     const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
 
 

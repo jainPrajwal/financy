@@ -8,12 +8,14 @@ import { ExploreVideoCard } from "../../components/Explore/ExploreVideoCard";
 import { default as chipsStyles } from "./Videos.module.css";
 import { useSearchParams } from "react-router-dom";
 import { CLEAR_ALL, FILTER_BY_CATEGORY, SORT_BY } from "../../constants/actions.types";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 export const Videos = () => {
   const { videosState, videosDispatch } = useVideos();
   const [searchParams, setSearchParams] = useSearchParams();
   const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
   useInfiniteScroll({ lastElement, setLastElement });
+  useScrollToTop();
 
   const { chipsContainer, chip, chipClear } = chipsStyles;
 

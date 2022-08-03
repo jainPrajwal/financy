@@ -1,7 +1,7 @@
-import { useToast } from "kaali-ui"
+import { useToast, Loader } from "kaali-ui"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { CATEGORIES, UserUploadedVideo, Video } from "../../constants/videos.types";
+import { CATEGORIES, loading, UserUploadedVideo, Video } from "../../constants/videos.types";
 
 import { useAsync } from "../../hooks/useAxios";
 import { useVideos } from "../../hooks/useVideos";
@@ -14,6 +14,7 @@ import { default as uploadStyles } from "./UploadVideo.module.css";
 import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { showToast } from "../../utils/showToast";
 import { YOUTUBE_REPL_API } from "../../constants/api";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 
 export const UploadVideo = () => {
     const [videoDetails, setVideoDetails] = useState<UserUploadedVideo>({
@@ -23,7 +24,8 @@ export const UploadVideo = () => {
     const [sidebar, setSidebar] = useState(false);
     const { toastDispatch } = useToast();
 
-    const { execute, status, response } = useAsync(uploadVideoService, false, null);
+    const { execute, status, response, errorMessage } = useAsync(uploadVideoService, false, null);
+    const [fetchingVideoStatus, setFetchingVideoStatus] = useState<loading>(`idle`)
 
     const { inputStyle } = common;
 
@@ -35,28 +37,48 @@ export const UploadVideo = () => {
     useEffect(() => {
         try {
             if (status === `success`) {
-                const { data: { message, video } } = response;
-                videosDispatch({
-                    type: `UPLOAD_VIDEO`,
-                    payload: {
-                        video
-                    }
-                });
+                const { data: { message, video }, status } = response;
+                if (status === 201) {
+                    videosDispatch({
+                        type: `UPLOAD_VIDEO`,
+                        payload: {
+                            video
+                        }
+                    });
+
+                    showToast({
+                        toastDispatch,
+                        element: (
+                            <ToastMessage message={message} videoId={video._id} />
+                        ),
+
+                        videoId: video._id,
+
+                    });
+                    setVideoDetails({
+                        url: null,
+                        category: null,
+                    })
+                }
+
+            } else if (status === `error`) {
+              
                 showToast({
                     toastDispatch,
                     element: (
-                        <ToastMessage message={message} videoId={video._id} />
+                        <ToastMessage message={errorMessage || `Something went wrong`} videoId={``} />
                     ),
 
-                    videoId: video._id,
+                    videoId: ``,
 
-                })
+                });
             }
         } catch (error) {
             console.error(`error `, error)
         }
 
-    }, [status, response, videosDispatch])
+    }, [status, response, videosDispatch, toastDispatch]);
+
 
     return <>
         <Navbar setSidebar={setSidebar} />
@@ -79,37 +101,51 @@ export const UploadVideo = () => {
                     onSubmit={async (e) => {
                         e.preventDefault();
                         const url = videoDetails.url;
-                        const videoId = url?.split(`=`)[1];
-                        const response = await axios.get(`${YOUTUBE_REPL_API}/videos/${videoId}/${videoDetails.category}`);
 
-                        const { data: { video } } = response;
-                        let videoToBeUploaded: Video = video[0];
-                        videoToBeUploaded = {
-                            ...videoToBeUploaded, isPremium: false, likes: {
-                                male: 0,
-                                female: 0,
-                                others: 0
-                            }, views: {
-                                male: 0,
-                                female: 0,
-                                others: 0
-                            }, url: videoId || ``
+
+                        const videoId = url?.split(`=`)[1] || url?.slice(url?.lastIndexOf(`/`) + 1);
+
+                        if (videoId) {
+                            setFetchingVideoStatus(`loading`)
+                            try {
+                                const response = await axios.get(`${YOUTUBE_REPL_API}/videos/${videoId}/${videoDetails.category}`);
+                                setFetchingVideoStatus(`success`)
+                                const { data: { video } } = response;
+                                let videoToBeUploaded: Video = video[0];
+                                videoToBeUploaded = {
+                                    ...videoToBeUploaded, isPremium: false, likes: {
+                                        male: 0,
+                                        female: 0,
+                                        others: 0
+                                    }, views: {
+                                        male: 0,
+                                        female: 0,
+                                        others: 0
+                                    }, url: videoId || ``
+                                }
+
+                                execute({ video: videoToBeUploaded })
+                            } catch (error) {
+                                console.error(`error `, error)
+                                setFetchingVideoStatus(`error`)
+                            }
+
+
                         }
-
-                        execute({ video: videoToBeUploaded })
 
 
                     }}>
-                    <label htmlFor="url" className="text-white">Enter Youtube URL</label>
+                    <label htmlFor="url" className="text-white ">Enter Youtube URL</label>
                     <input
-
+                        value={videoDetails.url || ``}
                         type="text" placeholder="Enter URL of any youtube video"
-                        className={`p-lg m-sm ${inputStyle}`}
+                        className={`p-lg m-sm ${inputStyle} `}
                         id={`url`}
                         onChange={(e) => setVideoDetails(prevState => ({ ...prevState, url: e.target.value }))} required autoFocus />
 
                     <label htmlFor="category" className="text-white">Category</label>
                     <select
+                        value={videoDetails.category || ``}
                         required
                         name="category" id="category" className={`${inputStyle} p-lg cursor-pointer`} onChange={(e) => setVideoDetails(prevState => ({ ...prevState, category: e.target.value }))}>
                         <option value="">Please select an option</option>
@@ -121,9 +157,14 @@ export const UploadVideo = () => {
                             })
                         }
                     </select>
+                    <div className=" my-lg py-lg">
+                        <button className="btn btn-primary w-100" type="submit">Upload Video</button>
+                    </div>
 
-                    <button className="btn btn-primary" type="submit">Upload Video</button>
                 </form>
+                {
+                    (status === `loading` || fetchingVideoStatus === `loading`) && <FlexContainer><Loader /></FlexContainer>
+                }
             </div>
 
         </div>

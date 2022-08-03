@@ -1,51 +1,29 @@
 import { Loader } from "kaali-ui"
-import { MdPlaylistAdd } from "react-icons/md";
 import { Playlist } from "../../constants/playlists.types";
 import { usePlaylists } from "../../hooks/usePlaylists"
-import { default as common } from "../../common/common.module.css";
-
-
 import { default as historyStyles } from "../History/History.module.css";
-
-import { MdMenu, MdVerifiedUser } from "react-icons/md";
-
-import { IoMdTrash } from "react-icons/io";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar"
 import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
-import { useVideos } from "../../hooks/useVideos";
-
-import { Video } from "../../constants/videos.types";
 import { PlaylistsCard } from "../../components/PlaylistsCard/PlaylistsCard";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { Fallback } from "../../components/Fallback/Fallback";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 export const Playlists = () => {
     const { playlistsState } = usePlaylists();
 
-
-    const {
-        navbar,
-        publisherAvatar,
-        wrapperLogo,
-        hamburgerMenu,
-        btnTrash
-    } = common;
     const {
         historyContainer,
         headerContainer,
         mainContainer,
-        publisherName,
-        cardContainer,
-        card,
-        cardWrapper,
-        cardImageWrapper,
 
-        cardImage,
-        cardTitle,
-        iconDelete
+        cardContainer,
+
     } = historyStyles;
+
     const [sidebar, setSidebar] = useState(false);
+    useScrollToTop();
 
 
     return (

@@ -1,5 +1,5 @@
 import { Avatar, Loader, useToast } from "kaali-ui";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Video } from "../../constants/videos.types";
 import { useAsync } from "../../hooks/useAxios";
 import { usePlaylists } from "../../hooks/usePlaylists";
@@ -62,9 +62,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
 
     const {
         videoContainer,
-        relatedContainer,
-        exploreContainer,
-        headerContainer,
+
         videoNumber,
         videoThumbnail,
         videoThumbnailWrapper,
@@ -77,25 +75,15 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
         iconButton,
         iconButtonLikeSolid,
         iconButtonLike,
-        videoWrapperContainer,
-        exploreWrapperContainer,
+   
         videoThumbnailContainer,
-        videoDuration,
-        relatedWrapperContainer,
-        relatedVideoContainer,
-        relatedVideoThumbnailContainer,
-        reltaedVideoThumbnailWrapper,
-        relatedVideoContent,
-        relatedVideoHeader,
-        relatedVideoMetrics,
-        chipsContainer, chip, chipClear
+
     } = exploreStyles;
 
     const {
-        detailsAndActions,
+      
         videoActions,
-        videoMain,
-        videoAside,
+      
     } = svp;
 
     useEffect(() => {
@@ -330,7 +318,11 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
     const path = location.pathname;
 
     if (index === videosState.videos.length - 1) {
-        return <>    <div>
+        return <>   
+        <div ref={setLastElement}>Last element</div> 
+        
+        {/*
+        <div>
             {
                 !ismodalHidden && <AddToPlaylistModal ismodalHidden={ismodalHidden} setIsModalHidden={setIsModalHidden} video={video} />
             }
@@ -578,7 +570,9 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: { video: Vide
             </div>
 
         </div>
+        */}
         </>
+
 
     }
 

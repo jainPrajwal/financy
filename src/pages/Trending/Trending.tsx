@@ -8,6 +8,7 @@ import { Navbar } from "../../components/Navbar/Navbar";
 import { useAsync } from "../../hooks/useAxios";
 import { getTrendingVideos } from "../../services/videos/getTrendingVideos";
 import { Video } from "../../constants/videos.types";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 
 export const Trending = () => {
@@ -39,6 +40,7 @@ export const Trending = () => {
 
     }, [status, response, errorMessage])
 
+    useScrollToTop();
 
 
     const {

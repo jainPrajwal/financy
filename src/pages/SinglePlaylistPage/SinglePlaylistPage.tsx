@@ -1,11 +1,8 @@
 
 import { useToast, Loader } from "kaali-ui"
-import { MdEdit, MdMenu } from "react-icons/md";
 import { useNavigate, useParams } from "react-router"
-
 import { usePlaylists } from "../../hooks/usePlaylists";
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
-import { default as common } from "../../common/common.module.css";
 import { default as historyStyles } from "../History/History.module.css"
 import { useEffect, useState } from "react";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
@@ -19,43 +16,33 @@ import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 import { Fallback } from "../../components/Fallback/Fallback";
 import { NO_VIDEOS_FOUND } from "../../constants/videos.types";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 
 export const SinglePlaylistPage = () => {
     const { playlistId } = useParams();
     const { playlistsState } = usePlaylists();
-    
+
     const playlist = playlistsState.customPlaylistsData.customPlaylists.find(playlist => playlist._id === playlistId);
 
 
 
 
-    const {
-        navbar,
-        publisherAvatar,
-        wrapperLogo,
-        hamburgerMenu,
-        btnTrash
-    } = common;
+
     const {
         historyContainer,
         headerContainer,
         mainContainer,
-        publisherName,
-        cardContainer,
-        card,
-        cardWrapper,
-        cardImageWrapper,
 
-        cardImage,
-        cardTitle,
-        iconDelete
+        cardContainer,
+
     } = historyStyles;
     const [sidebar, setSidebar] = useState(false);
     const { playlistsDispatch } = usePlaylists();
     const { toastDispatch } = useToast();
+    useScrollToTop();
 
 
-    const { execute: executeDeletePlaylistService, errorMessage, response: deletePlaylistResponse, status: deletePlaylistStatus } = useAsync(deletePlaylistService, false, null);
+    const { execute: executeDeletePlaylistService, response: deletePlaylistResponse, status: deletePlaylistStatus } = useAsync(deletePlaylistService, false, null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -90,7 +77,7 @@ export const SinglePlaylistPage = () => {
             }
         }
     })
-    
+
 
 
     return <>
