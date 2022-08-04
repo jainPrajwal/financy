@@ -15,6 +15,7 @@ import { UploadVideo } from "./pages/UploadVideo/UploadVideo";
 import { Videos } from "./pages/Videos/Videos";
 import { WatchLater } from "./pages/WatchLater/WatchLater";
 import { Signup } from "./pages/Auth/Signup";
+import { TrendingVideosProvider } from "./contexts/trending-videos-context";
 
 
 
@@ -22,7 +23,7 @@ import { Signup } from "./pages/Auth/Signup";
 
 
 function App() {
-
+  console.log(`App re-renders`)
   return (
     <>
       <Routes>
@@ -32,7 +33,11 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/trending" element={<Trending />} />
+        <Route path="/trending" element={
+          <TrendingVideosProvider>
+            <Trending />
+          </TrendingVideosProvider>
+        } />
         <Route path="/playlists" element={<RequiresAuth> <Playlists /> </RequiresAuth>} />
         <Route path="/playlists/:playlistId" element={<RequiresAuth> <SinglePlaylistPage /> </RequiresAuth>} />
         <Route path="/watchlater" element={<RequiresAuth> <WatchLater /> </RequiresAuth>} />
@@ -40,7 +45,11 @@ function App() {
         <Route path="/upload" element={<RequiresAuth> <UploadVideo /> </RequiresAuth>} />
         <Route path="/history" element={<RequiresAuth> <History /> </RequiresAuth>} />
         <Route path="/settings" element={<RequiresAuth> <Settings /> </RequiresAuth>} />
-        <Route path="/videos/:videoId" element={<SingleVideoPage />}></Route>
+        <Route path="/videos/:videoId" element={
+          <TrendingVideosProvider>
+            <SingleVideoPage />
+          </TrendingVideosProvider>
+        }></Route>
       </Routes>
     </>
   );

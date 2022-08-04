@@ -7,11 +7,9 @@ import { loadScript } from "./loadScript";
 export const displayRazorPayModal = async ({
   setPaymentDetails,
   setUserProfile,
-  
 }: {
   setPaymentDetails: React.Dispatch<React.SetStateAction<Payment | null>>;
   setUserProfile: React.Dispatch<React.SetStateAction<ProfileType | null>>;
-  
 }) => {
   try {
     const response = await loadScript(
@@ -44,7 +42,7 @@ export const displayRazorPayModal = async ({
       key: `rzp_test_qI8PEnrZgATDiP`,
       amount: amount.toString(),
       currency,
-      name: `Tube Stox Pvt Ltd`,
+      name: `Financyy Pvt Ltd`,
       description: `test`,
       order_id: orderId,
       handler: async function (response: any) {
@@ -62,7 +60,7 @@ export const displayRazorPayModal = async ({
             isAPremiumMember: true,
           },
         });
-        
+
         setPaymentDetails({
           orderId: result.data.payment.order_id,
           paymentId: result.data.payment.payment_id,

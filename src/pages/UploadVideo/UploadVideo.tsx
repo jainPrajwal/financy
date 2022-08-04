@@ -15,6 +15,7 @@ import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 import { showToast } from "../../utils/showToast";
 import { YOUTUBE_REPL_API } from "../../constants/api";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
+import { UploadedVideos } from "../../components/UploadedVideos/UploadedVideos";
 
 export const UploadVideo = () => {
     const [videoDetails, setVideoDetails] = useState<UserUploadedVideo>({
@@ -62,7 +63,7 @@ export const UploadVideo = () => {
                 }
 
             } else if (status === `error`) {
-              
+
                 showToast({
                     toastDispatch,
                     element: (
@@ -87,12 +88,12 @@ export const UploadVideo = () => {
             <div
                 className={`${headerContainer} header header-secondary text-white`}
             >
-                Upload Videos
+                Upload A New Video
             </div>
 
             <Sidebar />
 
-            <div style={{ height: `100vh`, maxWidth: `380px`, margin: `0 auto`, width: `100%` }}
+            <div style={{ maxWidth: `380px`, margin: `0 auto`, width: `100%` }}
 
             >
                 <form
@@ -167,6 +168,10 @@ export const UploadVideo = () => {
                 }
             </div>
 
+
+        </div>
+        <div>
+            <UploadedVideos />
         </div>
     </>
 } 

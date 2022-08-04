@@ -7,16 +7,14 @@ import { default as exploreStyles } from "../Explore/Explore.module.css"
 import { Navbar } from "../../components/Navbar/Navbar";
 import { useAsync } from "../../hooks/useAxios";
 import { getTrendingVideos } from "../../services/videos/getTrendingVideos";
-import { Video } from "../../constants/videos.types";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { useTrendingVideos } from "../../hooks/useTrendingVideos";
 
 
 export const Trending = () => {
 
     const [sidebar, setSidebar] = useState(false);
-    const [trendingVideos, setTrendingVideos] = useState<{ videos: Video[] }>({
-        videos: [],
-    })
+    const { trendingVideos, setTrendingVideos } = useTrendingVideos();
 
     const { execute, errorMessage, status, response } = useAsync(getTrendingVideos, false, null);
 
@@ -75,7 +73,9 @@ export const Trending = () => {
                             {
 
                                 status === `success` && trendingVideos.videos.map((video, index) => {
-                                    return <ExploreVideoCard index={index} setLastElement={null} video={video} key={video._id} />
+                                    return <ExploreVideoCard index={index} setLastElement={null} video={video} key={video._id}
+                                        trendingVideos={trendingVideos.videos} setTrendingVideos={setTrendingVideos}
+                                    />
                                 })
                             }
                             {
@@ -83,7 +83,7 @@ export const Trending = () => {
                                     <span className="d-flex jc-center w-100">
 
                                         <Loader />
-                                    </span> : <>Something went wrong..!</>
+                                    </span> :  status === `error` && <>Something went wrong..!</>
                             }
 
                         </div>

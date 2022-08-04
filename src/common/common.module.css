@@ -167,6 +167,12 @@
   border: 1px solid transparent;
 }
 
+.iconDelete:hover,
+.iconDelete:focus {
+  background-color: rgb(211, 47, 47, 0.2);
+  border: 1px solid transparent;
+}
+
 .inputStyle {
   background-color: rgb(49, 49, 56);
   outline: 1px solid transparent;
@@ -196,13 +202,16 @@
 }
 
 .iconDelete {
-  /* position: absolute;
+  position: absolute;
   bottom: 5px;
-  right: 5px; */
+  right: 5px;
   color: var(--tube-theme-error);
   cursor: pointer;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  width: 48px;
+  border-radius: 50%;
+  height: 48px;
 }
 
 @media (max-width: 860px) {

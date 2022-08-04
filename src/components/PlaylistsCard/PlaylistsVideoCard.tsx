@@ -1,7 +1,6 @@
 import { Loader, useToast } from "kaali-ui"
 import { useEffect } from "react";
 import { IoMdTrash } from "react-icons/io";
-import { MdVerifiedUser } from "react-icons/md";
 import { default as common } from "../../common/common.module.css";
 import { Video } from "../../constants/videos.types";
 import { useAsync } from "../../hooks/useAxios";
@@ -9,7 +8,7 @@ import { usePlaylists } from "../../hooks/usePlaylists";
 import { default as historyStyles } from "../../pages/History/History.module.css";
 import { clearHistoryService } from "../../services/playlists/clearHistoryService";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
-import { useLocation } from "react-router";
+import { Navigate, useLocation, useNavigate } from "react-router";
 import { useVideos } from "../../hooks/useVideos";
 import { useProfile } from "../../hooks/useProfile";
 import { updateVideoService } from "../../services/videos/updateVideoService";
@@ -37,31 +36,26 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
 
 
     const {
-        historyContainer,
-        headerContainer,
-        mainContainer,
-        publisherName,
-        cardContainer,
+
         card,
         cardWrapper,
         cardImageWrapper,
 
         cardImage,
-        cardTitle,  iconDelete
-        
+        cardTitle, iconDelete
+
     } = historyStyles;
     const {
-        navbar,
-        publisherAvatar,
-        wrapperLogo,
-        hamburgerMenu,
+
         btnTrash,
-      
+
     } = common;
 
     const location = useLocation();
     const { toastDispatch } = useToast();
     const videoId = video?._id;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         try {
@@ -222,7 +216,9 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
     return <div className={`${cardWrapper}`}>
         {
 
-            <div className={`${card} w-100`}>
+            <div className={`${card} w-100`} role={`button`} onClick={() => {
+                navigate(`/videos/${video._id}`)
+            }}>
                 {removeFromHistoryStatus === `loading` || removeFromLikeStatus === `loading` || removeFromWatchLaterStatus === `loading` || removeFromPlaylistStatus === `loading` ?
                     <div className="d-flex jc-center w-100 h-100">
 
@@ -234,17 +230,18 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                             alt={`noice`}
                         />
                     </div>
-                        <div className="p-md">
+                        <div className="p-md" >
 
 
                             <div className={`${cardTitle} text-white`}>
                                 {video.title}
                             </div>
                             <div className={`${iconDelete}`}>
-                                <button className={`btn ${btnTrash}`} onClick={() => {
+                                <button className={`btn ${btnTrash}`} onClick={(e) => {
+                                    e.stopPropagation();
                                     switch (location.pathname) {
                                         case `/history`:
-                                            
+
                                             executeRemoveFromHistory({
                                                 videoId: video._id,
                                                 playlistId: playlistsState.historyData.history._id
@@ -294,7 +291,7 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                         })
                                             break;
                                         case `/playlists/${playlistId}`:
-                                            
+
                                             if (playlistId) {
                                                 executeRemoveFromPlaylist({
                                                     videoId: video._id,
@@ -302,16 +299,16 @@ export const PlaylistsVideoCard = ({ video, playlistId }: { video: Video, playli
                                                 })
                                             }
                                             break;
-                                        default: 
+                                        default:
                                             break;
                                     }
                                 }
                                 }>
-                                    {" "}
-                                    <span>
-                                        {" "}
-                                        <IoMdTrash size={24} />{" "}
-                                    </span>{" "}
+
+                                    {location.pathname !== `/upload` && <span>
+
+                                        <IoMdTrash size={24} />
+                                    </span>}
                                 </button>
                             </div>
                         </div>

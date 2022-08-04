@@ -101,16 +101,7 @@ export const ProfileModal = ({ ismodalHidden, setIsModalHidden, }: { ismodalHidd
                                         />
 
                                     </ModalRow>
-                                    <ModalRow extendedClassNames={`row-saved-collection f-direction-col ai-start jc-start`}>
-
-
-                                        <input type="text"
-                                            readOnly
-                                            value={userProfile?.gender}
-                                            className={`${inputStyle} p-lg w-100 fs-2`}
-                                        />
-
-                                    </ModalRow>
+                                    
                                     <ModalRow extendedClassNames={`row-saved-collection f-direction-col ai-start jc-start`}>
 
 

@@ -59,9 +59,9 @@ const actionMap = new Map([
   [
     UPDATE_VIDEO,
     (state: VideosInitialState, action: ACTION) => {
-      console.log(`UPDATE_VIDEO `, state, action)
+
       if (action.type === UPDATE_VIDEO) {
-        return {
+        const updatedState = {
           ...state,
           videos: state.videos.map((video) => {
             if (video._id === action.payload.video._id) {
@@ -70,6 +70,8 @@ const actionMap = new Map([
             return video;
           }),
         };
+        console.log(`UPDATE_VIDEO `, updatedState)
+        return updatedState;
       }
       return state;
     },

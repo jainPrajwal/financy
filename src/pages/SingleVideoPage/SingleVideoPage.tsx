@@ -3,7 +3,7 @@ import { Avatar, Loader, useToast } from "kaali-ui";
 import { useParams } from "react-router-dom"
 import { useVideos } from "../../hooks/useVideos";
 import { usePlaylists } from "../../hooks/usePlaylists";
-import { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useAsync } from "../../hooks/useAxios";
 import { checkIfVideoIsAlreadyPresentInSpecifiedPlaylist } from "../../utils/checkIfVideoIsAlreadyPresentInSpecifiedPlaylist";
 import { removeFromPlaylistService } from "../../services/playlists/removeFromPlaylistService";
@@ -37,6 +37,8 @@ import { copyVideoLink } from "../../utils/copyVideoLink";
 import { Premium } from "../../components/Premium/Premium";
 import { deleteNotesService } from "../../services/notes/deleteNoteService";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
+import { useTrendingVideos } from "../../hooks/useTrendingVideos";
 
 
 export const SingleVideoPage = () => {
@@ -61,7 +63,8 @@ export const SingleVideoPage = () => {
         wrapperNotes,
         videoMain,
         videoAside,
-        videoContent
+        videoContent,
+        noteHeader
     } = svp;
     const {
         containerSingleVideoPage,
@@ -88,6 +91,7 @@ export const SingleVideoPage = () => {
     const { videoId } = useParams();
     const { videosState, videosDispatch } = useVideos();
     const { userProfile } = useProfile();
+    const { trendingVideos, setTrendingVideos } = useTrendingVideos();
     useScrollToTop();
 
 
@@ -109,6 +113,7 @@ export const SingleVideoPage = () => {
     const { playlistsState, playlistsDispatch } = usePlaylists();
 
     const [ismodalHidden, setIsModalHidden] = useState<boolean>(true);
+
     const { authState } = useAuth();
     const { toastDispatch } = useToast();
 
@@ -143,6 +148,10 @@ export const SingleVideoPage = () => {
 
 
     const [video, setVideo] = useState<Video | null>(null);
+    const [videoMetricsState, setVideoMetricsState] = useState({
+        likes: video && getLikesOfAVideo(video),
+        views: video && getViewsOfAVideo(video)
+    });
 
     useEffect(() => {
         try {
@@ -157,7 +166,7 @@ export const SingleVideoPage = () => {
             console.error(`error `, error)
         }
 
-    }, []);
+    }, [video, videoId, executeGetSingeVideoPageService]);
 
     useEffect(() => {
         try {
@@ -165,7 +174,6 @@ export const SingleVideoPage = () => {
 
                 const { status, data: { message, video, success } } = response;
 
-                console.log(`RESP `, response)
                 if (status === 200 && success) {
                     setVideo(video)
                 }
@@ -204,6 +212,7 @@ export const SingleVideoPage = () => {
                         videoId: videoId || `default`,
 
                     })
+
                 }
                 else {
                     showToast({
@@ -249,6 +258,7 @@ export const SingleVideoPage = () => {
                         videoId: videoId || `default`,
                         type: `danger`
                     })
+
                 }
                 else {
                     showToast({
@@ -406,23 +416,46 @@ export const SingleVideoPage = () => {
         try {
             if (updateVideoStatus === `success`) {
                 const {
-                    status, data: { message, video }, success
+                    status, data: { message, video, success }
                 } = updateVideoResponse;
 
+
+
                 if (status === 201 && success) {
+                    // UPDATE_VIDEOO
+                    if (trendingVideos && setTrendingVideos) {
+                        setTrendingVideos(prevState => {
+                            return {
+                                ...prevState,
+                                videos: prevState.videos.map(trendingVideo => {
+                                    if (trendingVideo._id === video?._id) {
+                                        return video;
+                                    }
+                                    return trendingVideo;
+                                })
+                            }
+                        })
+                    }
+                    console.log(`updateVideoResponse `, updateVideoResponse)
                     videosDispatch({
                         type: `UPDATE_VIDEO`,
                         payload: {
                             video
                         },
                     });
+                    setVideoMetricsState(prevState => ({
+
+                        views: getViewsOfAVideo(video),
+                        likes: getLikesOfAVideo(video)
+
+                    }))
                 }
 
             }
         } catch (error) {
             console.error(`error `, error)
         }
-    }, [updateVideoStatus, updateVideoResponse, videosDispatch]);
+    }, [updateVideoStatus, updateVideoResponse, videosDispatch,]);
 
     useEffect(() => {
         try {
@@ -967,13 +1000,15 @@ export const SingleVideoPage = () => {
                                             <span>
                                                 <IoMdHeart size={20} />
                                             </span>
-                                            <span className="pl-md "> {getLikesOfAVideo(video)} likes</span>
+                                            <span className="pl-md "> {`${videoMetricsState?.likes ? videoMetricsState.likes :
+                                                getLikesOfAVideo(video)
+                                                }`} likes</span>
                                         </div>
                                         <div className="d-flex ai-center">
                                             <span>
                                                 <MdRemoveRedEye size={20} />
                                             </span>
-                                            <span className="pl-md "> {video.views.male + video.views.female + video.views.others} views</span>
+                                            <span className="pl-md "> {`${videoMetricsState?.views ? videoMetricsState.views : getViewsOfAVideo(video)}`} views</span>
                                         </div>
                                         <div className="d-flex ai-center">
                                             <span>
@@ -1063,8 +1098,8 @@ export const SingleVideoPage = () => {
                                         {
 
                                             notesData.notes.map(note => {
-                                                return <div key={note._id} >
-                                                    <div className={`${editProfileIcon} ${iconButton}`} style={{ top: `0px`, right: `0px` }}>
+                                                return <div key={note._id} className={`d-flex f-direction-col gap-10`}>
+                                                    <div className={`${editProfileIcon} ${iconButton}`} style={{ top: `6px`, right: `6px` }}>
                                                         <button
                                                             className={`btn ${editProfileButton}`}
 
@@ -1080,29 +1115,32 @@ export const SingleVideoPage = () => {
                                                             <MdEditNote size={28} />
                                                         </button>
                                                     </div>
-                                                    <div className={`fs-3 mb-lg`}>{note.title}</div>
-                                                    <div className="">
+                                                    <div className={`fs-2 ${noteHeader}`}>{note.title}</div>
+                                                    <div className={`${noteHeader}`}>
                                                         {
                                                             note.description
                                                         }
                                                     </div>
-                                                    <div className={`${iconDelete}`}>
-                                                        <button className={`btn ${btnTrash}`}
-                                                            onClick={() => {
-                                                                executeDeleteNoteService({
-                                                                    noteId: note._id,
-                                                                    videoId: video._id
-                                                                })
-                                                            }}
-                                                        >
-                                                            <span>
-                                                                {" "}
-                                                                <IoMdTrash size={24} />{" "}
-                                                            </span>{" "}
+                                                    <div className="d-flex jc-end">
+                                                        <div className={`${iconDelete}`}>
+                                                            <button className={`btn ${btnTrash}`}
+                                                                onClick={() => {
+                                                                    executeDeleteNoteService({
+                                                                        noteId: note._id,
+                                                                        videoId: video._id
+                                                                    })
+                                                                }}
+                                                            >
+                                                                <span >
+                                                                    {" "}
+                                                                    <IoMdTrash size={24} />{" "}
+                                                                </span>{" "}
 
-                                                        </button>
+                                                            </button>
 
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             })
 
