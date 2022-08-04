@@ -70,7 +70,7 @@ const actionMap = new Map([
             return video;
           }),
         };
-        console.log(`UPDATE_VIDEO `, updatedState)
+      
         return updatedState;
       }
       return state;

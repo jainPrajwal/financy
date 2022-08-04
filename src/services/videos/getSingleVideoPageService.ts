@@ -9,7 +9,7 @@ export const getSingeVideoPageService = async ({
 }): Promise<AxiosResponse> => {
   try {
     const response = await axios.get(`${BASE_API}/videos/${videoId}`);
-    console.log(`FETCHED`)
+   
     return response;
   } catch (error) {
     console.error(

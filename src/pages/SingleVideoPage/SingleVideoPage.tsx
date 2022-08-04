@@ -498,7 +498,7 @@ export const SingleVideoPage = () => {
                             }
                         })
                     }
-                    console.log(`updateVideoResponse `, updateVideoResponse)
+                  
                     videosDispatch({
                         type: `UPDATE_VIDEO`,
                         payload: {

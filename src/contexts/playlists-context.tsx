@@ -88,7 +88,7 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
       const localtoken = local ? JSON.parse(local) : null;
 
       if (token || localtoken?.token) {
-        console.log(`FIRING GET PLAYLISTS`)
+       
         execute(null);
       }
     } catch (error) {

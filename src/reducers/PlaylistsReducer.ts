@@ -15,7 +15,7 @@ const actionMap = new Map([
       if (action.type === CREATE_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `custom`:
-            console.log(`action payload `, action.payload.playlist);
+          
             const updatedPlaylist = {
               ...state,
               customPlaylistsData: {
@@ -29,7 +29,7 @@ const actionMap = new Map([
                     ),
               },
             };
-            console.log(`CREATING `, updatedPlaylist);
+           
             return updatedPlaylist;
 
           case `liked`:

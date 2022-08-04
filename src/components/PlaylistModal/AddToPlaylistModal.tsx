@@ -51,7 +51,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden]);
 
     useEffect(() => {
-        console.log(`createPla`)
+      
         if (createPlaylistServiceStatus === `success`) {
             const { data: { success, message, playlist }, status } = createPlaylistServiceResponse;
             if (status === 201 && success) {

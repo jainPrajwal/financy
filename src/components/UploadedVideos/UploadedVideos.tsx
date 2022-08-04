@@ -20,6 +20,7 @@ import { Fallback } from "../../components/Fallback/Fallback";
 import { useAsync } from "../../hooks/useAxios";
 import { getUploadedVideosByUserService } from "../../services/videos/getUploadedVideosByUserService";
 import { useAuth } from "../../hooks/useAuth";
+import { useProfile } from "../../hooks/useProfile";
 
 
 export const UploadedVideos = () => {
@@ -37,19 +38,20 @@ export const UploadedVideos = () => {
 
     });
 
-    const { authState } = useAuth();
+    const { userProfile } = useProfile()
 
     const { execute, response, status } = useAsync(getUploadedVideosByUserService, false, null);
 
     useEffect(() => {
-        if (status === `idle`) {
+        if (status === `idle` && userProfile) {
+
             execute(null);
         }
-    }, []);
+    }, [userProfile, execute]);
 
     useEffect(() => {
         try {
-            if (authState && authState.token) {
+            if (userProfile) {
 
                 if (status === `success`) {
                     const { data, status } = response;
@@ -67,7 +69,7 @@ export const UploadedVideos = () => {
             console.error(`error `, error);
 
         }
-    }, [response, status, authState])
+    }, [response, status, userProfile])
     return (
         <>
             <Navbar setSidebar={setSidebar} />

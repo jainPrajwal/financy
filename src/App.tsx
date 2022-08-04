@@ -24,7 +24,7 @@ import { MostWatchedVideosProvider } from "./contexts/most-watched-videos-contex
 
 
 function App() {
-  console.log(`App re-renders`)
+ 
   return (
     <>
       <Routes>

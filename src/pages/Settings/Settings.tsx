@@ -22,6 +22,8 @@ import { getTotallikesOnPublishedVideos } from "../../utils/Videos/getTotalLikes
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { Premium } from "../../components/Premium/Premium";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
+import { UploadedVideos } from "../../components/UploadedVideos/UploadedVideos";
 
 
 ChartJS.register(ArcElement);
@@ -149,7 +151,8 @@ export const Settings = () => {
                                     <div className={`d-flex ai-center ${doughnutWrapper}`}>
                                         <div className={`${doughnutChartWrapper}`}>
 
-                                            {publishedVideos && publishedVideos?.length > 0 ? <Doughnut data={viewsData} /> : <><div>No Videos Uploaded Yet!</div></>}
+                                            {publishedVideos && publishedVideos?.length > 0 && views ?
+                                                views?.male + views?.female + views?.others > 0 ? <Doughnut data={viewsData} /> : <>No one has viewed the videos yet</> : <><div>No Videos Uploaded Yet!</div></>}
                                         </div>
                                         <div className={`p-1`}>
                                             <div className={`header header-secondary text-white`}>
@@ -161,7 +164,8 @@ export const Settings = () => {
                                     <div className={`d-flex ai-center  ${doughnutWrapper}`}>
                                         <div className={`${doughnutChartWrapper}`}>
 
-                                            {publishedVideos && publishedVideos?.length > 0 ? <Doughnut data={likesData} /> : <><div>No Videos Uploaded Yet!</div></>}
+                                            {publishedVideos && publishedVideos?.length > 0 && likes ?
+                                                likes?.male + likes?.female + likes?.others > 0 ? <Doughnut data={likesData} /> : <>No one has liked the videos yet</> : <><div>No Videos Uploaded Yet!</div></>}
                                         </div>
                                         <div className={`p-1`}>
                                             <div className={`header header-secondary text-white`}>
@@ -313,6 +317,9 @@ export const Settings = () => {
                 }
 
             </div>
+            {/* <div>
+                <UploadedVideos />
+            </div> */}
         </>
     );
 };
