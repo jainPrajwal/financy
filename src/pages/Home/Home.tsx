@@ -1,33 +1,28 @@
-import { Avatar, Loader } from "kaali-ui";
+import { Avatar, } from "kaali-ui";
 import { default as common } from "../../common/common.module.css";
 
 import { default as homeStyles } from "./Home.module.css";
 
-import { MdMenu, MdVerifiedUser } from "react-icons/md";
+import { MdVerifiedUser } from "react-icons/md";
 
 import { MobileSidebar } from "../../components/MobileSidebar/MobileSidebar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Sidebar } from "../../components/Sidebar/Sidebar";
-import { useVideos } from "../../hooks/useVideos";
-import { Video } from "../../constants/videos.types";
-import axios from "axios";
-import { AVATAR_FEMALE, AVATAR_MALE, BASE_API } from "../../constants/api";
-import { getAllVideos } from "../../services/videos/getAllVideos";
-import { NavLink, useNavigate } from "react-router-dom";
+
+import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
+
+
 
 import { Navbar } from "../../components/Navbar/Navbar";
 import { useProfile } from "../../hooks/useProfile";
-import { useAsync } from "../../hooks/useAxios";
-import { getMostWatchedVideos } from "../../services/videos/getMostWatchedVideos";
+import { MostWatchedVideos } from "../../components/MostWatchedVideos/MostWatchedVideos";
 
 export const Home = () => {
     const {
-        navbar,
+
 
         publisherAvatar,
 
-        wrapperLogo,
-        hamburgerMenu
     } = common;
 
     const {
@@ -42,50 +37,10 @@ export const Home = () => {
         bannerImage,
         bannerImageWrapper,
         publisherName,
-        cardContainer,
-        card,
-        cardWrapper,
-        cardImageWrapper,
-        cardContent,
-        cardImage,
-        cardTitle,
-        cardText,
-        cardAvatar
+
     } = homeStyles;
     const [sidebar, setSidebar] = useState(false);
-    const [mostWatched, setMostWatched] = useState<{ videos: Video[] }>({
-        videos: [],
-    });
-    const navigate = useNavigate();
     const { userProfile } = useProfile();
-
-
-
-    const { execute, errorMessage, status, response } = useAsync(getMostWatchedVideos, false, null);
-
-    useEffect(() => {
-        if (status === `idle`) {
-            execute(null);
-        }
-    }, []);
-
-    useEffect(() => {
-        try {
-            if (status === `success`) {
-                const { data } = response;
-                if (`videos` in data) {
-                    setMostWatched({ videos: data.videos })
-                }
-            }
-        } catch (error) {
-            console.error(`error `, error, errorMessage)
-        }
-
-    }, [status, response, errorMessage])
-
-  
-
-
     return (
         <>
             <Navbar setSidebar={setSidebar} />
@@ -196,72 +151,7 @@ export const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <div
-                        className={`${headerContainer} header header-secondary text-white`}
-                    >
-                        Most Watched
-                    </div>
-                    <div className={`${cardContainer}`}>
-                        {
-                            status === `loading`
-                                ?
-                                <div className="d-flex jc-center w-100">
-
-                                    <Loader />
-                                </div>
-                                : mostWatched?.videos.map((video: Video) => {
-                                    return <div
-                                        key={video._id}
-                                        className={`${cardWrapper} cursor-pointer`} role={`button`} onClick={() => {
-                                            navigate(`/videos/${video._id}`)
-                                        }}>
-
-                                        <div className={`${card} w-100`}>
-                                            <div className={`${cardImageWrapper}`}>
-                                                <img
-                                                    className={`${cardImage}`}
-                                                    src={`${video.thumbnails[0]?.standard?.url || video.thumbnails[0]?.high?.url}`}
-                                                    alt={`noice`}
-                                                />
-                                                <div className={`${cardAvatar}`}>
-                                                    <Avatar
-                                                        isVerified
-                                                        showStatus
-                                                        sizeOfStatus={`sm`}
-                                                        size={`md`}
-                                                        imageUrl={video.publisher.gender === `male` ? `${AVATAR_MALE}` : `${AVATAR_FEMALE}`}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={`${cardContent} p-md`}>
-                                                <div className={`${cardText}`}>
-                                                    <div className={`d-flex ai-center w-100`}>
-                                                        <div className={`${publisherName} pb-sm`}>
-                                                            <div className="d-flex ai-center">
-                                                                <div className="tube-text-secondary-color">
-                                                                    {video.publisher.name}
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className={`${cardTitle} text-white text-bold`}>
-                                                    {video.title}
-                                                </div>
-                                                <div
-                                                    className={`${"cardFooter"} d-flex tube-text-secondary-color jc-space-between mt-lg`}
-                                                >
-                                                    <div>{video.views.male + video.views.female + video.views.others} views</div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                })
-                        }
-                    </div>
+                    <MostWatchedVideos />
                 </div>
             </div>
         </>

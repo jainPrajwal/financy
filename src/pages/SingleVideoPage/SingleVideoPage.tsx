@@ -39,6 +39,9 @@ import { deleteNotesService } from "../../services/notes/deleteNoteService";
 import { useScrollToTop } from "../../hooks/useScrollToTop";
 import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
 import { useTrendingVideos } from "../../hooks/useTrendingVideos";
+import { getTrendingVideos } from "../../services/videos/getTrendingVideos";
+import { useMostWatchedVideos } from "../../hooks/useMostWatchedVideos";
+import { getMostWatchedVideos } from "../../services/videos/getMostWatchedVideos";
 
 
 export const SingleVideoPage = () => {
@@ -92,6 +95,7 @@ export const SingleVideoPage = () => {
     const { videosState, videosDispatch } = useVideos();
     const { userProfile } = useProfile();
     const { trendingVideos, setTrendingVideos } = useTrendingVideos();
+    const { mostWatchedVideos, setMostWatchedVideos } = useMostWatchedVideos();
     useScrollToTop();
 
 
@@ -184,7 +188,52 @@ export const SingleVideoPage = () => {
             console.error(`error `, error, errorMessage)
         }
 
-    }, [status, response, videosDispatch, errorMessage])
+    }, [status, response, videosDispatch, errorMessage]);
+
+
+    const { execute: executeGetTrendingVideos, errorMessage: errorMessageTrendingVideos, status: statusTrendingVideos, response: responseTrendingVideos } = useAsync(getTrendingVideos, false, null);
+
+    useEffect(() => {
+        if (statusTrendingVideos === `idle`) {
+            executeGetTrendingVideos(null);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (statusTrendingVideos === `success`) {
+                const { data } = responseTrendingVideos;
+                if (`videos` in data) {
+                    setTrendingVideos({ videos: data.videos })
+                }
+            }
+        } catch (error) {
+            console.error(`error `, error, errorMessageTrendingVideos)
+        }
+
+    }, [statusTrendingVideos, responseTrendingVideos, errorMessageTrendingVideos]);
+
+    const { execute: executeMostWatchedVideos, errorMessage: mostWatchedVideosErrorMessage, status: mostWatchedVideosStatus, response: mostWatchedVideosResponse } = useAsync(getMostWatchedVideos, false, null);
+
+    useEffect(() => {
+        if (mostWatchedVideosStatus === `idle`) {
+            executeMostWatchedVideos(null);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            if (mostWatchedVideosStatus === `success`) {
+                const { data } = mostWatchedVideosResponse;
+                if (`videos` in data) {
+                    setMostWatchedVideos({ videos: data.videos })
+                }
+            }
+        } catch (error) {
+            console.error(`error `, error, mostWatchedVideosErrorMessage)
+        }
+
+    }, [mostWatchedVideosStatus, mostWatchedVideosResponse, mostWatchedVideosErrorMessage, setMostWatchedVideos])
 
 
     useEffect(() => {
@@ -425,6 +474,19 @@ export const SingleVideoPage = () => {
                     // UPDATE_VIDEOO
                     if (trendingVideos && setTrendingVideos) {
                         setTrendingVideos(prevState => {
+                            return {
+                                ...prevState,
+                                videos: prevState.videos.map(trendingVideo => {
+                                    if (trendingVideo._id === video?._id) {
+                                        return video;
+                                    }
+                                    return trendingVideo;
+                                })
+                            }
+                        })
+                    }
+                    if(mostWatchedVideos && setMostWatchedVideos) {
+                        setMostWatchedVideos(prevState => {
                             return {
                                 ...prevState,
                                 videos: prevState.videos.map(trendingVideo => {
@@ -814,41 +876,53 @@ export const SingleVideoPage = () => {
                                 <div className={`${videoActions} d-flex ml-auto`}>
                                     {!isVideoAlreadyPresentInLikedPlaylist ? <button
                                         onClick={() => {
-                                            const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
-                                            executeAddToLikeService({
-                                                video,
-                                                playlistId:
-                                                    playlistsState.likedVideosData.likedVideos._id,
-                                            });
-                                            if (userProfile && userProfile.gender === `male`) {
+                                            let foundVideo = null;
+                                            foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                            if (!foundVideo) {
+                                                foundVideo = trendingVideos.videos.filter(video => video._id === videoId)[0];
 
-                                                executeUpdateVideoService({
-
-                                                    video: {
-                                                        likes: {
-                                                            male: foundVideo.likes.male + 1,
-                                                            female: foundVideo.likes.female,
-                                                            others: foundVideo.likes.others
-
-                                                        }
-
-                                                    },
-                                                    videoId: video._id
-                                                })
-                                            } else {
-                                                executeUpdateVideoService({
-
-                                                    video: {
-                                                        likes: {
-                                                            female: foundVideo.likes.female + 1,
-                                                            male: foundVideo.likes.male,
-                                                            others: foundVideo.likes.others
-
-                                                        }
-                                                    },
-                                                    videoId: video._id
-                                                })
                                             }
+                                            if (!foundVideo) {
+
+                                                foundVideo = mostWatchedVideos.videos.filter(video => video._id === videoId)[0];
+                                            }
+                                            if (foundVideo) {
+                                                executeAddToLikeService({
+                                                    video,
+                                                    playlistId:
+                                                        playlistsState.likedVideosData.likedVideos._id,
+                                                });
+                                                if (userProfile && userProfile.gender === `male`) {
+
+                                                    executeUpdateVideoService({
+
+                                                        video: {
+                                                            likes: {
+                                                                male: foundVideo.likes.male + 1,
+                                                                female: foundVideo.likes.female,
+                                                                others: foundVideo.likes.others
+
+                                                            }
+
+                                                        },
+                                                        videoId: video._id
+                                                    })
+                                                } else {
+                                                    executeUpdateVideoService({
+
+                                                        video: {
+                                                            likes: {
+                                                                female: foundVideo.likes.female + 1,
+                                                                male: foundVideo.likes.male,
+                                                                others: foundVideo.likes.others
+
+                                                            }
+                                                        },
+                                                        videoId: video._id
+                                                    })
+                                                }
+                                            }
+
 
                                         }}
                                         className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
@@ -863,40 +937,51 @@ export const SingleVideoPage = () => {
 
                                         <button
                                             onClick={() => {
-                                                const foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
-                                                executeRemoveFromLiked({
-                                                    videoId: video._id,
-                                                    playlistId: playlistsState.likedVideosData.likedVideos._id
-                                                })
-                                                if (userProfile && userProfile.gender === `male`) {
-
-                                                    executeUpdateVideoService({
-
-                                                        video: {
-                                                            likes: {
-                                                                male: foundVideo.likes.male - 1,
-                                                                female: foundVideo.likes.female,
-                                                                others: foundVideo.likes.others
-
-                                                            }
-
-                                                        },
-                                                        videoId: video._id
-                                                    })
-                                                } else {
-                                                    executeUpdateVideoService({
-
-                                                        video: {
-                                                            likes: {
-                                                                female: foundVideo.likes.female - 1,
-                                                                male: foundVideo.likes.male,
-                                                                others: foundVideo.likes.others
-
-                                                            }
-                                                        },
-                                                        videoId: video._id
-                                                    })
+                                                let foundVideo = null;
+                                                foundVideo = videosState.videos.filter(video => video._id === videoId)[0];
+                                                if (!foundVideo) {
+                                                    foundVideo = trendingVideos.videos.filter(video => video._id === videoId)[0];
                                                 }
+                                                if (!foundVideo) {
+
+                                                    foundVideo = mostWatchedVideos.videos.filter(video => video._id === videoId)[0];
+                                                }
+                                                if (foundVideo) {
+                                                    executeRemoveFromLiked({
+                                                        videoId: video._id,
+                                                        playlistId: playlistsState.likedVideosData.likedVideos._id
+                                                    })
+                                                    if (userProfile && userProfile.gender === `male`) {
+
+                                                        executeUpdateVideoService({
+
+                                                            video: {
+                                                                likes: {
+                                                                    male: foundVideo.likes.male - 1,
+                                                                    female: foundVideo.likes.female,
+                                                                    others: foundVideo.likes.others
+
+                                                                }
+
+                                                            },
+                                                            videoId: video._id
+                                                        })
+                                                    } else {
+                                                        executeUpdateVideoService({
+
+                                                            video: {
+                                                                likes: {
+                                                                    female: foundVideo.likes.female - 1,
+                                                                    male: foundVideo.likes.male,
+                                                                    others: foundVideo.likes.others
+
+                                                                }
+                                                            },
+                                                            videoId: video._id
+                                                        })
+                                                    }
+                                                }
+
                                             }}
                                             className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                         >

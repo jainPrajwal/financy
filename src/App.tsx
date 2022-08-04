@@ -16,6 +16,7 @@ import { Videos } from "./pages/Videos/Videos";
 import { WatchLater } from "./pages/WatchLater/WatchLater";
 import { Signup } from "./pages/Auth/Signup";
 import { TrendingVideosProvider } from "./contexts/trending-videos-context";
+import { MostWatchedVideosProvider } from "./contexts/most-watched-videos-context";
 
 
 
@@ -28,7 +29,11 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Explore />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={
+          <MostWatchedVideosProvider>
+            <Home />
+          </MostWatchedVideosProvider>
+        } />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/videos" element={<Videos />} />
@@ -47,7 +52,9 @@ function App() {
         <Route path="/settings" element={<RequiresAuth> <Settings /> </RequiresAuth>} />
         <Route path="/videos/:videoId" element={
           <TrendingVideosProvider>
-            <SingleVideoPage />
+            <MostWatchedVideosProvider>
+              <SingleVideoPage />
+            </MostWatchedVideosProvider>
           </TrendingVideosProvider>
         }></Route>
       </Routes>
