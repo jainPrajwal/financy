@@ -1,8 +1,11 @@
+import {useToast} from "kaali-ui";
 import { useState } from "react";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useTitle } from "../../hooks/useTitle";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 
 
 export const Signup = () => {
@@ -81,6 +84,7 @@ export const Signup = () => {
             isPasswordsEqual: false
         }
     });
+    const {toastDispatch} = useToast();
 
     useTitle({ title: `Sign Up` });
 
@@ -117,7 +121,15 @@ export const Signup = () => {
                     onSubmit={(e) => {
                         e.preventDefault();
 
-                        if (form.isFormValid) {
+                        if (Object.values(form?.isFormValid).includes(false)) {
+                            showToast({
+                              element: <ToastMessage message="All fields are mandatory and should be valid" videoId="default" key={`default`} />,
+                              toastDispatch,
+                              videoId: `default`,
+                              type: `danger`
+                            });
+              
+                          } else {
 
                             signUpUserWithCredentials({
                                 name: form.name,
@@ -493,7 +505,7 @@ export const Signup = () => {
                         <div className="p-md">
                             <button
                                 type="submit"
-                                disabled={Object.values(form?.isFormValid).includes(false)}
+                               
                                 className="btn btn-danger w-100"
                                 style={{ paddingInline: 0, margin: 0 }}
                             >

@@ -263,7 +263,7 @@ const actionMap = new Map([
   [
     RESET_PLAYLIST,
     (state: PlaylistsState, action: ACTION) => {
-      console.log(`resetting playlist.. `, action);
+  
       if (action.type === `RESET_PLAYLIST`) {
         return { ...playlistsInitialState };
       }
@@ -274,6 +274,6 @@ const actionMap = new Map([
 
 export const playlistsReducer = (state: PlaylistsState, action: ACTION) => {
   const mappedAction = actionMap.get(action.type);
-  console.log(`resetting playlist mappedAction.. `, mappedAction);
+ 
   return mappedAction ? mappedAction(state, action) : state;
 };

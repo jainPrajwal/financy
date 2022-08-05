@@ -326,7 +326,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
         }
     }, [updateVideoStatus, updateVideoResponse, videosDispatch]);
 
-    console.log(`PLAYLISTS STATE `, playlistsState)
+
     const isVideoAlreadyPresentInLikedPlaylist =
         checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(
             video,
@@ -519,7 +519,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                             className={`btn btn-danger ${iconButton} ${iconButtonLike}`}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                console.log(`AUTH STATE`, authState)
+                              
                                 if (authState && authState.token) {
                                     executeAddToLikeService({
                                         video,

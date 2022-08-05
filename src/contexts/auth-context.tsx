@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     authDispatch({
       type: `LOGOUT`,
     });
-    console.log(`RESETTING........!`)
+  
 
 
   

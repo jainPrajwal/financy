@@ -1,4 +1,4 @@
-import { Tooltip, Loader } from "kaali-ui";
+import { Tooltip, Loader, useToast } from "kaali-ui";
 import { useAuth } from "../../hooks/useAuth";
 
 
@@ -7,6 +7,8 @@ import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
 import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 import { useTitle } from "../../hooks/useTitle";
+import { showToast } from "../../utils/showToast";
+import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
 
 
 const Login = () => {
@@ -56,6 +58,7 @@ const Login = () => {
   });
 
   const { loginUserWithCredentials, loginStatus } = useAuth();
+  const { toastDispatch } = useToast();
 
 
   useTitle({ title: `Login` })
@@ -94,8 +97,16 @@ const Login = () => {
           onSubmit={(e) => {
             e.preventDefault();
 
-            if (form.isFormValid) {
 
+            if (Object.values(form?.isFormValid).includes(false)) {
+              showToast({
+                element: <ToastMessage message="All fields are mandatory and should be valid" videoId="default" key={`default`} />,
+                toastDispatch,
+                videoId: `default`,
+                type: `danger`
+              });
+
+            } else {
               loginUserWithCredentials({
                 email: form.email,
                 password: form.password
@@ -251,7 +262,7 @@ const Login = () => {
             <div className="p-md">
               <button
                 type="submit"
-                disabled={Object.values(form?.isFormValid).includes(false)}
+
                 className="btn btn-danger w-100"
                 style={{ paddingInline: 0, margin: 0 }}
               >

@@ -22,7 +22,7 @@ export const actionMap = new Map<
   [
     LOGOUT,
     (state: AuthState, action: ACTION) => {
-      console.log(`AUTH STATE `, state)
+   
       return initialAuthState;
     },
   ],
