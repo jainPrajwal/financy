@@ -86,10 +86,10 @@ export const Premium = ({ header }: { header: string }) => {
                         <ul>
                             <li className="header-secondary text-center my-md">Payment Details</li>
                             <li className={`py-lg`}>
-                                Order Id: <span className="fs-2">{`${paymentDetails?.orderId}`}</span>
+                                Order Id: <span className="fs-2 ml-lg">{`${paymentDetails?.orderId.slice(0,10)}`}</span>
                             </li>
                             <li className={`py-lg`}>
-                                Payment Id: <span className="fs-2">{`${paymentDetails?.paymentId}`}</span>
+                                Payment Id: <span className="fs-2 ml-lg">{`${paymentDetails?.paymentId.slice(0,10)}`}</span>
                             </li>
                         </ul>
                     </li>}

@@ -16,11 +16,11 @@ root.render(
     <ToastProvider>
       <AuthProvider>
         <ProfileProvider>
-            <PlaylistsProvider>
-          <VideosProvider>
+          <PlaylistsProvider>
+            <VideosProvider>
               <App />
-          </VideosProvider>
-            </PlaylistsProvider>
+            </VideosProvider>
+          </PlaylistsProvider>
         </ProfileProvider>
       </AuthProvider>
     </ToastProvider>

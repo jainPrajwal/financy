@@ -5,8 +5,10 @@ import {
   DELETE_PLAYLIST,
   REMOVE_FROM_PLAYLIST,
   SET_LOADING,
+  RESET_PLAYLIST,
 } from "../constants/actions.types";
 import { PlaylistsState } from "../constants/playlists.types";
+import { playlistsInitialState } from "../contexts/playlists-context";
 
 const actionMap = new Map([
   [
@@ -15,7 +17,6 @@ const actionMap = new Map([
       if (action.type === CREATE_PLAYLIST) {
         switch (action.payload.playlist.type) {
           case `custom`:
-          
             const updatedPlaylist = {
               ...state,
               customPlaylistsData: {
@@ -29,7 +30,7 @@ const actionMap = new Map([
                     ),
               },
             };
-           
+
             return updatedPlaylist;
 
           case `liked`:
@@ -259,9 +260,20 @@ const actionMap = new Map([
       return state;
     },
   ],
+  [
+    RESET_PLAYLIST,
+    (state: PlaylistsState, action: ACTION) => {
+      console.log(`resetting playlist.. `, action);
+      if (action.type === `RESET_PLAYLIST`) {
+        return { ...playlistsInitialState };
+      }
+      return state;
+    },
+  ],
 ]);
 
 export const playlistsReducer = (state: PlaylistsState, action: ACTION) => {
   const mappedAction = actionMap.get(action.type);
+  console.log(`resetting playlist mappedAction.. `, mappedAction);
   return mappedAction ? mappedAction(state, action) : state;
 };

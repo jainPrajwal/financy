@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { default as common } from "../../common/common.module.css";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { useAuth } from "../../hooks/useAuth";
+import { usePlaylists } from "../../hooks/usePlaylists";
 import { useProfile } from "../../hooks/useProfile";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { default as navbarStyles } from "./Navbar.module.css"
@@ -24,11 +25,12 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
     const [popOver, setShowPopOver] = useState(false);
     const { logout, authState } = useAuth();
     const [searchbar, setSearchbar] = useState(false);
+    const { playlistsDispatch } = usePlaylists();
     const navigate = useNavigate();
 
     return <header className={`${navbar} pr-lg`}>
         <div
-            className={`${hamburgerMenu} text-white`}
+            className={`${hamburgerMenu} text-white`} 
             role="button"
             onClick={() => setSidebar(true)}
         >
@@ -69,6 +71,9 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                     }}>Profile</div>
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         logout();
+                        playlistsDispatch({
+                            type: `RESET_PLAYLIST`
+                        })
                     }}>Logout</div>
                 </div>
             </div>

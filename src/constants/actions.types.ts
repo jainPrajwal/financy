@@ -17,6 +17,7 @@ export const REMOVE_FROM_PLAYLIST = "REMOVE_FROM_PLAYLIST";
 export const CREATE_PLAYLIST = "CREATE_PLAYLIST";
 export const DELETE_PLAYLIST = "DELETE_PLAYLIST";
 export const UPDATE_PLAYLIST = "UPDATE_PLAYLIST";
+export const RESET_PLAYLIST = "RESET_PLAYLIST";
 
 export const FILTER_BY_CATEGORY = `FILTER_BY_CATEGORY`;
 export const CLEAR_ALL = `CLEAR_ALL`;
@@ -152,4 +153,7 @@ export type ACTION =
       payload: {
         playlistId: string;
       };
+    }
+  | {
+      type: typeof RESET_PLAYLIST;
     };

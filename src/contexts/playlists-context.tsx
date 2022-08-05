@@ -8,7 +8,7 @@ import { useVideos } from "../hooks/useVideos";
 import { playlistsReducer } from "../reducers/PlaylistsReducer";
 import { getAllPlaylistsService } from "../services/playlists/getAllPlaylistsService";
 
-const playlistsInitialState: PlaylistsState = {
+export const playlistsInitialState: PlaylistsState = {
   customPlaylistsData: {
     customPlaylists: [],
     loading: `idle`,

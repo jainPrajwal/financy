@@ -20,6 +20,7 @@ import {
 } from "../services/auth/loginService";
 import { signupService } from "../services/auth/signupService";
 import { showToast } from "../utils/showToast";
+import { usePlaylists } from "../hooks/usePlaylists";
 
 export const AuthContext = createContext<{
   authState: AuthState;
@@ -52,6 +53,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { toastDispatch } = useToast();
+ 
 
   const { execute, status: loginStatus, response } = useAsync(loginService, false, null);
   const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
@@ -64,7 +66,12 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     authDispatch({
       type: `LOGOUT`,
     });
-    navigate(`/login`);
+    console.log(`RESETTING........!`)
+
+
+  
+
+    // navigate(`/login`);
     showToast({
       toastDispatch,
       element: (
@@ -116,7 +123,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             })
             setupAuthHeaderForServiceCalls(authState.token);
 
-            
+
 
           } else {
             showToast({
@@ -185,7 +192,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             setupAuthHeaderForServiceCalls(authState.token);
 
           } else {
-            
+
 
             showToast({
               toastDispatch,
@@ -205,7 +212,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       }
     } catch (error) {
       console.error(`error 207`, error)
-    
+
 
     }
 
@@ -241,13 +248,13 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
 
   const signUpUserWithCredentials = useCallback((userSignUpCredentials: signupUserCredentials) => {
-    
+
     executeSignup({ userSignUpCredentials })
   }, [executeSignup])
 
- useEffect(() => {
-  setupAuthExceptionHandler({toastDispatch});
- },[])
+  useEffect(() => {
+    setupAuthExceptionHandler({ toastDispatch });
+  }, [])
 
   return (
     <AuthContext.Provider

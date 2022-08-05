@@ -28,6 +28,7 @@ import { getLikesOfAVideo } from "../../utils/Videos/getLikesOfAVideo";
 import { AVATAR_FEMALE, AVATAR_MALE } from "../../constants/api";
 import { getViewsOfAVideo } from "../../utils/Videos/getViewsOfAVideo";
 import { useTrendingVideos } from "../../hooks/useTrendingVideos";
+import { useAuth } from "../../hooks/useAuth";
 
 
 
@@ -285,6 +286,9 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
 
     }, [removeFromWatchLaterStatus, removeFromWatchLaterResponse, playlistsDispatch]);
 
+    const { authState } = useAuth();
+
+
     useEffect(() => {
         try {
             if (updateVideoStatus === `success`) {
@@ -322,6 +326,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
         }
     }, [updateVideoStatus, updateVideoResponse, videosDispatch]);
 
+    console.log(`PLAYLISTS STATE `, playlistsState)
     const isVideoAlreadyPresentInLikedPlaylist =
         checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(
             video,
@@ -412,11 +417,25 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                                 {!isVideoAlreadyPresentInWatchLaterPlaylist ? <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        executeAddToWatchLaterService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                        });
+                                        if (authState && authState.token) {
+                                            executeAddToWatchLaterService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            });
+                                        } else {
+
+                                            showToast({
+                                                toastDispatch,
+                                                element: (
+                                                    <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                                ),
+
+                                                videoId,
+                                                type: `danger`
+                                            })
+                                        }
+
                                     }}
                                     className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                 >
@@ -431,10 +450,23 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            executeRemoveFromWatchLater({
-                                                videoId: video._id,
-                                                playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                            })
+                                            if (authState && authState.token) {
+                                                executeRemoveFromWatchLater({
+                                                    videoId: video._id,
+                                                    playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                                })
+                                            } else {
+                                                showToast({
+                                                    toastDispatch,
+                                                    element: (
+                                                        <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                                    ),
+    
+                                                    videoId,
+                                                    type: `danger`
+                                                })
+                                            }
+
                                         }}
                                         className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                     >
@@ -487,40 +519,51 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                             className={`btn btn-danger ${iconButton} ${iconButtonLike}`}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                // need to fetch the video here
+                                console.log(`AUTH STATE`, authState)
+                                if (authState && authState.token) {
+                                    executeAddToLikeService({
+                                        video,
+                                        playlistId:
+                                            playlistsState.likedVideosData.likedVideos._id,
+                                    });
+                                    if (userProfile && userProfile.gender === `male`) {
 
-                                executeAddToLikeService({
-                                    video,
-                                    playlistId:
-                                        playlistsState.likedVideosData.likedVideos._id,
-                                });
-                                if (userProfile && userProfile.gender === `male`) {
+                                        executeUpdateVideoService({
 
-                                    executeUpdateVideoService({
+                                            video: {
+                                                likes: {
+                                                    male: video.likes.male + 1,
+                                                    female: video.likes.female,
+                                                    others: video.likes.others
 
-                                        video: {
-                                            likes: {
-                                                male: video.likes.male + 1,
-                                                female: video.likes.female,
-                                                others: video.likes.others
+                                                }
 
-                                            }
+                                            },
+                                            videoId: video._id
+                                        })
+                                    } else {
+                                        executeUpdateVideoService({
 
-                                        },
-                                        videoId: video._id
-                                    })
-                                } else {
-                                    executeUpdateVideoService({
+                                            video: {
+                                                likes: {
+                                                    female: video.likes.female + 1,
+                                                    male: video.likes.male,
+                                                    others: video.likes.others
 
-                                        video: {
-                                            likes: {
-                                                female: video.likes.female + 1,
-                                                male: video.likes.male,
-                                                others: video.likes.others
+                                                }
+                                            },
+                                            videoId: video._id
+                                        })
+                                    }
+                                }else {
+                                    showToast({
+                                        toastDispatch,
+                                        element: (
+                                            <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                        ),
 
-                                            }
-                                        },
-                                        videoId: video._id
+                                        videoId,
+                                        type: `danger`
                                     })
                                 }
 
@@ -541,40 +584,54 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
-
-                                    executeRemoveFromLiked({
-                                        videoId: video._id,
-                                        playlistId: playlistsState.likedVideosData.likedVideos._id
-                                    })
-                                    if (userProfile && userProfile.gender === `male`) {
-
-                                        executeUpdateVideoService({
-
-                                            video: {
-                                                likes: {
-                                                    male: video.likes.male - 1,
-                                                    female: video.likes.female,
-                                                    others: video.likes.others
-
-                                                }
-
-                                            },
-                                            videoId: video._id
+                                    if (authState && authState.token) {
+                                        executeRemoveFromLiked({
+                                            videoId: video._id,
+                                            playlistId: playlistsState.likedVideosData.likedVideos._id
                                         })
+                                        if (userProfile && userProfile.gender === `male`) {
+
+                                            executeUpdateVideoService({
+
+                                                video: {
+                                                    likes: {
+                                                        male: video.likes.male - 1,
+                                                        female: video.likes.female,
+                                                        others: video.likes.others
+
+                                                    }
+
+                                                },
+                                                videoId: video._id
+                                            })
+                                        } else {
+                                            executeUpdateVideoService({
+
+                                                video: {
+                                                    likes: {
+                                                        female: video.likes.female - 1,
+                                                        male: video.likes.male,
+                                                        others: video.likes.others
+
+                                                    }
+                                                },
+                                                videoId: video._id
+                                            })
+                                        }
+
                                     } else {
-                                        executeUpdateVideoService({
-
-                                            video: {
-                                                likes: {
-                                                    female: video.likes.female - 1,
-                                                    male: video.likes.male,
-                                                    others: video.likes.others
-
-                                                }
-                                            },
-                                            videoId: video._id
+                                        showToast({
+                                            toastDispatch,
+                                            element: (
+                                                <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                            ),
+    
+                                            videoId,
+                                            type: `danger`
                                         })
                                     }
+
+
                                 }}
                                 className={`btn btn-danger ${iconButton} ${iconButtonLikeSolid} `}
                             >
@@ -667,11 +724,24 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                                 {!isVideoAlreadyPresentInWatchLaterPlaylist ? <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        executeAddToWatchLaterService({
-                                            video,
-                                            playlistId:
-                                                playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                        });
+                                        if (authState && authState.token) {
+
+                                            executeAddToWatchLaterService({
+                                                video,
+                                                playlistId:
+                                                    playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                            });
+                                        }else {
+                                            showToast({
+                                                toastDispatch,
+                                                element: (
+                                                    <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                                ),
+        
+                                                videoId,
+                                                type: `danger`
+                                            })
+                                        }
                                     }}
                                     className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                 >
@@ -686,10 +756,23 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            executeRemoveFromWatchLater({
-                                                videoId: video._id,
-                                                playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
-                                            })
+                                            if (authState && authState.token) {
+
+                                                executeRemoveFromWatchLater({
+                                                    videoId: video._id,
+                                                    playlistId: playlistsState.watchLaterVideosData.watchLaterVideos._id
+                                                })
+                                            } else {
+                                                showToast({
+                                                    toastDispatch,
+                                                    element: (
+                                                        <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                                    ),
+    
+                                                    videoId,
+                                                    type: `danger`
+                                                })
+                                            }
                                         }}
                                         className={`btn btn-danger ${iconButton} d-flex ai-center jc-center`}
                                     >
@@ -750,40 +833,53 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                         onClick={(e) => {
                             e.stopPropagation();
 
-                            executeAddToLikeService({
-                                video,
-                                playlistId:
-                                    playlistsState.likedVideosData.likedVideos._id,
-                            });
-                            if (userProfile && userProfile.gender === `male`) {
+                            if (authState && authState.token) {
+                                executeAddToLikeService({
+                                    video,
+                                    playlistId:
+                                        playlistsState.likedVideosData.likedVideos._id,
+                                });
+                                if (userProfile && userProfile.gender === `male`) {
 
-                                executeUpdateVideoService({
+                                    executeUpdateVideoService({
 
-                                    video: {
-                                        likes: {
-                                            male: video.likes.male + 1,
-                                            female: video.likes.female,
-                                            others: video.likes.others
+                                        video: {
+                                            likes: {
+                                                male: video.likes.male + 1,
+                                                female: video.likes.female,
+                                                others: video.likes.others
 
-                                        }
+                                            }
 
-                                    },
-                                    videoId: video._id
-                                })
+                                        },
+                                        videoId: video._id
+                                    })
+                                } else {
+                                    executeUpdateVideoService({
+
+                                        video: {
+                                            likes: {
+                                                female: video.likes.female + 1,
+                                                male: video.likes.male,
+                                                others: video.likes.others
+
+                                            }
+                                        },
+                                        videoId: video._id
+                                    })
+                                }
                             } else {
-                                executeUpdateVideoService({
+                                showToast({
+                                    toastDispatch,
+                                    element: (
+                                        <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                    ),
 
-                                    video: {
-                                        likes: {
-                                            female: video.likes.female + 1,
-                                            male: video.likes.male,
-                                            others: video.likes.others
-
-                                        }
-                                    },
-                                    videoId: video._id
+                                    videoId,
+                                    type: `danger`
                                 })
                             }
+
 
                         }}
 
@@ -801,40 +897,53 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
+                                if (authState && authState.token) {
 
-                                executeRemoveFromLiked({
-                                    videoId: video._id,
-                                    playlistId: playlistsState.likedVideosData.likedVideos._id
-                                })
-                                if (userProfile && userProfile.gender === `male`) {
-
-                                    executeUpdateVideoService({
-
-                                        video: {
-                                            likes: {
-                                                male: video.likes.male - 1,
-                                                female: video.likes.female,
-                                                others: video.likes.others
-
-                                            }
-
-                                        },
-                                        videoId: video._id
+                                    executeRemoveFromLiked({
+                                        videoId: video._id,
+                                        playlistId: playlistsState.likedVideosData.likedVideos._id
                                     })
+                                    if (userProfile && userProfile.gender === `male`) {
+
+                                        executeUpdateVideoService({
+
+                                            video: {
+                                                likes: {
+                                                    male: video.likes.male - 1,
+                                                    female: video.likes.female,
+                                                    others: video.likes.others
+
+                                                }
+
+                                            },
+                                            videoId: video._id
+                                        })
+                                    } else {
+                                        executeUpdateVideoService({
+
+                                            video: {
+                                                likes: {
+                                                    female: video.likes.female - 1,
+                                                    male: video.likes.male,
+                                                    others: video.likes.others
+
+                                                }
+                                            },
+                                            videoId: video._id
+                                        })
+                                    }
                                 } else {
-                                    executeUpdateVideoService({
+                                    showToast({
+                                        toastDispatch,
+                                        element: (
+                                            <ToastMessage message={`Please login to avail these features`} videoId={videoId} />
+                                        ),
 
-                                        video: {
-                                            likes: {
-                                                female: video.likes.female - 1,
-                                                male: video.likes.male,
-                                                others: video.likes.others
-
-                                            }
-                                        },
-                                        videoId: video._id
+                                        videoId,
+                                        type: `danger`
                                     })
                                 }
+
                             }}
                             className={`btn btn-danger ${iconButton} ${iconButtonLikeSolid} `}
                         >

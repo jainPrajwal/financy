@@ -17,6 +17,7 @@ import { default as common } from "../../common/common.module.css";
 import { showToast } from "../../utils/showToast";
 import { ToastMessage } from "../ToastMessage/ToastMessage";
 import { Fallback } from "../Fallback/Fallback";
+import { useAuth } from "../../hooks/useAuth";
 
 const UserPlaylist: UserDefinedPlaylist = {
     name: null,
@@ -45,13 +46,14 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
     useFocus(InputRef, showPlaylistInput);
     useOnClickOutside(ModalRef, setIsModalHidden);
     const { toastDispatch } = useToast();
+    const { authState } = useAuth();
 
 
 
     const handleModalClose = useCallback(() => setIsModalHidden(true), [setIsModalHidden]);
 
     useEffect(() => {
-      
+
         if (createPlaylistServiceStatus === `success`) {
             const { data: { success, message, playlist }, status } = createPlaylistServiceResponse;
             if (status === 201 && success) {
@@ -76,11 +78,33 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
                     >
                         <form onSubmit={(e) => {
                             e.preventDefault();
-                            setShowPlaylistInput(true)
-                            if (showPlaylistInput) {
 
-                                executeCreatePlaylistService(newPlaylistDetails)
+                            if (authState && authState.token) {
+                                setShowPlaylistInput(true)
+                                if (showPlaylistInput) {
+
+                                    executeCreatePlaylistService(newPlaylistDetails);
+                                    setnewPlaylistDetails((prevState) => {
+                                        return {
+                                            ...prevState,
+                                            name: null,
+                                            description: null
+                                        }
+                                    })
+                                }
+                            } else {
+
+                                showToast({
+                                    toastDispatch,
+                                    element: (
+                                        <ToastMessage message={`Please login to avail these features`} videoId={`default`} />
+                                    ),
+
+                                    videoId: `default`,
+                                    type: `danger`
+                                })
                             }
+
 
                         }}>
                             <ModalContainer>
@@ -132,6 +156,7 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
                                             <div className="create-text w-100 my-sm">
                                                 <input type="text" placeholder="Create new playlist" className={`p-lg ${inputStyle} fs-2`} autoFocus
+                                                    value={newPlaylistDetails.name || ``}
                                                     ref={InputRef}
                                                     required={showPlaylistInput ? true : false}
                                                     name="playlist name"
@@ -140,7 +165,9 @@ export const AddToPlaylistModal = ({ ismodalHidden, setIsModalHidden, video }: {
 
                                             </div>
                                             <div className="create-text w-100 my-sm">
-                                                <textarea placeholder="Description" className={`p-lg ${inputStyle} fs-2`} style={{ resize: `none` }}
+                                                <textarea placeholder="Description"
+                                                  value={newPlaylistDetails.description || ``}
+                                                className={`p-lg ${inputStyle} fs-2`} style={{ resize: `none` }}
                                                     name="playlist description"
                                                     onChange={(e) => setnewPlaylistDetails(prevState => ({ ...prevState, description: e.target.value, }))}
                                                 />
