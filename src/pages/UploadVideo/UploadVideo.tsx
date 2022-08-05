@@ -86,7 +86,7 @@ export const UploadVideo = () => {
         <MobileSidebar status={{ sidebar, setSidebar }} />
         <div className={`${uploadContainer}`}>
             <div
-                className={`${headerContainer} header header-secondary text-white`}
+                className={`${headerContainer} header-secondary text-white`}
             >
                 Upload A New Video
             </div>

@@ -30,7 +30,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
 
     return <header className={`${navbar} pr-lg`}>
         <div
-            className={`${hamburgerMenu} text-white`} 
+            className={`${hamburgerMenu} text-white`}
             role="button"
             onClick={() => setSidebar(true)}
         >
@@ -71,6 +71,7 @@ export const Navbar = ({ setSidebar }: { setSidebar: React.Dispatch<React.SetSta
                     }}>Profile</div>
                     <div className="fs-1 p-lg cursor-pointer" role={`button`} onClick={() => {
                         logout();
+                        navigate(`/`);
                         playlistsDispatch({
                             type: `RESET_PLAYLIST`
                         })
