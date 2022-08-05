@@ -1,4 +1,4 @@
-import {useToast} from "kaali-ui";
+import { useToast, Loader } from "kaali-ui";
 import { useState } from "react";
 import { default as authStyles } from "./Auth.module.css";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useTitle } from "../../hooks/useTitle";
 import { showToast } from "../../utils/showToast";
 import { ToastMessage } from "../../components/ToastMessage/ToastMessage";
+import { FlexContainer } from "../../components/FlexContainer/FlexContainer";
 
 
 export const Signup = () => {
@@ -14,7 +15,7 @@ export const Signup = () => {
         confirm: false
     });
 
-    const { signUpUserWithCredentials } = useAuth();
+    const { signUpUserWithCredentials, signupStatus } = useAuth();
     const {
 
         inputPasswordWrapper,
@@ -84,7 +85,7 @@ export const Signup = () => {
             isPasswordsEqual: false
         }
     });
-    const {toastDispatch} = useToast();
+    const { toastDispatch } = useToast();
 
     useTitle({ title: `Sign Up` });
 
@@ -123,13 +124,13 @@ export const Signup = () => {
 
                         if (Object.values(form?.isFormValid).includes(false)) {
                             showToast({
-                              element: <ToastMessage message="All fields are mandatory and should be valid" videoId="default" key={`default`} />,
-                              toastDispatch,
-                              videoId: `default`,
-                              type: `danger`
+                                element: <ToastMessage message="All fields are mandatory and should be valid" videoId="default" key={`default`} />,
+                                toastDispatch,
+                                videoId: `default`,
+                                type: `danger`
                             });
-              
-                          } else {
+
+                        } else {
 
                             signUpUserWithCredentials({
                                 name: form.name,
@@ -505,14 +506,14 @@ export const Signup = () => {
                         <div className="p-md">
                             <button
                                 type="submit"
-                               
+
                                 className="btn btn-danger w-100"
                                 style={{ paddingInline: 0, margin: 0 }}
                             >
                                 <span className="text-upper ">{`${`CONTINUE`}`}</span>
                             </button>
                         </div>
-                        
+
                         <div className="p-sm text-center">
                             Already have an Account?
                             <Link to="/login">
@@ -525,6 +526,10 @@ export const Signup = () => {
                 </form>
 
 
+            </div>
+            <div className="pt-lg">
+                {signupStatus === `loading` && <FlexContainer>
+                    <Loader /></FlexContainer>}
             </div>
         </div>
     );

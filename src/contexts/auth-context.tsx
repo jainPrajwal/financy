@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { toastDispatch } = useToast();
- 
 
-  const { execute, status: loginStatus, response } = useAsync(loginService, false, null);
-  const { execute: executeSignup, response: signupResponse, status: signupStatus } = useAsync(signupService, false, null)
+
+  const { execute, status: loginStatus, response, errorMessage: loginErrorMessage } = useAsync(loginService, false, null);
+  const { execute: executeSignup, response: signupResponse, status: signupStatus, errorMessage: signupErrorMessage } = useAsync(signupService, false, null)
 
 
 
@@ -66,10 +66,10 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     authDispatch({
       type: `LOGOUT`,
     });
-  
 
 
-  
+
+
 
     // navigate(`/login`);
     showToast({
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             })
             setupAuthHeaderForServiceCalls(authState.token);
 
-
+            (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
 
           } else {
             showToast({
@@ -133,12 +133,25 @@ export const AuthProvider = ({ children }: ProviderProps) => {
               ),
 
               videoId: token,
+              type: `danger`
 
 
             })
           }
 
-          (state as { from: string })?.from ? navigate(`${(state as { from: string }).from}`) : navigate(`/`)
+
+        } else if (loginStatus === `error`) {
+          showToast({
+            toastDispatch,
+            element: (
+              <ToastMessage message={loginErrorMessage || `Something went wrong`} videoId={`default`} />
+            ),
+
+            videoId: `default`,
+            type: `danger`
+
+
+          })
         }
       }
     } catch (error) {
@@ -191,6 +204,18 @@ export const AuthProvider = ({ children }: ProviderProps) => {
             localStorage.setItem(`token`, JSON.stringify(authState))
             setupAuthHeaderForServiceCalls(authState.token);
 
+            showToast({
+              toastDispatch,
+              element: (
+                <ToastMessage message={`${message}`} videoId={token} />
+              ),
+
+              videoId: token,
+
+
+            });
+            navigate(`/`);
+
           } else {
 
 
@@ -208,6 +233,18 @@ export const AuthProvider = ({ children }: ProviderProps) => {
 
 
           (state as { from: string })?.from && navigate(`${(state as { from: string }).from}`)
+        } else if (signupStatus === `error`) {
+          showToast({
+            toastDispatch,
+            element: (
+              <ToastMessage message={signupErrorMessage || `Something went wrong`} videoId={`default`} />
+            ),
+
+            videoId: `default`,
+            type: `danger`
+
+
+          })
         }
       }
     } catch (error) {
