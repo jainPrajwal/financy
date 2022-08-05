@@ -109,7 +109,7 @@ export const UploadVideo = () => {
                         if (videoId) {
                             setFetchingVideoStatus(`loading`)
                             try {
-                                const response = await axios.get(`${YOUTUBE_REPL_API}/videos/${videoId}/${videoDetails.category}`);
+                                const response = await axios.get(`${YOUTUBE_REPL_API}/videos/${videoId}/${videoDetails.category?.toLowerCase()}`);
                                 setFetchingVideoStatus(`success`)
                                 const { data: { video } } = response;
                                 let videoToBeUploaded: Video = video[0];
