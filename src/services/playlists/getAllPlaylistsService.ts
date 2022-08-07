@@ -5,7 +5,6 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 export const getAllPlaylistsService = async (): Promise<
   AxiosResponse<any, any>
 > => {
-  
     
   try {
     const response = await axios.get(`${BASE_API}/playlists`);

@@ -7,8 +7,13 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 export const setupAuthHeaderForServiceCalls = (
   token: string
 ): string | undefined => {
-  if (token) {
-    const bearerToken = `Bearer ${token}`;
+
+  const local = localStorage.getItem(`token`);
+  const localtoken = local ? JSON.parse(local) : null;
+
+  if (token || localtoken?.token) {
+
+    const bearerToken = `Bearer ${token ?? localtoken.token}`;
     return (axios.defaults.headers.common["Authorization"] = bearerToken);
   }
 };

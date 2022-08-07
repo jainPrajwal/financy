@@ -83,12 +83,9 @@ export const PlaylistsProvider = ({ children }: ProviderProps) => {
 
   useEffect(() => {
     try {
-     
-      const local = localStorage.getItem(`token`);
-      const localtoken = local ? JSON.parse(local) : null;
 
-      if (token || localtoken?.token) {
-       
+      if (token) {
+
         execute(null);
       }
     } catch (error) {
