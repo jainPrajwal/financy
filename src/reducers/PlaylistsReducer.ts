@@ -43,6 +43,8 @@ const actionMap = new Map([
             };
 
           case `history`:
+            let historyVideos = action.payload.playlist.videos.reverse();
+            action.payload.playlist.videos = historyVideos;
             return {
               ...state,
               historyData: {
@@ -263,7 +265,6 @@ const actionMap = new Map([
   [
     RESET_PLAYLIST,
     (state: PlaylistsState, action: ACTION) => {
-  
       if (action.type === `RESET_PLAYLIST`) {
         return { ...playlistsInitialState };
       }
@@ -274,6 +275,6 @@ const actionMap = new Map([
 
 export const playlistsReducer = (state: PlaylistsState, action: ACTION) => {
   const mappedAction = actionMap.get(action.type);
- 
+
   return mappedAction ? mappedAction(state, action) : state;
 };
