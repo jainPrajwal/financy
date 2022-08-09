@@ -154,6 +154,7 @@ export const Signup = () => {
                                 <input
                                     type="text"
                                     placeholder="Enter Name"
+                                    required
                                     className={`${input}  p-md w-100`}
                                     value={form.name}
                                     onChange={(e) => {
