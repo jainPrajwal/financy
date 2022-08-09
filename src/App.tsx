@@ -17,6 +17,7 @@ import { WatchLater } from "./pages/WatchLater/WatchLater";
 import { Signup } from "./pages/Auth/Signup";
 import { TrendingVideosProvider } from "./contexts/trending-videos-context";
 import { MostWatchedVideosProvider } from "./contexts/most-watched-videos-context";
+import { PageNotFound } from "./pages/PageNotFound/PagenotFound";
 
 
 
@@ -24,7 +25,7 @@ import { MostWatchedVideosProvider } from "./contexts/most-watched-videos-contex
 
 
 function App() {
- 
+
   return (
     <>
       <Routes>
@@ -57,6 +58,7 @@ function App() {
             </MostWatchedVideosProvider>
           </TrendingVideosProvider>
         }></Route>
+        <Route path={`*`} element={<PageNotFound />} />
       </Routes>
     </>
   );
