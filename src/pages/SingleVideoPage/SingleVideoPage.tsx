@@ -1234,55 +1234,23 @@ export const SingleVideoPage = () => {
                                     <span className="w-100 h-100 d-flex jc-center">
                                         <Loader width={`20px`} height={`20px`} borderWidth={`2px`} />
                                     </span>
-                                    : <>{notesData.notes.length > 0 && <div className={`${popular} my-1 pos-rel`}>
+                                    : <>{notesData.notes.length > 0 && <>
                                         {
 
                                             notesData.notes.map(note => {
-                                                return <div key={note._id} className={`d-flex f-direction-col gap-10`}>
-                                                    <div className={`${editProfileIcon} ${iconButton}`} style={{ top: `6px`, right: `6px` }}>
-                                                        <button
-                                                            className={`btn ${editProfileButton}`}
+                                                return <div key={note._id} className={`${popular} my-1 pos-rel`}>
+                                                    <div  className={`d-flex f-direction-col gap-10`}>
+                                                        <div className={`${editProfileIcon} ${iconButton}`} style={{ top: `6px`, right: `6px` }}>
+                                                            <button
+                                                                className={`btn ${editProfileButton}`}
 
-                                                            onClick={() => {
-                                                                if (authState && authState.token) {
-
-                                                                    setEditNote(prevState => ({ ...prevState, isEditNote: true, noteId: note._id }));
-                                                                    setUserDefinedNote({
-                                                                        title: note.title,
-                                                                        description: note.description
-                                                                    })
-                                                                } else {
-
-                                                                    showToast({
-                                                                        toastDispatch,
-                                                                        element: (
-                                                                            <ToastMessage message={`Please login to avail these features`} videoId={videoId || `default`} />
-                                                                        ),
-
-                                                                        videoId: videoId || `default`,
-                                                                        type: `danger`
-                                                                    })
-                                                                }
-                                                            }
-
-                                                            }>
-                                                            <MdEditNote size={28} />
-                                                        </button>
-                                                    </div>
-                                                    <div className={`fs-2 ${noteHeader}`}>{note.title}</div>
-                                                    <div className={`${noteHeader}`}>
-                                                        {
-                                                            note.description
-                                                        }
-                                                    </div>
-                                                    <div className="d-flex jc-end">
-                                                        <div className={`${iconDelete}`}>
-                                                            <button className={`btn ${btnTrash}`}
                                                                 onClick={() => {
                                                                     if (authState && authState.token) {
-                                                                        executeDeleteNoteService({
-                                                                            noteId: note._id,
-                                                                            videoId: video._id
+
+                                                                        setEditNote(prevState => ({ ...prevState, isEditNote: true, noteId: note._id }));
+                                                                        setUserDefinedNote({
+                                                                            title: note.title,
+                                                                            description: note.description
                                                                         })
                                                                     } else {
 
@@ -1296,25 +1264,59 @@ export const SingleVideoPage = () => {
                                                                             type: `danger`
                                                                         })
                                                                     }
+                                                                }
 
-                                                                }}
-                                                            >
-                                                                <span >
-                                                                    {" "}
-                                                                    <IoMdTrash size={24} />{" "}
-                                                                </span>{" "}
-
+                                                                }>
+                                                                <MdEditNote size={28} />
                                                             </button>
-
                                                         </div>
-                                                    </div>
+                                                        <div className={`fs-2 ${noteHeader}`}>{note.title}</div>
+                                                        <div className={`${noteHeader}`}>
+                                                            {
+                                                                note.description
+                                                            }
+                                                        </div>
+                                                        <div className="d-flex jc-end">
+                                                            <div className={`${iconDelete}`}>
+                                                                <button className={`btn ${btnTrash}`}
+                                                                    onClick={() => {
+                                                                        if (authState && authState.token) {
+                                                                            executeDeleteNoteService({
+                                                                                noteId: note._id,
+                                                                                videoId: video._id
+                                                                            })
+                                                                        } else {
 
+                                                                            showToast({
+                                                                                toastDispatch,
+                                                                                element: (
+                                                                                    <ToastMessage message={`Please login to avail these features`} videoId={videoId || `default`} />
+                                                                                ),
+
+                                                                                videoId: videoId || `default`,
+                                                                                type: `danger`
+                                                                            })
+                                                                        }
+
+                                                                    }}
+                                                                >
+                                                                    <span >
+                                                                        {" "}
+                                                                        <IoMdTrash size={24} />{" "}
+                                                                    </span>{" "}
+
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             })
 
 
                                         }
-                                    </div>}</>}
+                                    </>}</>}
                             </div>
                         </div>
                     </div>
