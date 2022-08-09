@@ -12,7 +12,8 @@ import { ToastMessage } from "../ToastMessage/ToastMessage";
 
 
 export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video: Video }) => {
-    const [isChecked, setIsChecked] = useState<Boolean>(false);
+    const isVideoPresentInPlaylist = checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(video, playlist);
+    const [isChecked, setIsChecked] = useState<Boolean>(isVideoPresentInPlaylist);
     const { playlistsDispatch } = usePlaylists();
     const { toastDispatch } = useToast();
     const videoId = video._id;
@@ -38,7 +39,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
                     element: (
                         <ToastMessage message={message} videoId={videoId} />
                     ),
-    
+
                     videoId,
                     type: `danger`
                 })
@@ -46,7 +47,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
         } catch (error) {
             console.error(`error `, error)
         }
-      
+
     }, [removeFromPlaylistStatus, playlistsDispatch, removeFromPlaylistResponse])
 
 
@@ -80,6 +81,7 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
 
     const onChangeHandler = () => {
         setIsChecked(prevState => {
+
             if (prevState) {
 
 
@@ -101,7 +103,8 @@ export const CheckboxWrapper = ({ playlist, video }: { playlist: Playlist, video
         })
     }
 
-    const isVideoPresentInPlaylist = checkIfVideoIsAlreadyPresentInSpecifiedPlaylist(video, playlist);
+
+
 
     if (removeFromPlaylistStatus === `loading` || addToPlaylistServiceStatus === `loading`) {
         return <Loader width={`36px`} height={`36px`} />
