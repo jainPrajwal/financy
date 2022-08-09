@@ -65,8 +65,8 @@ export const Signup = () => {
             validateIndividualPassword: function (password: string) {
                 if (password.length <= 0) {
                     return `Password cannot be blank`;
-                } else if (password.length < 5) {
-                    return `At least 5 characters required`;
+                } else if (!/^(?=.*[A-Z])(?=.*\d).{8,}$/g.test(password)) {
+                    return `Password should contain atleast 8 characters (atleast one number & one upper case letter)`
                 }
 
                 return ``;
@@ -122,7 +122,7 @@ export const Signup = () => {
                     onSubmit={(e) => {
                         e.preventDefault();
 
-                        if (Object.values(form?.isFormValid).includes(false)) {
+                        if (Object.values(form.isFormValid).includes(false)) {
                             showToast({
                                 element: <ToastMessage message="All fields are mandatory and should be valid" videoId="default" key={`default`} />,
                                 toastDispatch,
@@ -155,13 +155,13 @@ export const Signup = () => {
                                     type="text"
                                     placeholder="Enter Name"
                                     className={`${input}  p-md w-100`}
-                                    value={form?.name}
+                                    value={form.name}
                                     onChange={(e) => {
                                         setForm((prevState) => ({
                                             ...prevState,
                                             name: e.target.value,
                                             isFormValid:
-                                                form?.validations?.validateName(e.target.value)
+                                                form.validations?.validateName(e.target.value)
                                                     ?.length > 0
                                                     ? { ...prevState.isFormValid, isNameValid: false }
                                                     : { ...prevState.isFormValid, isNameValid: true }
@@ -180,14 +180,14 @@ export const Signup = () => {
                             </label>
                             {
                                 <span
-                                    className={`d-block ${!form?.isFormValid?.isNameValid && form?.touched["name"]
+                                    className={`d-block ${!form.isFormValid?.isNameValid && form.touched["name"]
                                         ? ``
                                         : `${visHidden}`
                                         }`}
                                     style={{ color: "var(--tube-theme-error-light)" }}
                                 >
                                     {" "}
-                                    {form?.validations?.validateName(form?.name)}
+                                    {form.validations?.validateName(form.name)}
                                 </span>
                             }
                         </div>
@@ -196,7 +196,7 @@ export const Signup = () => {
                             <label className="d-block pos-relative">
                                 <input
                                     type="email"
-                                    value={form?.email}
+                                    value={form.email}
                                     placeholder="Enter Email"
                                     className={`${input}  p-md w-100`}
                                     required
@@ -205,7 +205,7 @@ export const Signup = () => {
                                             ...prevState,
                                             email: e.target.value,
                                             isFormValid:
-                                                form?.validations?.validateEmail(e.target.value)
+                                                form.validations?.validateEmail(e.target.value)
                                                     ?.length > 0
                                                     ? { ...prevState.isFormValid, isEmailValid: false }
                                                     : { ...prevState.isFormValid, isEmailValid: true }
@@ -224,14 +224,14 @@ export const Signup = () => {
                             </label>
                             {
                                 <span
-                                    className={`d-block ${!form?.isFormValid?.isEmailValid && form?.touched["email"]
+                                    className={`d-block ${!form.isFormValid?.isEmailValid && form.touched["email"]
                                         ? ``
                                         : `${visHidden}`
                                         }`}
                                     style={{ color: "var(--tube-theme-error-light)" }}
                                 >
                                     {" "}
-                                    {form?.validations?.validateEmail(form?.email)}
+                                    {form.validations?.validateEmail(form.email)}
                                 </span>
                             }
                         </div>
@@ -240,7 +240,7 @@ export const Signup = () => {
                             <div className={`${inputPasswordWrapper}`}>
                                 <label className="d-block pos-relative">
                                     <input
-                                        value={form?.initialPassword}
+                                        value={form.initialPassword}
                                         type={`${showPassword.initial ? `text` : `password`}`}
                                         placeholder="Enter Password"
                                         className={`${input}  p-md w-100`}
@@ -250,16 +250,16 @@ export const Signup = () => {
                                                 ...prevState,
                                                 initialPassword: e.target.value,
                                                 isFormValid:
-                                                    form?.validations?.validateIndividualPassword(
+                                                    form.validations?.validateIndividualPassword(
                                                         e.target.value
                                                     )?.length > 0
                                                         ? {
                                                             ...prevState.isFormValid,
                                                             isInitialPasswordValid: false
                                                         }
-                                                        : form?.validations?.validateBothPasswords(
+                                                        : form.validations?.validateBothPasswords(
                                                             e.target.value,
-                                                            form?.confirmPassword
+                                                            form.confirmPassword
                                                         ).length > 0
                                                             ? {
                                                                 ...prevState.isFormValid,
@@ -321,16 +321,16 @@ export const Signup = () => {
                             </div>
                             {
                                 <span
-                                    className={`d-block ${!form?.isFormValid?.isInitialPasswordValid &&
-                                        form?.touched["initialPassword"]
+                                    className={`d-block ${!form.isFormValid?.isInitialPasswordValid &&
+                                        form.touched["initialPassword"]
                                         ? ``
                                         : `${visHidden}`
                                         }`}
                                     style={{ color: "var(--tube-theme-error-light)" }}
                                 >
                                     {" "}
-                                    {form?.validations?.validateIndividualPassword(
-                                        form?.initialPassword
+                                    {form.validations?.validateIndividualPassword(
+                                        form.initialPassword
                                     )}
                                 </span>
                             }
@@ -340,7 +340,7 @@ export const Signup = () => {
                             <div className={`${inputPasswordWrapper}`}>
                                 <label className="d-block pos-relative">
                                     <input
-                                        value={form?.confirmPassword}
+                                        value={form.confirmPassword}
                                         type={`${showPassword?.confirm ? `text` : `password`}`}
                                         placeholder="Confirm Password"
                                         className={`${input}  p-md w-100`}
@@ -350,15 +350,15 @@ export const Signup = () => {
                                                 ...prevState,
                                                 confirmPassword: e.target.value,
                                                 isFormValid:
-                                                    form?.validations?.validateIndividualPassword(
+                                                    form.validations?.validateIndividualPassword(
                                                         e.target.value
                                                     )?.length > 0
                                                         ? {
                                                             ...prevState.isFormValid,
                                                             isConfirmPasswordValid: false
                                                         }
-                                                        : form?.validations?.validateBothPasswords(
-                                                            form?.initialPassword,
+                                                        : form.validations?.validateBothPasswords(
+                                                            form.initialPassword,
                                                             e.target.value
                                                         ).length > 0
                                                             ? {
@@ -384,7 +384,8 @@ export const Signup = () => {
                                         }}
                                     />
                                     <span className="tooltip tooltip-top tooltip-dark p-md ">
-                                        Password should have atleast 5 characters
+                                        {form.validations.validateIndividualPassword(
+                                            form.confirmPassword)}
                                     </span>
                                 </label>
 
@@ -423,33 +424,33 @@ export const Signup = () => {
 
                             {
                                 <span
-                                    className={`d-block ${!form?.isFormValid?.isConfirmPasswordValid &&
-                                        form?.touched["confirmPassword"]
+                                    className={`d-block ${!form.isFormValid?.isConfirmPasswordValid &&
+                                        form.touched["confirmPassword"]
                                         ? ``
                                         : `${visHidden}`
                                         }`}
                                     style={{ color: "var(--tube-theme-error-light)" }}
                                 >
-                                    {" "}
-                                    {form?.validations?.validateIndividualPassword(
-                                        form?.confirmPassword
+                                    
+                                    {form.validations?.validateIndividualPassword(
+                                        form.confirmPassword
                                     )}
                                 </span>
                             }
                             {
                                 <span
-                                    className={`d-block ${!form?.isFormValid?.isPasswordsEqual &&
-                                        form?.touched["initialPassword"] &&
-                                        form?.touched["confirmPassword"]
+                                    className={`d-block ${!form.isFormValid?.isPasswordsEqual &&
+                                        form.touched["initialPassword"] &&
+                                        form.touched["confirmPassword"]
                                         ? ``
                                         : `${visHidden}`
                                         }`}
                                     style={{ color: "var(--tube-theme-error-light)" }}
                                 >
                                     {" "}
-                                    {form?.validations?.validateBothPasswords(
-                                        form?.initialPassword,
-                                        form?.confirmPassword
+                                    {form.validations?.validateBothPasswords(
+                                        form.initialPassword,
+                                        form.confirmPassword
                                     )}
                                 </span>
                             }

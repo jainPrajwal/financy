@@ -47,7 +47,7 @@ const Login = () => {
         return ``;
       },
       validatePassword: function (password: string) {
-        if (password.length <= 0) return `Password cannot be blank`;
+        if (password.length <= 5) return `Password cannot be blank`;
         return ``;
       }
     },
