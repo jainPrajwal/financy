@@ -113,7 +113,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId} />
+                            <ToastMessage message={`Video liked 👍`} videoId={videoId} />
                         ),
 
                         videoId,
@@ -162,7 +162,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId} />
+                            <ToastMessage message={`Video Disliked 👎`} videoId={videoId} />
                         ),
 
                         videoId,
@@ -210,7 +210,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId} />
+                            <ToastMessage  message={`Video Added To Watch Later Successfully`} videoId={videoId} />
                         ),
 
                         videoId
@@ -259,7 +259,7 @@ export const ExploreVideoCard = ({ video, index, setLastElement }: {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId} />
+                            <ToastMessage message={`Video Removed From Watch Later Successfully`}  videoId={videoId} />
                         ),
 
                         videoId,

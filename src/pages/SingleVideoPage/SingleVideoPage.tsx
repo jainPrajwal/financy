@@ -256,7 +256,7 @@ export const SingleVideoPage = () => {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId || `default`} />
+                            <ToastMessage message={`Video liked 👍`} videoId={videoId || `default`} />
                         ),
 
                         videoId: videoId || `default`,
@@ -302,7 +302,7 @@ export const SingleVideoPage = () => {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId || `default`} />
+                            <ToastMessage message={`Video Disliked 👎`} videoId={videoId || `default`} />
                         ),
 
                         videoId: videoId || `default`,
@@ -350,7 +350,7 @@ export const SingleVideoPage = () => {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId || `default`} />
+                            <ToastMessage message={`Video Added To Watch Later Successfully`} videoId={videoId || `default`} />
                         ),
 
                         videoId: videoId || `default`,
@@ -396,7 +396,7 @@ export const SingleVideoPage = () => {
                     showToast({
                         toastDispatch,
                         element: (
-                            <ToastMessage message={message} videoId={videoId || `default`} />
+                            <ToastMessage message={`Video Removed From Watch Later Successfully`} videoId={videoId || `default`} />
                         ),
 
                         videoId: videoId || `default`,
